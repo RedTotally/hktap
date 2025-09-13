@@ -28,7 +28,8 @@ export default function Home() {
   const [leaderboard, setLeaderboard] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
 
-  const [camera, setCamera] = useState(false)
+  const [camera, setCamera] = useState(false);
+  const [ranking, setRanking] = useState(false);
 
   const items = [
     {
