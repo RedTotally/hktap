@@ -150,7 +150,7 @@ export default function CameraCapture() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-4 pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto">
+    <div className="flex flex-col items-center pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto">
       {!previewImage ? (
         <>
           <video
@@ -160,12 +160,12 @@ export default function CameraCapture() {
           />
           <canvas ref={canvasRef} className="hidden" />
           <div className="flex gap-2 w-full">
-            {!isCameraOn ? (
-              <div className="w-full">
-                <p className="text-sm text-center mb-5">Status: {error}</p>
+            {isCameraOn ? (
+              <div className="w-full mt-5">
+                <p className="text-sm text-center">Status: {error}</p>
                 <div
                   onClick={startCamera}
-                  className="flex justify-center items-center w-full"
+                  className="flex justify-center items-center w-full mt-5"
                 >
                   <img
                     className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
@@ -175,19 +175,25 @@ export default function CameraCapture() {
               </div>
             ) : (
               <>
-                <div className="flex justify-between w-full">
-                  <button
-                    onClick={capturePhoto}
-                    className="block px-4 py-2 text-sm bg-blue-500 text-white rounded-full hover:brightness-[90%] duration-300 cursor-pointer"
-                  >
-                    Capture Photo
-                  </button>
-                  <button
+                <div className="w-full">
+                  <p
                     onClick={stopCamera}
-                    className="block px-4 py-2 text-sm bg-red-500 text-white rounded-full hover:brightness-[90%] duration-300 cursor-pointer"
+                    className="block px-4 py-2 text-sm bg-gray-500 text-white text-center hover:brightness-[90%] duration-300 cursor-pointer"
                   >
                     Stop Camera
-                  </button>
+                  </p>
+
+                  <div
+                    onClick={capturePhoto}
+                    className="flex justify-center items-center w-full mt-5"
+                  >
+                    <img
+                      className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
+                      src={"/photo.svg"}
+                    ></img>
+                  </div>
+
+
                 </div>
               </>
             )}
