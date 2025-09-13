@@ -39,13 +39,15 @@ export default function Home() {
       } else {
         console.log(data);
       }
-    }else{
-      console.log("Supabase key is fucked bro")
+    } else {
+      console.log("Supabase key is fucked bro");
     }
   }
 
   return (
     <>
+      <CameraCapture />
+
       <div className="flex justify-center items-center h-[30em] bg-gray-100 relative">
         <Map />
       </div>
@@ -108,8 +110,6 @@ export default function Home() {
           View Other Options
         </p>
       </div>
-
-      <CameraCapture />
 
       <div
         className={
