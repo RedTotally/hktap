@@ -84,7 +84,7 @@ export default function CameraCapture() {
       const { latitude, longitude } = position.coords;
 
       // Save to Supabase
-      const { data, error } = await supabase.from("photos").insert([
+      const { data, error } = await supabase.from("locations_db").insert([
         {
           image_data: imageData,
           coordinates: [latitude, longitude],
