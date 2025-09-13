@@ -172,8 +172,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={camera == true ? "fixed w-full h-full top-0 z-[102]" : "fixed w-full h-full top-0 z-[102] hidden"}>
-        <div className="bg-black w-full h-full top-0 z-[-1] opacity-30 absolute"></div>
+      <div className={camera == true ? "fixed w-full h-screen top-0 z-[102]" : "fixed w-full h-full top-0 z-[102] hidden"}>
+        <div className="bg-black w-full h-screen top-0 z-[-1] opacity-30 absolute"></div>
         <div className="flex items-center justify-center w-full h-full">
           <CameraCapture />
         </div>

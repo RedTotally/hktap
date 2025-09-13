@@ -172,18 +172,20 @@ export default function CameraCapture() {
               </div>
             ) : (
               <>
-                <button
-                  onClick={capturePhoto}
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  Capture Photo
-                </button>
-                <button
-                  onClick={stopCamera}
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                  Stop Camera
-                </button>
+                <div className="flex justify-between w-full">
+                  <button
+                    onClick={capturePhoto}
+                    className="block px-4 py-2 text-sm bg-blue-500 text-white rounded-full hover:brightness-[90%] duration-300 cursor-pointer"
+                  >
+                    Capture Photo
+                  </button>
+                  <button
+                    onClick={stopCamera}
+                    className="block px-4 py-2 text-sm bg-red-500 text-white rounded-full hover:brightness-[90%] duration-300 cursor-pointer"
+                  >
+                    Stop Camera
+                  </button>
+                </div>
               </>
             )}
           </div>
