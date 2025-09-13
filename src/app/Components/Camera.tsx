@@ -159,7 +159,7 @@ export default function CameraCapture() {
             className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none"
           />
           <canvas ref={canvasRef} className="hidden" />
-          <div className="flex gap-2 w-full">
+          <div className="gap-2 w-full">
             {!isCameraOn ? (
               <div className="w-full mt-5">
                 <p className="text-sm text-center">Status: {error}</p>
@@ -192,59 +192,63 @@ export default function CameraCapture() {
                       src={"/photo.svg"}
                     ></img>
                   </div>
-
-
                 </div>
               </>
             )}
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center w-full">
           <img
             src={previewImage}
             alt="Captured preview"
             className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none"
           />
-          <div className="flex flex-col gap-2 w-full max-w-md">
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter title"
-              className="px-2 py-1 border rounded"
-            />
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description"
-              className="px-2 py-1 border rounded"
-            />
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="px-2 py-1 border rounded"
-            >
-              <option value="">Select category</option>
-              <option value="landscape">Landscape</option>
-              <option value="urban">Urban</option>
-              <option value="nature">Nature</option>
-              <option value="other">Other</option>
-            </select>
-            <div className="flex gap-2">
-              <button
-                onClick={uploadPhoto}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Upload Photo
-              </button>
-              <button
-                onClick={() => setPreviewImage(null)}
-                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-              >
-                Retake Photo
-              </button>
+          <div className="lg:h-[20em] w-full">
+            <div className="lg:h-[13em] overflow-auto w-full">
+              <div className="w-full">
+                <p
+                  onClick={() => setPreviewImage(null)}
+                  className="block px-4 py-2 text-sm bg-gray-500 text-white text-center hover:brightness-[90%] duration-300 cursor-pointer"
+                >
+                  Retake Photo
+                </p>
+              </div>
+              <div className="flex flex-col w-full">
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Title"
+                  className="p-3 w-full outline-none"
+                />
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                  className="p-3 w-full outline-none"
+                />
+                <input
+                  type="text"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder="Category"
+                  className="p-3 w-full outline-none"
+                />
+
+                
+              </div>
+              
             </div>
+            <div
+                  onClick={uploadPhoto}
+                  className="flex justify-center items-center w-full mt-5"
+                >
+                  <img
+                    className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
+                    src={"/upolad.svg"}
+                  ></img>
+                </div>
           </div>
         </div>
       )}
