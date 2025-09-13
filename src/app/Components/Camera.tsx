@@ -71,8 +71,8 @@ export default function CameraCapture() {
     }
 
     try {
-      if (!canvasRef.current) {
-        setError("Canvas not available");
+      if (!canvasRef.current || !videoRef.current) {
+        setError("Canvas or video not available");
         return;
       }
 
@@ -82,19 +82,46 @@ export default function CameraCapture() {
         return;
       }
 
-      if (!videoRef.current) {
-        setError("Video element not available");
-        return;
-      }
-
-      context.drawImage(
-        videoRef.current,
+      context.clearRect(
         0,
         0,
         canvasRef.current.width,
         canvasRef.current.height
       );
-      const imageData = canvasRef.current.toDataURL("image/jpeg");
+
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const videoAspect = video.videoWidth / video.videoHeight;
+      const canvasAspect = canvas.width / canvas.height;
+
+      let drawWidth,
+        drawHeight,
+        offsetX = 0,
+        offsetY = 0;
+
+      if (videoAspect > canvasAspect) {
+        drawHeight = canvas.height;
+        drawWidth = canvas.height * videoAspect;
+        offsetX = (canvas.width - drawWidth) / 2;
+      } else {
+        drawWidth = canvas.width;
+        drawHeight = canvas.width / videoAspect;
+        offsetY = (canvas.height - drawHeight) / 2;
+      }
+
+      context.drawImage(
+        video,
+        0,
+        0,
+        video.videoWidth,
+        video.videoHeight,
+        offsetX,
+        offsetY,
+        drawWidth,
+        drawHeight
+      );
+
+      const imageData = canvasRef.current.toDataURL("image/jpeg", 0.9);
       setPreviewImage(imageData);
       setError(null);
     } catch (err) {
@@ -202,13 +229,16 @@ export default function CameraCapture() {
           <img
             src={previewImage}
             alt="Captured preview"
-            className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none"
+            className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none object-cover"
           />
           <div className="lg:h-[20em] w-full">
             <div className="lg:h-[13em] overflow-auto w-full">
               <div className="w-full">
                 <p
-                  onClick={() => setPreviewImage(null)}
+                  onClick={async () => {
+                    setPreviewImage(null);
+                    await startCamera();
+                  }}
                   className="block px-4 py-2 text-sm bg-gray-500 text-white text-center hover:brightness-[90%] duration-300 cursor-pointer"
                 >
                   Retake Photo
@@ -235,20 +265,17 @@ export default function CameraCapture() {
                   placeholder="Category"
                   className="p-3 w-full outline-none"
                 />
-
-                
               </div>
-              
             </div>
             <div
-                  onClick={uploadPhoto}
-                  className="flex justify-center items-center w-full mt-5"
-                >
-                  <img
-                    className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
-                    src={"/upolad.svg"}
-                  ></img>
-                </div>
+              onClick={uploadPhoto}
+              className="flex justify-center items-center w-full mt-5"
+            >
+              <img
+                className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
+                src={"/upolad.svg"}
+              ></img>
+            </div>
           </div>
         </div>
       )}

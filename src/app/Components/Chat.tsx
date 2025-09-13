@@ -18,7 +18,13 @@ interface ChatProps {
   onToggle: () => void;
 }
 
-export default function Chat({ locationsData, supabaseUrl, supabaseKey, isOpen, onToggle }: ChatProps) {
+export default function Chat({
+  locationsData,
+  supabaseUrl,
+  supabaseKey,
+  isOpen,
+  onToggle,
+}: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +45,8 @@ export default function Chat({ locationsData, supabaseUrl, supabaseKey, isOpen, 
         {
           id: "1",
           role: "assistant",
-          content: "Hello! I'm your HKTAP AI assistant. I can help you find information about locations in Hong Kong based on our database. How can I assist you today?",
+          content:
+            "Hello! I'm your HKTAP AI assistant. I can help you find information about locations in Hong Kong based on our database. How can I assist you today?",
           timestamp: new Date(),
         },
       ]);
@@ -48,15 +55,20 @@ export default function Chat({ locationsData, supabaseUrl, supabaseKey, isOpen, 
 
   const generateSystemPrompt = () => {
     const locationsInfo = locationsData
-      .map((location, index) => 
-        `${index + 1}. ${location.title || 'Untitled Location'}: ${location.description || 'No description'}`
+      .map(
+        (location, index) =>
+          `${index + 1}. ${location.title || "Untitled Location"}: ${
+            location.description || "No description"
+          }`
       )
-      .join('\n');
+      .join("\n");
 
-    return `You are HKTAP AI, an intelligent assistant for Hong Kong location discovery. You have access to a database of ${locationsData.length} locations in Hong Kong.
+    return `You are HKTAP AI, an intelligent assistant for Hong Kong location discovery. You have access to a database of ${
+      locationsData.length
+    } locations in Hong Kong.
 
 Available Locations:
-${locationsInfo || 'No locations available in the database.'}
+${locationsInfo || "No locations available in the database."}
 
 Your role:
 - Help users find and learn about locations in Hong Kong
@@ -67,7 +79,9 @@ Your role:
 
 Always base your recommendations on the locations in the database above. If a user asks about a location not in the database, let them know it's not available but suggest similar alternatives from the database.
 
-Current database contains ${locationsData.length} location${locationsData.length !== 1 ? 's' : ''}.`;
+Current database contains ${locationsData.length} location${
+      locationsData.length !== 1 ? "s" : ""
+    }.`;
   };
 
   const sendMessage = async () => {
@@ -80,7 +94,7 @@ Current database contains ${locationsData.length} location${locationsData.length
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
     setIsLoading(true);
 
@@ -88,7 +102,9 @@ Current database contains ${locationsData.length} location${locationsData.length
       // Check for OpenRouter API key
       const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
       if (!apiKey) {
-        throw new Error("OpenRouter API key not configured. Please add NEXT_PUBLIC_OPENROUTER_API_KEY to your .env file.");
+        throw new Error(
+          "OpenRouter API key not configured. Please add NEXT_PUBLIC_OPENROUTER_API_KEY to your .env file."
+        );
       }
 
       const openai = new OpenAI({
@@ -108,7 +124,7 @@ Current database contains ${locationsData.length} location${locationsData.length
             role: "system",
             content: generateSystemPrompt(),
           },
-          ...messages.map(msg => ({
+          ...messages.map((msg) => ({
             role: msg.role,
             content: msg.content,
           })),
@@ -124,20 +140,24 @@ Current database contains ${locationsData.length} location${locationsData.length
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: completion.choices[0].message.content || "Sorry, I couldn't generate a response.",
+        content:
+          completion.choices[0].message.content ||
+          "Sorry, I couldn't generate a response.",
         timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error("Error calling OpenAI:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'}. Please make sure your OpenRouter API key is configured correctly.`,
+        content: `Sorry, I encountered an error: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }. Please make sure your OpenRouter API key is configured correctly.`,
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -157,10 +177,7 @@ Current database contains ${locationsData.length} location${locationsData.length
       {/* Chat Header */}
       <div className="bg-blue-500 text-white p-3 rounded-t-lg flex justify-between items-center">
         <h3 className="font-semibold">HKTAP AI Assistant</h3>
-        <button
-          onClick={onToggle}
-          className="text-white hover:text-gray-200"
-        >
+        <button onClick={onToggle} className="text-white hover:text-gray-200">
           ✕
         </button>
       </div>
@@ -170,7 +187,9 @@ Current database contains ${locationsData.length} location${locationsData.length
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex ${
+              message.role === "user" ? "justify-end" : "justify-start"
+            }`}
           >
             <div
               className={`max-w-[80%] p-2 rounded-lg text-sm ${

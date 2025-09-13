@@ -17,7 +17,7 @@ const Map = dynamic(() => import("./Components/Map"), {
 });
 
 export default function Home() {
- const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
+  const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
   const [currentCategory, setCurrentCategory] = useState("");
@@ -27,7 +27,7 @@ export default function Home() {
   const [leaderboard, setLeaderboard] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
 
-  const [camera, setCamera] = useState(false)
+  const [camera, setCamera] = useState(false);
 
   const items = [
     {
@@ -51,7 +51,7 @@ export default function Home() {
     async function fetchLocationsData() {
       if (supabaseKey !== undefined) {
         const supabase = createClient(supabaseUrl, supabaseKey);
-        
+
         try {
           const { data, error } = await supabase
             .from("locations_db")
@@ -199,7 +199,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={camera == true ? "fixed w-full h-full top-0 z-[102]" : "fixed w-full h-full top-0 z-[102] hidden"}>
+      <div
+        className={
+          camera == true
+            ? "fixed w-full h-full top-0 z-[102]"
+            : "fixed w-full h-full top-0 z-[102] hidden"
+        }
+      >
         <div className="bg-black w-full h-screen top-0 z-[-1] opacity-30 absolute"></div>
         <div className="flex items-center justify-center w-full h-full">
           <CameraCapture />
@@ -214,15 +220,15 @@ export default function Home() {
         </p>
       </footer>
 
-<div className="relative z-[103]">
+      <div className="relative z-[103]">
         <Chat
-        locationsData={locationsData}
-        supabaseUrl={supabaseUrl}
-        supabaseKey={supabaseKey}
-        isOpen={chatOpen}
-        onToggle={() => setChatOpen(!chatOpen)}
-      />
-</div>
+          locationsData={locationsData}
+          supabaseUrl={supabaseUrl}
+          supabaseKey={supabaseKey}
+          isOpen={chatOpen}
+          onToggle={() => setChatOpen(!chatOpen)}
+        />
+      </div>
     </>
   );
 }
