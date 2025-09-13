@@ -214,13 +214,15 @@ export default function Home() {
         </p>
       </footer>
 
-      <Chat
+<div className="relative z-[103]">
+        <Chat
         locationsData={locationsData}
         supabaseUrl={supabaseUrl}
         supabaseKey={supabaseKey}
         isOpen={chatOpen}
         onToggle={() => setChatOpen(!chatOpen)}
       />
+</div>
     </>
   );
 }
