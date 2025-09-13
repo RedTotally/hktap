@@ -92,9 +92,12 @@ function DockItem({
       role="button"
       aria-haspopup="true"
     >
-      {Children.map(children, (child) =>
-        cloneElement(child as React.ReactElement, { isHovered })
-      )}
+      {Children.map(children, (child) => {
+        if (React.isValidElement<{ isHovered?: MotionValue<number> }>(child)) {
+          return cloneElement(child, { isHovered });
+        }
+        return child;
+      })}
     </motion.div>
   );
 }
@@ -137,9 +140,10 @@ function DockLabel({ children, className = "", isHovered }: DockLabelProps) {
 type DockIconProps = {
   className?: string;
   children: React.ReactNode;
+  isHovered?: MotionValue<number>;
 };
 
-function DockIcon({ children, className = "" }: DockIconProps) {
+function DockIcon({ children, className = "", isHovered }: DockIconProps) {
   return (
     <div className={`flex items-center justify-center ${className}`}>
       {children}
