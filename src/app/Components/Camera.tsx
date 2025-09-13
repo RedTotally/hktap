@@ -8,7 +8,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
 export default function CameraCapture() {
   if (supabaseKey == undefined) {
-    return;
+    return <p className="text-red-500">Supabase key is missing</p>;
   }
 
   const supabase = createClient(supabaseUrl, supabaseKey);
@@ -18,10 +18,15 @@ export default function CameraCapture() {
   const [error, setError] = useState<string | null>(null);
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
 
   const startCamera = async () => {
     try {
       if (videoRef.current == null) {
+        setError("Video element not available");
         return;
       }
 
@@ -52,10 +57,14 @@ export default function CameraCapture() {
       }
       setIsCameraOn(false);
       setStream(null);
+      setPreviewImage(null);
+      setTitle("");
+      setDescription("");
+      setCategory("");
     }
   };
 
-  const capturePhoto = async () => {
+  const capturePhoto = () => {
     if (!isCameraOn) {
       setError("Camera is not active");
       return;
@@ -80,7 +89,25 @@ export default function CameraCapture() {
 
       context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
       const imageData = canvasRef.current.toDataURL("image/jpeg");
+      setPreviewImage(imageData);
+      setError(null);
+    } catch (err) {
+      setError("Error capturing photo: " + (err as Error).message);
+    }
+  };
 
+  const uploadPhoto = async () => {
+    if (!previewImage) {
+      setError("No photo to upload");
+      return;
+    }
+
+    if (!title || !description || !category) {
+      setError("Please fill in all fields: title, description, and category");
+      return;
+    }
+
+    try {
       const position = await new Promise<GeolocationPosition>(
         (resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -91,9 +118,12 @@ export default function CameraCapture() {
 
       const { data, error } = await supabase.from("locations_db").insert([
         {
-          photo: imageData,
+          photo: previewImage,
           latitude: latitude,
           longitude: longitude,
+          title: title,
+          description: description,
+          category: category,
           created_at: new Date().toISOString(),
         },
       ]);
@@ -102,7 +132,7 @@ export default function CameraCapture() {
         throw new Error("Failed to save to Supabase: " + error.message);
       }
 
-      setError("Photo and coordinates saved successfully!");
+      setError("Photo and details saved successfully!");
       stopCamera();
     } catch (err) {
       setError("Error: " + (err as Error).message);
@@ -111,33 +141,81 @@ export default function CameraCapture() {
 
   return (
     <div className="flex flex-col items-center gap-4 p-4">
-      <video ref={videoRef} autoPlay className="w-[640px] h-[480px] border" />
-      <canvas ref={canvasRef} className="hidden" />
-      <div className="flex gap-2">
-        {!isCameraOn ? (
-          <button
-            onClick={startCamera}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Enable Camera
-          </button>
-        ) : (
-          <>
-            <button
-              onClick={capturePhoto}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+      {!previewImage ? (
+        <>
+          <video ref={videoRef} autoPlay className="w-[640px] h-[480px] border" />
+          <canvas ref={canvasRef} className="hidden" />
+          <div className="flex gap-2">
+            {!isCameraOn ? (
+              <button
+                onClick={startCamera}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Enable Camera
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={capturePhoto}
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  Capture Photo
+                </button>
+                <button
+                  onClick={stopCamera}
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                  Stop Camera
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="flex flex-col items-center gap-4">
+          <img src={previewImage} alt="Captured preview" className="w-[640px] h-[480px] border" />
+          <div className="flex flex-col gap-2 w-full max-w-md">
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter title"
+              className="px-2 py-1 border rounded"
+            />
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter description"
+              className="px-2 py-1 border rounded"
+            />
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="px-2 py-1 border rounded"
             >
-              Capture Photo
-            </button>
-            <button
-              onClick={stopCamera}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Stop Camera
-            </button>
-          </>
-        )}
-      </div>
+              <option value="">Select category</option>
+              <option value="landscape">Landscape</option>
+              <option value="urban">Urban</option>
+              <option value="nature">Nature</option>
+              <option value="other">Other</option>
+            </select>
+            <div className="flex gap-2">
+              <button
+                onClick={uploadPhoto}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Upload Photo
+              </button>
+              <button
+                onClick={() => setPreviewImage(null)}
+                className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              >
+                Retake Photo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {error && <p className="text-red-500">{error}</p>}
     </div>
   );
