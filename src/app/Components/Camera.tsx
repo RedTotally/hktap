@@ -8,28 +8,32 @@ const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function CameraCapture() {
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [error, setError] = useState(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isCameraOn, setIsCameraOn] = useState(false);
-  const [stream, setStream] = useState(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const startCamera = async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoRef.current.srcObject = mediaStream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
       setStream(mediaStream);
       setIsCameraOn(true);
       setError(null);
     } catch (err) {
-      setError('Failed to access camera: ' + err.message);
+      setError('Failed to access camera: ' + (err as Error).message);
     }
   };
 
   const stopCamera = () => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      videoRef.current.srcObject = null;
+      stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
       setIsCameraOn(false);
       setStream(null);
     }
@@ -42,12 +46,22 @@ export default function CameraCapture() {
     }
 
     try {
+      if (!canvasRef.current || !videoRef.current) {
+        setError('Camera elements not available');
+        return;
+      }
+      
       const context = canvasRef.current.getContext('2d');
+      if (!context) {
+        setError('Canvas context not available');
+        return;
+      }
+      
       context.drawImage(videoRef.current, 0, 0, 640, 480);
       const imageData = canvasRef.current.toDataURL('image/jpeg');
 
       // Get geolocation
-      const position = await new Promise((resolve, reject) => {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
 
@@ -71,7 +85,7 @@ export default function CameraCapture() {
       setError('Photo and coordinates saved successfully!');
       stopCamera();
     } catch (err) {
-      setError('Error: ' + err.message);
+      setError('Error: ' + (err as Error).message);
     }
   };
 
