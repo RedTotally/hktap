@@ -17,10 +17,12 @@ interface RatingData {
   rating: number;
   comment?: string;
   created_at: string;
-  // Location data if joined
-  title?: string;
-  description?: string;
-  photo?: string;
+  // Location data if joined (nested under table name)
+  locations_db?: {
+    title?: string;
+    description?: string;
+    photo?: string;
+  };
 }
 
 export default function Ranking({ onClose }: RankingProps) {
