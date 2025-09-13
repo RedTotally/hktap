@@ -150,7 +150,7 @@ export default function CameraCapture() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
+    <div className="flex flex-col items-center gap-4 p-4 bg-white rounded-xl">
       {!previewImage ? (
         <>
           <video
@@ -159,14 +159,17 @@ export default function CameraCapture() {
             className="w-[640px] h-[480px] bg-black rounded-xl"
           />
           <canvas ref={canvasRef} className="hidden" />
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full">
             {!isCameraOn ? (
-              <button
-                onClick={startCamera}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Failed to enable camera? Click me.
-              </button>
+              <div className="flex justify-between items-center w-full">
+                <p className="text-sm">Status: {error}</p>
+                <a
+                  onClick={startCamera}
+                  className="block px-4 py-2 text-sm bg-blue-500 text-white rounded-full hover:brightness-[90%] duration-300 cursor-pointer"
+                >
+                  Enable Camera
+                </a>
+              </div>
             ) : (
               <>
                 <button
@@ -234,7 +237,6 @@ export default function CameraCapture() {
           </div>
         </div>
       )}
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
