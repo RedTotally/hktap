@@ -6,7 +6,11 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
-export default function CameraCapture() {
+interface CameraCaptureProps {
+  onClose?: () => void;
+}
+
+export default function CameraCapture({ onClose }: CameraCaptureProps) {
   if (supabaseKey == undefined) {
     return <p className="text-red-500">Supabase key is missing</p>;
   }
@@ -177,7 +181,17 @@ export default function CameraCapture() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto">
+    <div className="flex flex-col items-center pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto relative">
+      {/* Close button */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70 transition-all duration-200"
+          aria-label="Close camera"
+        >
+          ×
+        </button>
+      )}
       {!previewImage ? (
         <>
           <video
@@ -203,13 +217,6 @@ export default function CameraCapture() {
             ) : (
               <>
                 <div className="w-full">
-                  <p
-                    onClick={stopCamera}
-                    className="block px-4 py-2 text-sm bg-gray-500 text-white text-center hover:brightness-[90%] duration-300 cursor-pointer"
-                  >
-                    Stop Camera
-                  </p>
-
                   <div
                     onClick={capturePhoto}
                     className="flex justify-center items-center w-full mt-5"

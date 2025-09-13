@@ -9,7 +9,10 @@ import { UUID } from "crypto";
 interface Location {
   id: UUID;
   latitude: number;
-longitude: number;
+  longitude: number;
+  title: string;
+  description: string;
+  photo: string;
 }
 
 function Map() {
@@ -89,11 +92,19 @@ function Map() {
         return (
           <Marker key={item.id} position={position} icon={customIcon}>
             <Popup>
-              <p>Place</p>
-              <p>
+              <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+              {item.photo && (
+                <img 
+                  src={item.photo} 
+                  alt={item.title}
+                  className="w-full h-32 object-cover rounded mb-2"
+                />
+              )}
+              <p className="mb-2">{item.description}</p>
+              <p className="text-sm text-gray-500 mb-2">
                 {position[0].toFixed(4)}, {position[1].toFixed(4)}
               </p>
-              <a className="cursor-pointer">Vote</a>
+              <a className="cursor-pointer text-blue-500 hover:text-blue-700">Vote</a>
             </Popup>
           </Marker>
         );

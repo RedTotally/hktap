@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 import Chat from "./Components/Chat";
+import Ranking from "./Components/Ranking";
 
 import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
@@ -27,13 +28,13 @@ export default function Home() {
   const [leaderboard, setLeaderboard] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
 
-  const [camera, setCamera] = useState(false);
+  const [camera, setCamera] = useState(false)
 
   const items = [
     {
       icon: "/leaderboard.svg",
       label: "Leaderboard",
-      onClick: () => alert("Home!"),
+      onClick: () => setRanking(true),
     },
     {
       icon: "/add.svg",
@@ -208,7 +209,14 @@ export default function Home() {
       >
         <div className="bg-black w-full h-screen top-0 z-[-1] opacity-30 absolute"></div>
         <div className="flex items-center justify-center w-full h-full">
-          <CameraCapture />
+          <CameraCapture onClose={() => setCamera(false)} />
+        </div>
+      </div>
+
+      <div className={ranking == true ? "fixed w-full h-full top-0 z-[102]" : "fixed w-full h-full top-0 z-[102] hidden"}>
+        <div className="bg-black w-full h-screen top-0 z-[-1] opacity-30 absolute"></div>
+        <div className="flex items-center justify-center w-full h-full p-4">
+          <Ranking onClose={() => setRanking(false)} />
         </div>
       </div>
 
