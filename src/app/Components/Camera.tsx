@@ -236,7 +236,7 @@ export default function CameraCapture() {
               <div className="w-full">
                 <p
                   onClick={async () => {
-                    setPreviewImage(null);
+                    stopCamera();
                     await startCamera();
                   }}
                   className="block px-4 py-2 text-sm bg-gray-500 text-white text-center hover:brightness-[90%] duration-300 cursor-pointer"
