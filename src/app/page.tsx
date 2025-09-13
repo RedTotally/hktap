@@ -8,6 +8,8 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 
+import Dock from "./Components/Dock";
+
 const Map = dynamic(() => import("./Components/Map"), {
   ssr: false,
 });
@@ -20,6 +22,13 @@ export default function Home() {
 
   const [moreOption, setMoreOption] = useState(false);
   const [leaderboard, setLeaderboard] = useState(false);
+
+  const items = [
+    { icon: "/leaderboard.svg", label: "Leaderboard", onClick: () => alert("Home!") },
+    { icon: "/add.svg", label: "Add Location", onClick: () => alert("Archive!") },
+    { icon: "/AI.svg", label: "AI Assistant", onClick: () => alert("Profile!") },
+
+  ];
 
   async function addData() {
     if (supabaseKey !== undefined) {
@@ -35,12 +44,19 @@ export default function Home() {
       } else {
         console.log(data);
       }
-    } 
+    }
   }
 
   return (
     <>
-
+      <div className="fixed bg-black z-[100] flex justify-center bottom-0 left-[50%] right-[50%] mb-5">
+        <Dock
+          items={items}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+        />
+      </div>
 
       <div className="flex justify-center items-center h-[30em] bg-gray-100 relative">
         <Map />
@@ -142,9 +158,7 @@ export default function Home() {
         </div>
       </div>
 
-      
-
-            <CameraCapture />
+      <CameraCapture />
 
       <div className="mb-[50em]"></div>
 
@@ -153,8 +167,6 @@ export default function Home() {
           © 2025 HKTAP | An Exceptional Product for a Hackathon
         </p>
       </footer>
-
-
     </>
   );
 }
