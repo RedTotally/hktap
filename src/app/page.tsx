@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <>
-      <CameraCapture />
+
 
       <div className="flex justify-center items-center h-[30em] bg-gray-100 relative">
         <Map />
@@ -142,6 +142,10 @@ export default function Home() {
         </div>
       </div>
 
+      
+
+            <CameraCapture />
+
       <div className="mb-[50em]"></div>
 
       <footer className="mb-[25em]">
@@ -150,57 +154,7 @@ export default function Home() {
         </p>
       </footer>
 
-      <div>
-        <div
-          onClick={() =>
-            leaderboard == true ? setLeaderboard(false) : setLeaderboard(true)
-          }
-          className="flex justify-center fixed left-[5%] right-[5%] bottom-0 bg-gray-100 p-3 py-5 cursor-pointer z-[99] rounded-t-xl"
-        >
-          <div
-            className={
-              leaderboard == true
-                ? "w-full px-10 duration-300"
-                : "w-full px-10 mb-[-29em] duration-300"
-            }
-          >
-            <p className="text-center font-bold">Leaderboard</p>
 
-            <div className="w-full">
-              <div className="flex justify-between items-center my-5">
-                <p>1. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>2. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>3. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>4. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>5. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>6. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>7. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>8. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>9. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>10. Placeholder</p> <p>0 Votes</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 }
