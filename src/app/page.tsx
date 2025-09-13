@@ -4,9 +4,10 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
+import Chat from "./Components/Chat";
 
 import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
@@ -20,9 +21,11 @@ export default function Home() {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
   const [currentCategory, setCurrentCategory] = useState("");
+  const [locationsData, setLocationsData] = useState<any[]>([]);
 
   const [moreOption, setMoreOption] = useState(false);
   const [leaderboard, setLeaderboard] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   const [camera, setCamera] = useState(false)
 
@@ -40,9 +43,34 @@ export default function Home() {
     {
       icon: "/AI.svg",
       label: "AI Assistant",
-      onClick: () => alert("Profile!"),
+      onClick: () => setChatOpen(!chatOpen),
     },
   ];
+
+  // Fetch locations data for AI assistant
+  useEffect(() => {
+    async function fetchLocationsData() {
+      if (supabaseKey !== undefined) {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        
+        try {
+          const { data, error } = await supabase
+            .from("locations_db")
+            .select("*");
+
+          if (error) {
+            console.error("Error fetching locations:", error);
+          } else {
+            setLocationsData(data || []);
+          }
+        } catch (err) {
+          console.error("Failed to fetch locations:", err);
+        }
+      }
+    }
+
+    fetchLocationsData();
+  }, [supabaseKey]);
 
   async function addData() {
     if (supabaseKey !== undefined) {
@@ -57,6 +85,8 @@ export default function Home() {
         console.log(error);
       } else {
         console.log(data);
+        // Refresh locations data after adding new location
+        setLocationsData(prev => [...prev, ...data]);
       }
     }
   }
@@ -186,6 +216,15 @@ export default function Home() {
           © 2025 HKTAP | An Exceptional Product for a Hackathon
         </p>
       </footer>
+
+      {/* AI Chat Assistant */}
+      <Chat
+        locationsData={locationsData}
+        supabaseUrl={supabaseUrl}
+        supabaseKey={supabaseKey}
+        isOpen={chatOpen}
+        onToggle={() => setChatOpen(!chatOpen)}
+      />
     </>
   );
 }
