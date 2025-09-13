@@ -160,7 +160,7 @@ export default function CameraCapture() {
           />
           <canvas ref={canvasRef} className="hidden" />
           <div className="flex gap-2 w-full">
-            {isCameraOn ? (
+            {!isCameraOn ? (
               <div className="w-full mt-5">
                 <p className="text-sm text-center">Status: {error}</p>
                 <div
