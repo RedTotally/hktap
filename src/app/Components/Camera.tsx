@@ -26,6 +26,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [cameraKey, setCameraKey] = useState(0);
 
   const startCamera = async () => {
     try {
@@ -38,9 +39,11 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
         video: { facingMode: "environment" },
       });
       videoRef.current.srcObject = mediaStream;
+      await videoRef.current.play();
       setStream(mediaStream);
       setIsCameraOn(true);
       setError(null);
+      setCameraKey((prev) => prev + 1);
 
       videoRef.current.onloadedmetadata = () => {
         if (videoRef.current && canvasRef.current) {
@@ -49,6 +52,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
         }
       };
     } catch (err) {
+      console.error("Camera start error:", err);
       setError("Failed to access camera: " + (err as Error).message);
     }
   };
@@ -65,6 +69,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
       setTitle("");
       setDescription("");
       setCategory("");
+      setError(null);
     }
   };
 
@@ -178,11 +183,18 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
 
   useEffect(() => {
     startCamera();
+    return () => stopCamera();
   }, []);
+
+  const handleRetake = () => {
+    setPreviewImage(null);
+    if (!isCameraOn) {
+      setTimeout(startCamera, 100);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto relative">
-      {/* Close button */}
       {onClose && (
         <button
           onClick={onClose}
@@ -197,13 +209,14 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           <video
             ref={videoRef}
             autoPlay
+            key={cameraKey}
             className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none"
           />
           <canvas ref={canvasRef} className="hidden" />
           <div className="gap-2 w-full">
             {!isCameraOn ? (
               <div className="w-full mt-5">
-                <p className="text-sm text-center">Status: {error}</p>
+                <p className="text-sm text-center">Status: {error || "Starting camera..."}</p>
                 <div
                   onClick={startCamera}
                   className="flex justify-center items-center w-full mt-5"
@@ -211,7 +224,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                   <img
                     className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
                     src={"/activate.svg"}
-                  ></img>
+                  />
                 </div>
               </div>
             ) : (
@@ -224,7 +237,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                     <img
                       className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
                       src={"/photo.svg"}
-                    ></img>
+                    />
                   </div>
                 </div>
               </>
@@ -242,10 +255,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
             <div className="lg:h-[13em] overflow-auto w-full">
               <div className="w-full">
                 <p
-                  onClick={async () => {
-                    stopCamera();
-                    await startCamera();
-                  }}
+                  onClick={handleRetake}
                   className="block px-4 py-2 text-sm bg-gray-500 text-white text-center hover:brightness-[90%] duration-300 cursor-pointer"
                 >
                   Retake Photo
@@ -281,7 +291,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
               <img
                 className="mb-5 h-15 w-15 bg-black rounded-full p-5 outline-black outline-2 outline-offset-2 cursor-pointer duration-300"
                 src={"/upolad.svg"}
-              ></img>
+              />
             </div>
           </div>
         </div>
