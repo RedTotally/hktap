@@ -32,6 +32,13 @@ export default function CameraCapture() {
       setStream(mediaStream);
       setIsCameraOn(true);
       setError(null);
+
+      videoRef.current.onloadedmetadata = () => {
+        if (videoRef.current && canvasRef.current) {
+          canvasRef.current.width = videoRef.current.videoWidth;
+          canvasRef.current.height = videoRef.current.videoHeight;
+        }
+      };
     } catch (err) {
       setError("Failed to access camera: " + (err as Error).message);
     }
@@ -71,10 +78,9 @@ export default function CameraCapture() {
         return;
       }
 
-      context.drawImage(videoRef.current, 0, 0, 640, 480);
+      context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
       const imageData = canvasRef.current.toDataURL("image/jpeg");
 
-      // Get geolocation
       const position = await new Promise<GeolocationPosition>(
         (resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -83,7 +89,6 @@ export default function CameraCapture() {
 
       const { latitude, longitude } = position.coords;
 
-      // Save to Supabase
       const { data, error } = await supabase.from("locations_db").insert([
         {
           photo: imageData,
@@ -107,7 +112,7 @@ export default function CameraCapture() {
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       <video ref={videoRef} autoPlay className="w-[640px] h-[480px] border" />
-      <canvas ref={canvasRef} width="640" height="480" className="hidden" />
+      <canvas ref={canvasRef} className="hidden" />
       <div className="flex gap-2">
         {!isCameraOn ? (
           <button

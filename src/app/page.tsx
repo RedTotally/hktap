@@ -22,8 +22,6 @@ export default function Home() {
   const [leaderboard, setLeaderboard] = useState(false);
 
   async function addData() {
-    console.log("Clicked");
-
     if (supabaseKey !== undefined) {
       const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -32,16 +30,12 @@ export default function Home() {
         .insert([{ title: "someValue", description: "otherValue" }])
         .select();
 
-      console.log("Fuck you.");
-
       if (error) {
         console.log(error);
       } else {
         console.log(data);
       }
-    } else {
-      console.log("Supabase key is fucked bro");
-    }
+    } 
   }
 
   return (
