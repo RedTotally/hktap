@@ -8,6 +8,9 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 
+import Dock from "./Components/Dock";
+import { tr } from "motion/react-client";
+
 const Map = dynamic(() => import("./Components/Map"), {
   ssr: false,
 });
@@ -21,9 +24,27 @@ export default function Home() {
   const [moreOption, setMoreOption] = useState(false);
   const [leaderboard, setLeaderboard] = useState(false);
 
-  async function addData() {
-    console.log("Clicked");
+  const [camera, setCamera] = useState(false)
 
+  const items = [
+    {
+      icon: "/leaderboard.svg",
+      label: "Leaderboard",
+      onClick: () => alert("Home!"),
+    },
+    {
+      icon: "/add.svg",
+      label: "Add Location",
+      onClick: () => setCamera(true),
+    },
+    {
+      icon: "/AI.svg",
+      label: "AI Assistant",
+      onClick: () => alert("Profile!"),
+    },
+  ];
+
+  async function addData() {
     if (supabaseKey !== undefined) {
       const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -32,21 +53,24 @@ export default function Home() {
         .insert([{ title: "someValue", description: "otherValue" }])
         .select();
 
-      console.log("Fuck you.");
-
       if (error) {
         console.log(error);
       } else {
         console.log(data);
       }
-    } else {
-      console.log("Supabase key is fucked bro");
     }
   }
 
   return (
     <>
-      <CameraCapture />
+      <div className="fixed bg-black z-[100] flex justify-center bottom-0 left-[50%] right-[50%] mb-5">
+        <Dock
+          items={items}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+        />
+      </div>
 
       <div className="flex justify-center items-center h-[30em] bg-gray-100 relative">
         <Map />
@@ -148,6 +172,13 @@ export default function Home() {
         </div>
       </div>
 
+      <div className={camera == true ? "fixed w-full h-full top-0 z-[102]" : "fixed w-full h-full top-0 z-[102] hidden"}>
+        <div className="bg-black w-full h-full top-0 z-[-1] opacity-30 absolute"></div>
+        <div className="flex items-center justify-center w-full h-full">
+          <CameraCapture />
+        </div>
+      </div>
+
       <div className="mb-[50em]"></div>
 
       <footer className="mb-[25em]">
@@ -155,58 +186,6 @@ export default function Home() {
           © 2025 HKTAP | An Exceptional Product for a Hackathon
         </p>
       </footer>
-
-      <div>
-        <div
-          onClick={() =>
-            leaderboard == true ? setLeaderboard(false) : setLeaderboard(true)
-          }
-          className="flex justify-center fixed left-[5%] right-[5%] bottom-0 bg-gray-100 p-3 py-5 cursor-pointer z-[99] rounded-t-xl"
-        >
-          <div
-            className={
-              leaderboard == true
-                ? "w-full px-10 duration-300"
-                : "w-full px-10 mb-[-29em] duration-300"
-            }
-          >
-            <p className="text-center font-bold">Leaderboard</p>
-
-            <div className="w-full">
-              <div className="flex justify-between items-center my-5">
-                <p>1. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>2. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>3. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>4. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>5. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>6. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>7. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>8. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>9. Placeholder</p> <p>0 Votes</p>
-              </div>
-              <div className="flex justify-between items-center my-5">
-                <p>10. Placeholder</p> <p>0 Votes</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 }
