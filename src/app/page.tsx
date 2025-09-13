@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
 "use client";
+
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
