@@ -150,13 +150,13 @@ export default function CameraCapture() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-4 pb-4 bg-white rounded-xl">
+    <div className="flex flex-col items-center gap-4 pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto">
       {!previewImage ? (
         <>
           <video
             ref={videoRef}
             autoPlay
-            className="w-[540px] h-[460px] bg-black rounded-t-xl"
+            className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none"
           />
           <canvas ref={canvasRef} className="hidden" />
           <div className="flex gap-2 w-full">
@@ -198,7 +198,7 @@ export default function CameraCapture() {
           <img
             src={previewImage}
             alt="Captured preview"
-            className="w-[540px] h-[460px] bg-black rounded-t-xl"
+            className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none"
           />
           <div className="flex flex-col gap-2 w-full max-w-md">
             <input
