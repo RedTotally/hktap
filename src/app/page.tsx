@@ -158,7 +158,11 @@ export default function Home() {
         </div>
       </div>
 
-      <CameraCapture />
+<div className=" fixed w-full h-full top-0 z-[102]">
+        <div className="bg-black w-full h-full top-0 z-[-1] opacity-30 absolute">
+      </div>
+<div className="flex items-center justify-center w-full h-full"><CameraCapture /></div>
+</div>
 
       <div className="mb-[50em]"></div>
 

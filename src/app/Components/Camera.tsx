@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
@@ -87,7 +87,13 @@ export default function CameraCapture() {
         return;
       }
 
-      context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+      context.drawImage(
+        videoRef.current,
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
       const imageData = canvasRef.current.toDataURL("image/jpeg");
       setPreviewImage(imageData);
       setError(null);
@@ -139,11 +145,19 @@ export default function CameraCapture() {
     }
   };
 
+  useEffect(() => {
+    startCamera();
+  }, []);
+
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       {!previewImage ? (
         <>
-          <video ref={videoRef} autoPlay className="w-[640px] h-[480px] border" />
+          <video
+            ref={videoRef}
+            autoPlay
+            className="w-[640px] h-[480px] bg-black"
+          />
           <canvas ref={canvasRef} className="hidden" />
           <div className="flex gap-2">
             {!isCameraOn ? (
@@ -151,7 +165,7 @@ export default function CameraCapture() {
                 onClick={startCamera}
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
-                Enable Camera
+                Failed to enable camera? Click me.
               </button>
             ) : (
               <>
@@ -173,7 +187,11 @@ export default function CameraCapture() {
         </>
       ) : (
         <div className="flex flex-col items-center gap-4">
-          <img src={previewImage} alt="Captured preview" className="w-[640px] h-[480px] border" />
+          <img
+            src={previewImage}
+            alt="Captured preview"
+            className="w-[640px] h-[480px] border"
+          />
           <div className="flex flex-col gap-2 w-full max-w-md">
             <input
               type="text"
