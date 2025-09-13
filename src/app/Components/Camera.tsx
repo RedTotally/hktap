@@ -156,7 +156,7 @@ export default function CameraCapture() {
           <video
             ref={videoRef}
             autoPlay
-            className="w-[640px] h-[480px] bg-black"
+            className="w-[640px] h-[480px] bg-black rounded-xl"
           />
           <canvas ref={canvasRef} className="hidden" />
           <div className="flex gap-2">

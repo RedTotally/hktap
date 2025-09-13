@@ -9,6 +9,7 @@ import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 
 import Dock from "./Components/Dock";
+import { tr } from "motion/react-client";
 
 const Map = dynamic(() => import("./Components/Map"), {
   ssr: false,
@@ -23,11 +24,24 @@ export default function Home() {
   const [moreOption, setMoreOption] = useState(false);
   const [leaderboard, setLeaderboard] = useState(false);
 
-  const items = [
-    { icon: "/leaderboard.svg", label: "Leaderboard", onClick: () => alert("Home!") },
-    { icon: "/add.svg", label: "Add Location", onClick: () => alert("Archive!") },
-    { icon: "/AI.svg", label: "AI Assistant", onClick: () => alert("Profile!") },
+  const [camera, setCamera] = useState(false)
 
+  const items = [
+    {
+      icon: "/leaderboard.svg",
+      label: "Leaderboard",
+      onClick: () => alert("Home!"),
+    },
+    {
+      icon: "/add.svg",
+      label: "Add Location",
+      onClick: () => setCamera(true),
+    },
+    {
+      icon: "/AI.svg",
+      label: "AI Assistant",
+      onClick: () => alert("Profile!"),
+    },
   ];
 
   async function addData() {
@@ -158,11 +172,12 @@ export default function Home() {
         </div>
       </div>
 
-<div className=" fixed w-full h-full top-0 z-[102]">
-        <div className="bg-black w-full h-full top-0 z-[-1] opacity-30 absolute">
+      <div className={camera == true ? "fixed w-full h-full top-0 z-[102]" : "fixed w-full h-full top-0 z-[102] hidden"}>
+        <div className="bg-black w-full h-full top-0 z-[-1] opacity-30 absolute"></div>
+        <div className="flex items-center justify-center w-full h-full">
+          <CameraCapture />
+        </div>
       </div>
-<div className="flex items-center justify-center w-full h-full"><CameraCapture /></div>
-</div>
 
       <div className="mb-[50em]"></div>
 
