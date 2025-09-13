@@ -1,21 +1,53 @@
 "use client";
 
+/* eslint-disable react-hooks/rules-of-hooks */
+
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+import CameraCapture from "./Components/Camera";
 
 const Map = dynamic(() => import("./Components/Map"), {
   ssr: false,
 });
 
 export default function Home() {
+  const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+
   const [currentCategory, setCurrentCategory] = useState("");
 
   const [moreOption, setMoreOption] = useState(false);
   const [leaderboard, setLeaderboard] = useState(false);
 
+  async function addData() {
+    console.log("Clicked");
+
+    if (supabaseKey !== undefined) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      const { data, error } = await supabase
+        .from("locations_db")
+        .insert([{ title: "someValue", description: "otherValue" }])
+        .select();
+
+      console.log("Fuck you.");
+
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+    } else {
+      console.log("Supabase key is fucked bro");
+    }
+  }
+
   return (
     <>
+      <CameraCapture />
+
       <div className="flex justify-center items-center h-[30em] bg-gray-100 relative">
         <Map />
       </div>
@@ -125,8 +157,19 @@ export default function Home() {
       </footer>
 
       <div>
-        <div onClick={() => leaderboard == true ? setLeaderboard(false) : setLeaderboard(true)} className="flex justify-center fixed left-[5%] right-[5%] bottom-0 bg-gray-100 p-3 py-5 cursor-pointer z-[99] rounded-t-xl">
-          <div className={leaderboard == true ? "w-full px-10 duration-300" : "w-full px-10 mb-[-29em] duration-300"}>
+        <div
+          onClick={() =>
+            leaderboard == true ? setLeaderboard(false) : setLeaderboard(true)
+          }
+          className="flex justify-center fixed left-[5%] right-[5%] bottom-0 bg-gray-100 p-3 py-5 cursor-pointer z-[99] rounded-t-xl"
+        >
+          <div
+            className={
+              leaderboard == true
+                ? "w-full px-10 duration-300"
+                : "w-full px-10 mb-[-29em] duration-300"
+            }
+          >
             <p className="text-center font-bold">Leaderboard</p>
 
             <div className="w-full">
