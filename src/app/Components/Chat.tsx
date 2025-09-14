@@ -173,9 +173,10 @@ Current database contains ${locationsData.length} location${
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-24 right-6 w-96 h-96 bg-white border border-gray-300 rounded-lg shadow-xl z-50 flex flex-col">
+    <div className="flex justify-center w-full h-full">
+      <div className="h-[35em] w-[25em] fixed bottom-40 bg-white border-gray-300 rounded-xl shadow-xl z-50 flex flex-col">
       {/* Chat Header */}
-      <div className="bg-blue-500 text-white p-3 rounded-t-lg flex justify-between items-center">
+      <div className="bg-black text-white p-3 rounded-t-lg flex justify-between items-center">
         <h3 className="font-semibold">HKTAP AI Assistant</h3>
         <button onClick={onToggle} className="text-white hover:text-gray-200">
           ✕
@@ -239,6 +240,7 @@ Current database contains ${locationsData.length} location${
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }
