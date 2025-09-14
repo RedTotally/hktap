@@ -101,7 +101,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex justify-center items-center h-[45em] bg-gray-100 relative">
+      <div className="flex justify-center items-center h-[35em] bg-gray-100 relative">
         <Map />
       </div>
 
