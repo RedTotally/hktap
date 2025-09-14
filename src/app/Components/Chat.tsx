@@ -174,9 +174,9 @@ Current database contains ${locationsData.length} location${
 
   return (
     <div className="flex justify-center w-full h-full">
-      <div className="h-screen w-screen lg:h-[35em] lg:w-[25em] fixed bottom-0 lg:bottom-40 bg-white border-gray-300 lg:rounded-xl shadow-xl z-50 flex flex-col">
+      <div className="h-full w-full lg:h-[35em] lg:w-[25em] fixed bottom-0 lg:bottom-40 bg-white border-gray-300 lg:rounded-xl shadow-xl z-50 flex flex-col">
       {/* Chat Header */}
-      <div className="bg-black text-white px-5 p-3 rounded-t-lg flex justify-between items-center">
+      <div className="bg-black text-white px-5 p-3 lg:rounded-t-lg flex justify-between items-center">
         <h3 className="font-semibold">HKTAP AI Assistant</h3>
         <button onClick={onToggle} className="text-white hover:text-gray-200">
           ✕
