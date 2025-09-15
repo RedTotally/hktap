@@ -16,9 +16,10 @@ import { useSearchParams } from "next/navigation";
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
+  loading: () => <div>Loading map...</div>, 
 });
 
-export const dynamic = 'force-dynamic'; // Keep this as-is for Next.js
+export const dynamic = "force-dynamic"; 
 
 export default function Home() {
   
