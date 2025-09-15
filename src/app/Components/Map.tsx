@@ -2,7 +2,7 @@
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { UUID } from "crypto";
 import Link from "next/link";
@@ -117,6 +117,8 @@ function Map() {
   }
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+    
     <MapContainer
       className="w-full h-full relative z-[1]"
       center={[22.3193, 114.1694]}
@@ -174,7 +176,9 @@ function Map() {
           </Marker>
         );
       })}
+      
     </MapContainer>
+    </Suspense>
   );
 }
 

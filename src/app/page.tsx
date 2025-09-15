@@ -4,7 +4,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 import Chat from "./Components/Chat";
@@ -168,7 +168,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <><Suspense fallback={<div>Loading...</div>}>
       <div
         className={
           selectedCategory == "default" ? "hidden" : "flex justify-center"
@@ -319,6 +319,7 @@ export default function Home() {
           onToggle={() => setChatOpen(!chatOpen)}
         />
       </div>
+      </Suspense>
     </>
   );
 }
