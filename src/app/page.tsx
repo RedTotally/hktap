@@ -201,7 +201,7 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center items-center h-[35em] bg-gray-100 relative">
-          <Map />
+          <Suspense><Map /></Suspense>
         </div>
 
         <div>

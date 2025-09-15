@@ -18,12 +18,22 @@ interface Location {
   votes: number;
 }
 
-function MapContent() {
+function Map() {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get("category") || "default";
 
   const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+
+  if (supabaseKey == undefined) {
+    return (
+      <p className="text-red-500 p-4">
+        Supabase configuration missing. Check environment variables.
+      </p>
+    );
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,21 +47,18 @@ function MapContent() {
   });
 
   async function fetchData() {
-    if (supabaseKey === undefined) {
-      setError("Supabase configuration missing. Check environment variables.");
-      setLoading(false);
-      return;
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseKey);
     try {
       setLoading(true);
       let query = supabase.from("locations_db").select("*");
+
       if (selectedCategory !== "default") {
         query = query.eq("category", selectedCategory);
       }
+
       const { data: locations_db, error } = await query;
+
       if (error) throw error;
+
       console.log(locations_db);
       setLocations(locations_db || []);
     } catch (err) {
@@ -63,38 +70,46 @@ function MapContent() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedCategory]); 
+  }, []);
 
   async function vote(place_id: UUID) {
-    if (supabaseKey === undefined) return { data: null, error: new Error("Supabase key missing") };
-    const supabase = createClient(supabaseUrl, supabaseKey);
     const { data: currentData, error: fetchError } = await supabase
       .from("locations_db")
       .select("votes")
       .eq("id", place_id)
       .single();
+
     if (fetchError) {
       console.error("Error fetching current votes:", fetchError);
       return { data: null, error: fetchError };
     }
+
     const currentVotes = currentData?.votes ?? 0;
+
     const { data, error } = await supabase
       .from("locations_db")
       .update({ votes: currentVotes + 1 })
       .eq("id", place_id)
       .select();
+
     if (!error) {
       setLocations((prevLocations) =>
         prevLocations.map((location) =>
-          location.id === place_id ? { ...location, votes: currentVotes + 1 } : location
+          location.id === place_id
+            ? { ...location, votes: currentVotes + 1 }
+            : location
         )
       );
     }
+
     return { data, error };
   }
-
   if (loading) {
-    return <div className="flex items-center justify-center h-64">Loading map...</div>;
+    return (
+      <div className="flex items-center justify-center h-64">
+        Loading map...
+      </div>
+    );
   }
 
   if (error) {
@@ -102,6 +117,8 @@ function MapContent() {
   }
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+    
     <MapContainer
       className="w-full h-full relative z-[1]"
       center={[22.3193, 114.1694]}
@@ -112,8 +129,10 @@ function MapContent() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
       {locations.map((item) => {
         const position: [number, number] = [item.latitude, item.longitude];
+
         return (
           <Marker key={item.id} position={position} icon={customIcon}>
             <Popup>
@@ -131,7 +150,7 @@ function MapContent() {
                   <div className="group p-2">
                     <div className="flex justify-center relative z-[110]">
                       <p
-                        className="duration-200 opacity-0 group-hover:opacity-100 absolute -top-10 group-hover:-top-11 w-fit whitespace-pre rounded-md border border-neutral-700 bg-[#060010] px-2 py-0.5 text-xs text-white"
+                        className={`duration-200 opacity-0 group-hover:opacity-100 absolute -top-10 group-hover:-top-11 w-fit whitespace-pre rounded-md border border-neutral-700 bg-[#060010] px-2 py-0.5 text-xs text-white`}
                       >
                         Drop Your Heat
                       </p>
@@ -139,14 +158,16 @@ function MapContent() {
                     <img
                       onClick={() => vote(item.id)}
                       className="bg-orange-500 rounded-full p-5 cursor-pointer w-[7em]"
-                      src="/flame.svg"
+                      src={"/flame.svg"}
                     />
                   </div>
                 </div>
                 <p className="text-center text-xl">{item.votes}</p>
                 <Link
                   className="text-sm my-2 block text-center underline"
-                  href={`https://www.google.com/maps/place/${position[0].toFixed(4)},${position[1].toFixed(4)}`}
+                  href={`https://www.google.com/maps/place/${position[0].toFixed(
+                    4
+                  )}, ${position[1].toFixed(4)}`}
                 >
                   Take me there
                 </Link>
@@ -155,14 +176,10 @@ function MapContent() {
           </Marker>
         );
       })}
+      
     </MapContainer>
-  );
-}
-
-export default function Map() {
-  return (
-    <Suspense fallback={<div>Loading map...</div>}>
-      <MapContent />
     </Suspense>
   );
 }
+
+export default Map;
