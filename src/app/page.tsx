@@ -2,7 +2,7 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
@@ -14,9 +14,11 @@ import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
 import { useSearchParams } from "next/navigation";
 
-const Map = dynamic(() => import("./Components/Map"), {
+const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
 });
+
+export const dynamic = 'force-dynamic'; // Keep this as-is for Next.js
 
 export default function Home() {
   
