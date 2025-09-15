@@ -16,14 +16,15 @@ import { useSearchParams } from "next/navigation";
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
-  loading: () => <div>Loading map...</div>, 
+  loading: () => <div>Loading map...</div>,
 });
 
-export const dynamic = "force-dynamic"; 
+export const dynamic = "force-dynamic";
 
 export default function Home() {
-  
-  const searchParams = useSearchParams();
+  const searchParams = new URLSearchParams(
+    typeof window !== "undefined" ? window.location.search : ""
+  );
   const selectedCategory = searchParams.get("category") || "default";
 
   const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
@@ -201,7 +202,9 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center items-center h-[35em] bg-gray-100 relative">
-          <Suspense><Map /></Suspense>
+          <Suspense>
+            <Map />
+          </Suspense>
         </div>
 
         <div>
