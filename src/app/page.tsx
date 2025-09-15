@@ -256,7 +256,7 @@ export default function Home() {
             }
             className="text-sm underline cursor-pointer"
           >
-            View Other Options
+            View All Options
           </p>
         </div>
 
