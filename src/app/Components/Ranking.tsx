@@ -164,8 +164,12 @@ export default function Ranking({ onClose }: RankingProps) {
 
                 {/* Votes */}
                 <div className="flex-shrink-0 text-right">
-                  <div className="flex items-center gap-1">
-                    <span className="text-2xl">👍</span>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="/flame.svg"
+                      alt="Heat votes"
+                      className="w-6 h-6 bg-orange-500 rounded-full p-1"
+                    />
                     <span className="font-bold text-lg">{item.votes}</span>
                   </div>
                   <p className="text-xs text-gray-500">
