@@ -10,19 +10,13 @@ interface RankingProps {
   onClose?: () => void;
 }
 
-interface RatingData {
+interface LocationData {
   id: string;
-  location_id: string;
-  user_name?: string;
-  rating: number;
-  comment?: string;
+  title?: string;
+  description?: string;
+  photo?: string;
+  votes: number;
   created_at: string;
-  // Location data if joined (nested under table name)
-  locations_db?: {
-    title?: string;
-    description?: string;
-    photo?: string;
-  };
 }
 
 export default function Ranking({ onClose }: RankingProps) {
@@ -32,7 +26,7 @@ export default function Ranking({ onClose }: RankingProps) {
 
   const supabase = createClient(supabaseUrl, supabaseKey);
   
-  const [rankings, setRankings] = useState<RatingData[]>([]);
+  const [rankings, setRankings] = useState<LocationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,16 +34,9 @@ export default function Ranking({ onClose }: RankingProps) {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from("ratings")
-        .select(`
-          *,
-          locations_db (
-            title,
-            description,
-            photo
-          )
-        `)
-        .order('rating', { ascending: false })
+        .from("locations_db")
+        .select("id, title, description, photo, votes, created_at")
+        .order('votes', { ascending: false })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -125,7 +112,7 @@ export default function Ranking({ onClose }: RankingProps) {
       {/* Header */}
       <div className="p-6 border-b">
         <h2 className="text-2xl font-bold text-center">🏆 Leaderboard</h2>
-        <p className="text-center text-gray-600 mt-2">Top rated locations in Hong Kong</p>
+        <p className="text-center text-gray-600 mt-2">Most voted locations in Hong Kong</p>
       </div>
 
       {/* Rankings List */}
@@ -133,7 +120,7 @@ export default function Ranking({ onClose }: RankingProps) {
         {rankings.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500">No rankings available yet</p>
-            <p className="text-sm text-gray-400 mt-2">Be the first to rate a location!</p>
+            <p className="text-sm text-gray-400 mt-2">Be the first to vote for a location!</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -155,10 +142,10 @@ export default function Ranking({ onClose }: RankingProps) {
                 </div>
 
                 {/* Photo */}
-                {item.locations_db?.photo && (
+                {item.photo && (
                   <img
-                    src={item.locations_db.photo}
-                    alt={item.locations_db.title || 'Location'}
+                    src={item.photo}
+                    alt={item.title || 'Location'}
                     className="w-16 h-16 object-cover rounded-lg"
                   />
                 )}
@@ -166,30 +153,20 @@ export default function Ranking({ onClose }: RankingProps) {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-lg truncate">
-                    {item.locations_db?.title || `Location ${item.location_id}`}
+                    {item.title || `Location ${item.id}`}
                   </h3>
-                  {item.locations_db?.description && (
+                  {item.description && (
                     <p className="text-gray-600 text-sm truncate">
-                      {item.locations_db.description}
-                    </p>
-                  )}
-                  {item.user_name && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Rated by: {item.user_name}
-                    </p>
-                  )}
-                  {item.comment && (
-                    <p className="text-sm text-gray-700 mt-1 italic">
-                      "{item.comment}"
+                      {item.description}
                     </p>
                   )}
                 </div>
 
-                {/* Rating */}
+                {/* Votes */}
                 <div className="flex-shrink-0 text-right">
                   <div className="flex items-center gap-1">
-                    <span className="text-2xl">⭐</span>
-                    <span className="font-bold text-lg">{item.rating}</span>
+                    <span className="text-2xl">👍</span>
+                    <span className="font-bold text-lg">{item.votes}</span>
                   </div>
                   <p className="text-xs text-gray-500">
                     {new Date(item.created_at).toLocaleDateString()}
