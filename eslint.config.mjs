@@ -9,7 +9,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+export default [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     ignores: [
@@ -20,12 +20,11 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+
+  ...compat.extends("plugin:react-hooks/recommended"),
   {
-    extends: ["plugin:react-hooks/recommended"],
     rules: {
       "react-hooks/rules-of-hooks": "off",
     },
   },
 ];
-
-export default eslintConfig;
