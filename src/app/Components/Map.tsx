@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { UUID } from "crypto";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface Location {
   id: UUID;
@@ -18,6 +19,9 @@ interface Location {
 }
 
 function Map() {
+  const searchParams = useSearchParams();
+  const selectedCategory = searchParams.get("category") || "default";
+
   const supabaseUrl = "https://sokmrypoigsarqrdmgpq.supabase.co";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
@@ -45,9 +49,13 @@ function Map() {
   async function fetchData() {
     try {
       setLoading(true);
-      const { data: locations_db, error } = await supabase
-        .from("locations_db")
-        .select("*");
+      let query = supabase.from("locations_db").select("*");
+
+      if (selectedCategory !== "default") {
+        query = query.eq("category", selectedCategory);
+      }
+
+      const { data: locations_db, error } = await query;
 
       if (error) throw error;
 
@@ -64,38 +72,38 @@ function Map() {
     fetchData();
   }, []);
 
-async function vote(place_id: UUID) {
-  const { data: currentData, error: fetchError } = await supabase
-    .from("locations_db")
-    .select("votes")
-    .eq("id", place_id)
-    .single();
+  async function vote(place_id: UUID) {
+    const { data: currentData, error: fetchError } = await supabase
+      .from("locations_db")
+      .select("votes")
+      .eq("id", place_id)
+      .single();
 
-  if (fetchError) {
-    console.error("Error fetching current votes:", fetchError);
-    return { data: null, error: fetchError };
+    if (fetchError) {
+      console.error("Error fetching current votes:", fetchError);
+      return { data: null, error: fetchError };
+    }
+
+    const currentVotes = currentData?.votes ?? 0;
+
+    const { data, error } = await supabase
+      .from("locations_db")
+      .update({ votes: currentVotes + 1 })
+      .eq("id", place_id)
+      .select();
+
+    if (!error) {
+      setLocations((prevLocations) =>
+        prevLocations.map((location) =>
+          location.id === place_id
+            ? { ...location, votes: currentVotes + 1 }
+            : location
+        )
+      );
+    }
+
+    return { data, error };
   }
-
-  const currentVotes = currentData?.votes ?? 0;
-
-  const { data, error } = await supabase
-    .from("locations_db")
-    .update({ votes: currentVotes + 1 })
-    .eq("id", place_id)
-    .select();
-
-  if (!error) {
-    setLocations(prevLocations =>
-      prevLocations.map(location =>
-        location.id === place_id
-          ? { ...location, votes: currentVotes + 1 }
-          : location
-      )
-    );
-  }
-
-  return { data, error };
-}
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
