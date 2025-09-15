@@ -217,6 +217,7 @@ export default function Home() {
             {topCategories.map((item) => {
               return (
                 <div
+               
                   onClick={() => {
                     setCurrentCategory(item.category);
                     window.location.replace(`/?category=${item.category}`);
@@ -263,6 +264,7 @@ export default function Home() {
           {categories.map((item) => {
             return (
               <div
+              key={item.category}
                 onClick={() => {
                   setCurrentCategory(item.category);
                   window.location.replace(`/?category=${item.category}`);
