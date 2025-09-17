@@ -341,7 +341,7 @@ export default function Home() {
         </div>
 
         <div className="my-[20em] px-10">
-          <p className="text-center text-xl lg:text-5xl">
+          <p className="text-center text-3xl lg:text-5xl">
             Powered By An Exceptional AI Model and Database
           </p>
           <div className="flex justify-center mt-20">
