@@ -340,8 +340,25 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="my-[20em] px-10">
+          <p className="text-center text-xl lg:text-5xl">
+            Powered By An Exceptional AI Model and Database
+          </p>
+          <div className="flex justify-center mt-20">
+            <img className="w-[25em]" src={"/AI-photo.svg"}></img>
+          </div>
+          <div className="flex justify-center">
+            {" "}
+            <p className="mt-20 lg:w-[45em] text-center text-xl">
+We have implemented a tailored AI chatbot system for travelers. You can receive the best and latest information by simply stating what you want to the AI chatbot. With the advanced model and fresh data, you are promised to get the best guidance possible.
+            </p>
+          </div>
+        </div>
+
         <div className="mt-[20em] px-10">
-<div className="flex justify-center"><img className="w-[5em]" src={"/star-craft.svg"}></img></div>
+          <div className="flex justify-center">
+            <img className="w-[5em]" src={"/star-craft.svg"}></img>
+          </div>
 
           <div className="flex justify-center mt-10">
             <p className="text-center text-3xl lg:text-5xl w-[15em] leading-tight">
@@ -377,7 +394,8 @@ export default function Home() {
 
                 <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
                   <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Lorem ipsum dolor sit amet consectetur adipisicing elit." <br></br>—Thomas
+                    "Lorem ipsum dolor sit amet consectetur adipisicing elit."{" "}
+                    <br></br>—Thomas
                   </p>
                   <div className="bg-blue-500 rounded-full p-5 h-[25em] xl:h-[50em]">
                     <div className="flex justify-center">
@@ -409,7 +427,8 @@ export default function Home() {
 
                 <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
                   <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Lorem ipsum, dolor sit amet consectetur adipisicing elit."<br></br>—CHM
+                    "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
+                    <br></br>—CHM
                   </p>
                   <div className="bg-indigo-500 rounded-full p-5 h-[25em] xl:h-[50em]">
                     <div className="flex justify-center">
@@ -428,8 +447,18 @@ export default function Home() {
 
         <div className="mt-[20em] flex justify-center bg-black text-white py-40 px-10">
           <div>
-            <p className="text-center text-3xl lg:text-5xl">Learn About Our Ideas and Initiatives</p>
-            <div className="flex justify-center mt-10"><Link className="bg-white p-5 px-20 text-black" target="_blank" href="https://devpost.com/software/hktap">Learn More</Link></div>
+            <p className="text-center text-3xl lg:text-5xl">
+              Learn About Our Ideas and Initiatives
+            </p>
+            <div className="flex justify-center mt-10">
+              <Link
+                className="bg-white p-5 px-20 text-black"
+                target="_blank"
+                href="https://devpost.com/software/hktap"
+              >
+                Learn More
+              </Link>
+            </div>
           </div>
         </div>
 
