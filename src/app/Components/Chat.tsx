@@ -176,7 +176,7 @@ Current database contains ${locationsData.length} location${
     <div className="flex justify-center w-full h-full">
       <div className="h-full w-full lg:h-[60%] lg:w-[25em] fixed bottom-0 lg:bottom-40 bg-white border-gray-300 lg:rounded-xl shadow-xl z-50 flex flex-col">
       {/* Chat Header */}
-      <div className="bg-black text-white px-5 p-3 lg:rounded-t-lg flex justify-between items-center">
+      <div className="bg-black text-white px-5 p-3 lg:rounded-t-xl flex justify-between items-center">
         <h3 className="font-semibold">HKTAP AI Assistant</h3>
         <button onClick={onToggle} className="text-white hover:text-gray-200">
           ✕
@@ -193,7 +193,7 @@ Current database contains ${locationsData.length} location${
             }`}
           >
             <div
-              className={`max-w-[80%] p-2 rounded-lg text-sm ${
+              className={`max-w-[80%] p-2 rounded-xl text-sm ${
                 message.role === "user"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-100 text-gray-800"
@@ -208,7 +208,7 @@ Current database contains ${locationsData.length} location${
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-800 p-2 rounded-lg text-sm">
+            <div className="bg-gray-100 text-gray-800 p-2 rounded-xl text-sm">
               <div className="flex items-center space-x-2">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
                 <span>Thinking...</span>
@@ -228,13 +228,13 @@ Current database contains ${locationsData.length} location${
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask about Hong Kong locations..."
-            className="flex-1 p-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500"
+            className="flex-1 p-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-blue-500"
             disabled={isLoading}
           />
           <button
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isLoading}
-            className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white px-3 py-2 rounded text-sm transition-colors"
+            className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white px-3 py-2 rounded-xl text-sm transition-colors"
           >
             Send
           </button>

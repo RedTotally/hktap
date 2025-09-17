@@ -313,25 +313,122 @@ export default function Home() {
           </div>
         </div>
 
-<div className="relative z-[50] px-10">
-<div className="lg:flex justify-between items-center">
-    <div>
-    <p className="text-5xl lg:text-7xl">Why HKTAP?</p>
-  <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5">It's fun, engaging, and filled with love! The best thing? Everyone can use it. Every pin in the map is a real human, a footprint on Hong Kong; it's real. Find somewhere exciting to go, and share somewhere worth your time.</p>
+        <div className="relative z-[50] px-10 2xl:px-20">
+          <div className="lg:flex justify-between items-center">
+            <div>
+              <p className="text-5xl lg:text-7xl">Why HKTAP?</p>
+              <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5">
+                It's fun, engaging, and filled with love! The best thing?
+                Everyone can use it. Every pin in the map is a real human, a
+                footprint on Hong Kong; it's real. Find somewhere exciting to
+                go, and share somewhere worth your time.
+              </p>
 
-  <div className="mt-10"><a onClick={() => setCamera(true)} className="underline text-3xl cursor-pointer">Try to Take a Snapshot</a></div>
-  </div>
-<div className="flex justify-center"><img className="mt-20 lg:mt-0" src="/location-photo.svg"></img></div>
+              <div className="mt-10">
+                <a
+                  onClick={() => setCamera(true)}
+                  className="underline text-3xl cursor-pointer"
+                >
+                  Try to Take a Snapshot
+                </a>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <img className="mt-20 lg:mt-0" src="/location-photo.svg"></img>
+            </div>
+          </div>
+        </div>
 
-</div>
-</div>
+        <div className="mt-[20em] px-10">
+<div className="flex justify-center"><img className="w-[5em]" src={"/star-craft.svg"}></img></div>
+
+          <div className="flex justify-center mt-10">
+            <p className="text-center text-3xl lg:text-5xl w-[15em] leading-tight">
+              Developed by Four Aspiring Talented Youth in Hong Kong
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <p className="text-center mt-5">
+              The platform is built by a group of Gen Zs
+            </p>
+          </div>
+
+          <div className="flex justify-center mt-20">
+            <div>
+              <div className="grid xl:grid-cols-4 gap-10 justify-center items-center">
+                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
+                  <p className="text-center xl:mb-5 text-xs h-[10em]">
+                    "Be extraordinary!"<br></br>—Ricky Chan
+                  </p>
+                  <div className="bg-orange-500 rounded-full p-5 h-[25em] xl:h-[50em]">
+                    <div className="flex justify-center">
+                      <div
+                        className="h-35 w-35 rounded-full outline-2 outline-offset-6 outline-white bg-cover bg-center"
+                        style={{ backgroundImage: "url('/ricky.png')" }}
+                      ></div>
+                    </div>
+                    <p className="text-center mt-5 text-2xl text-white">
+                      Ricky Chan
+                    </p>
+                    <p className="text-center text-sm text-white">Developer</p>
+                  </div>
+                </div>
+
+                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
+                  <p className="text-center xl:mb-5 text-xs h-[10em]">
+                    "Lorem ipsum dolor sit amet consectetur adipisicing elit." <br></br>—Thomas
+                  </p>
+                  <div className="bg-blue-500 rounded-full p-5 h-[25em] xl:h-[50em]">
+                    <div className="flex justify-center">
+                      <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
+                    </div>
+                    <p className="text-center mt-5 text-2xl text-white">
+                      Thomas
+                    </p>
+                    <p className="text-center text-sm text-white">Developer</p>
+                  </div>
+                </div>
+
+                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
+                  <p className="text-center xl:mb-5 text-xs h-[10em]">
+                    "Lorem ipsum dolor sit amet."<br></br>—Jeff Leung
+                  </p>
+                  <div className="bg-yellow-500 rounded-full p-5 h-[25em] xl:h-[50em]">
+                    <div className="flex justify-center">
+                      <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
+                    </div>
+                    <p className="text-center mt-5 text-2xl text-white">
+                      Jeff Leung
+                    </p>
+                    <p className="text-center text-sm text-white">
+                      Creative Strategist
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
+                  <p className="text-center xl:mb-5 text-xs h-[10em]">
+                    "Lorem ipsum, dolor sit amet consectetur adipisicing elit."<br></br>—CHM
+                  </p>
+                  <div className="bg-indigo-500 rounded-full p-5 h-[25em] xl:h-[50em]">
+                    <div className="flex justify-center">
+                      <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
+                    </div>
+                    <p className="text-center mt-5 text-2xl text-white">CHM</p>
+                    <p className="text-center text-sm text-white">
+                      Designer & Analyst
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="mb-[50em]"></div>
 
         <footer className="mb-[25em]">
-          <p className="text-center">
-            © 2025 HKTAP | Developed with ❤️🇭🇰
-          </p>
+          <p className="text-center">© 2025 HKTAP | Developed with ❤️🇭🇰</p>
         </footer>
 
         <div className="relative z-[103]">
