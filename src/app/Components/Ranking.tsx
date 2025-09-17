@@ -110,7 +110,7 @@ export default function Ranking({ onClose }: RankingProps) {
       )}
 
       {/* Header */}
-      <div className="p-6 border-b">
+      <div className="p-6">
         <h2 className="text-2xl font-bold text-center">🏆 Leaderboard</h2>
         <p className="text-center text-gray-600 mt-2">Most voted locations in Hong Kong</p>
       </div>

@@ -313,11 +313,24 @@ export default function Home() {
           </div>
         </div>
 
+<div className="relative z-[50] px-10">
+<div className="lg:flex justify-between items-center">
+    <div>
+    <p className="text-5xl lg:text-7xl">Why HKTAP?</p>
+  <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5">It's fun, engaging, and filled with love! The best thing? Everyone can use it. Every pin in the map is a real human, a footprint on Hong Kong; it's real. Find somewhere exciting to go, and share somewhere worth your time.</p>
+
+  <div className="mt-10"><a onClick={() => setCamera(true)} className="underline text-3xl cursor-pointer">Try to Take a Snapshot</a></div>
+  </div>
+<div className="flex justify-center"><img className="mt-20 lg:mt-0" src="/location-photo.svg"></img></div>
+
+</div>
+</div>
+
         <div className="mb-[50em]"></div>
 
         <footer className="mb-[25em]">
           <p className="text-center">
-            © 2025 HKTAP | An Exceptional Product for a Hackathon
+            © 2025 HKTAP | Developed with ❤️🇭🇰
           </p>
         </footer>
 
