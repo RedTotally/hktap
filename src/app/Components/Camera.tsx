@@ -232,7 +232,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full h-full">
           <img
             src={previewImage}
             alt="Captured preview"

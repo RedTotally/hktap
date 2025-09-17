@@ -350,7 +350,10 @@ export default function Home() {
           <div className="flex justify-center">
             {" "}
             <p className="mt-20 lg:w-[45em] text-center text-xl">
-We have implemented a tailored AI chatbot system for travelers. You can receive the best and latest information by simply stating what you want to the AI chatbot. With the advanced model and fresh data, you are promised to get the best guidance possible.
+              We have implemented a tailored AI chatbot system for travelers.
+              You can receive the best and latest information by simply stating
+              what you want to the AI chatbot. With the advanced model and fresh
+              data, you are promised to get the best guidance possible.
             </p>
           </div>
         </div>
