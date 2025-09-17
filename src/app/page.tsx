@@ -13,6 +13,7 @@ import Ranking from "./Components/Ranking";
 import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
@@ -422,6 +423,13 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-[20em] flex justify-center bg-black text-white py-40 px-10">
+          <div>
+            <p className="text-center text-3xl lg:text-5xl">Learn About Our Ideas and Initiatives</p>
+            <div className="flex justify-center mt-10"><Link className="bg-white p-5 px-20 text-black" target="_blank" href="https://devpost.com/software/hktap">Learn More</Link></div>
           </div>
         </div>
 
