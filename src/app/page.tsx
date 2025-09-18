@@ -397,17 +397,27 @@ export default function Home() {
 
                 <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
                   <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Lorem ipsum dolor sit amet consectetur adipisicing elit."{" "}
-                    <br></br>—Thomas
+                    "Creating digital experiences with passion and precision."{" "}
+                    <br></br>—Thomas Suen
                   </p>
                   <div className="bg-blue-500 rounded-full p-5 h-[25em] xl:h-[50em]">
                     <div className="flex justify-center">
                       <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
                     </div>
                     <p className="text-center mt-5 text-2xl text-white">
-                      Thomas
+                      Thomas Suen
                     </p>
-                    <p className="text-center text-sm text-white">Developer</p>
+                    <p className="text-center text-sm text-white">Developer & Photographer</p>
+                    <div className="flex justify-center mt-2">
+                      <a 
+                        href="https://owenisas.com" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-xs text-white underline hover:text-blue-200 transition-colors"
+                      >
+                        owenisas.com
+                      </a>
+                    </div>
                   </div>
                 </div>
 
