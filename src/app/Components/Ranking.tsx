@@ -25,7 +25,12 @@ export default function Ranking({ onClose }: RankingProps) {
   }
 
   const supabase = createClient(supabaseUrl, supabaseKey);
-  
+
+  const searchParams = new URLSearchParams(
+    typeof window !== "undefined" ? window.location.search : ""
+  );
+  const selectedCategory = searchParams.get("category") || "default";
+
   const [rankings, setRankings] = useState<LocationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,15 +38,20 @@ export default function Ranking({ onClose }: RankingProps) {
   const fetchRankings = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      let query = supabase
         .from("locations_db")
         .select("id, title, description, photo, votes, created_at")
-        .order('votes', { ascending: false })
-        .order('created_at', { ascending: false });
+        .order("votes", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      if (selectedCategory !== "default") {
+        query = query.eq("category", selectedCategory);
+      }
+      const { data, error } = await query;
 
       if (error) throw error;
 
-      console.log('Rankings data:', data);
+      console.log("Rankings data:", data);
       setRankings(data || []);
     } catch (err) {
       setError("Failed to fetch rankings: " + (err as Error).message);
@@ -112,7 +122,9 @@ export default function Ranking({ onClose }: RankingProps) {
       {/* Header */}
       <div className="p-6">
         <h2 className="text-2xl font-bold text-center">🏆 Leaderboard</h2>
-        <p className="text-center text-gray-600 mt-2">Most voted locations in Hong Kong</p>
+        <p className="text-center text-gray-600 mt-2">
+          Most voted locations in Hong Kong
+        </p>
       </div>
 
       {/* Rankings List */}
@@ -120,7 +132,9 @@ export default function Ranking({ onClose }: RankingProps) {
         {rankings.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500">No rankings available yet</p>
-            <p className="text-sm text-gray-400 mt-2">Be the first to vote for a location!</p>
+            <p className="text-sm text-gray-400 mt-2">
+              Be the first to vote for a location!
+            </p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -131,12 +145,17 @@ export default function Ranking({ onClose }: RankingProps) {
               >
                 {/* Rank */}
                 <div className="flex-shrink-0">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${
-                    index === 0 ? 'bg-yellow-500' : 
-                    index === 1 ? 'bg-gray-400' : 
-                    index === 2 ? 'bg-orange-600' : 
-                    'bg-blue-500'
-                  }`}>
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${
+                      index === 0
+                        ? "bg-yellow-500"
+                        : index === 1
+                        ? "bg-gray-400"
+                        : index === 2
+                        ? "bg-orange-600"
+                        : "bg-blue-500"
+                    }`}
+                  >
                     {index + 1}
                   </div>
                 </div>
@@ -145,7 +164,7 @@ export default function Ranking({ onClose }: RankingProps) {
                 {item.photo && (
                   <img
                     src={item.photo}
-                    alt={item.title || 'Location'}
+                    alt={item.title || "Location"}
                     className="w-16 h-16 object-cover rounded-lg"
                   />
                 )}
