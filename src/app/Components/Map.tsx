@@ -47,10 +47,10 @@ function Map() {
 
   const getIconSize = (votes: number): [number, number] => {
     const baseSize = 25;
-    const maxSize = 50; // Maximum icon size cap
-    const scaleFactor = 0.5; // Adjusts how quickly size increases with votes
+    const maxSize = 50; 
+    const scaleFactor = 0.5; 
     const size = Math.min(baseSize + votes * scaleFactor, maxSize);
-    return [size, size * 1.64]; // Maintain aspect ratio (41/25 = 1.64)
+    return [size, size * 1.64]; 
   };
 
   const createCustomIcon = (votes: number) => {
@@ -117,7 +117,6 @@ function Map() {
             : location
         )
       );
-
       
     }
 
