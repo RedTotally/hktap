@@ -7,6 +7,10 @@ import { createClient } from "@supabase/supabase-js";
 import { UUID } from "crypto";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import "leaflet.markercluster";
 
 interface Location {
   id: UUID;
@@ -41,12 +45,23 @@ function Map() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const customIcon = new L.Icon({
-    iconUrl: "/location.svg",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-  });
+  const getIconSize = (votes: number): [number, number] => {
+    const baseSize = 25;
+    const maxSize = 50; // Maximum icon size cap
+    const scaleFactor = 0.5; // Adjusts how quickly size increases with votes
+    const size = Math.min(baseSize + votes * scaleFactor, maxSize);
+    return [size, size * 1.64]; // Maintain aspect ratio (41/25 = 1.64)
+  };
+
+  const createCustomIcon = (votes: number) => {
+    const [width, height] = getIconSize(votes);
+    return new L.Icon({
+      iconUrl: "/location.svg",
+      iconSize: [width, height],
+      iconAnchor: [width / 2, height],
+      popupAnchor: [1, -height + 7],
+    });
+  };
 
   async function fetchData() {
     try {
@@ -135,17 +150,27 @@ function Map() {
           const position: [number, number] = [item.latitude, item.longitude];
 
           return (
-            <Marker key={item.id} position={position} icon={customIcon}>
+            <Marker
+              key={item.id}
+              position={position}
+              icon={createCustomIcon(item.votes)}
+            >
               <Popup>
-                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                <h3 className="font-bold text-lg mb-2">                  {item.title.charAt(0).toUpperCase() +
+                    item.title.slice(1)}</h3>
                 {item.photo && (
                   <img
                     src={item.photo}
                     alt={item.title}
-                    className="w-full h-32 object-cover rounded mb-2"
+                    className="w-full h-[15em] object-cover rounded mb-2"
                   />
                 )}
-                <p className="mb-2">{item.description}</p>
+
+                <p className="mb-2">
+                  {" "}
+                  {item.description.charAt(0).toUpperCase() +
+                    item.description.slice(1)}
+                </p>
                 <div className="my-3">
                   <div className="flex justify-center items-center">
                     <div className="group p-2">
