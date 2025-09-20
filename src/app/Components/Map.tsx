@@ -51,8 +51,9 @@ function Map() {
   const [selectedLocation_Description, setSelectedLocation_Description] =
     useState("");
   const [selectedLocation_Photo, setSelectedLocation_Photo] = useState("");
-  const [selectedLocation_Category, setSelectedLocation_Category] = useState("")
-  const [selectedLocation_Votes, setSelectedLocation_Votes] = useState(0)
+  const [selectedLocation_Category, setSelectedLocation_Category] =
+    useState("");
+  const [selectedLocation_Votes, setSelectedLocation_Votes] = useState(0);
 
   const getIconSize = (votes: number): [number, number] => {
     const baseSize = 25;
@@ -62,11 +63,11 @@ function Map() {
     return [size, size * 1.64];
   };
 
-const createCustomIcon = (votes: number, title: string) => {
-  const [width, height] = getIconSize(votes);
+  const createCustomIcon = (votes: number, title: string) => {
+    const [width, height] = getIconSize(votes);
 
-  return new L.DivIcon({
-    html: `
+    return new L.DivIcon({
+      html: `
       <div style="position: relative; text-align: center;">
         <div style="
           position: absolute;
@@ -86,12 +87,12 @@ const createCustomIcon = (votes: number, title: string) => {
         <img src="/location.svg" style="width: ${width}px; height: ${height}px;" />
       </div>
     `,
-    className: "custom-marker", 
-    iconSize: [width, height],
-    iconAnchor: [width / 2, height], 
-    popupAnchor: [0, -height + 7], 
-  });
-};
+      className: "custom-marker",
+      iconSize: [width, height],
+      iconAnchor: [width / 2, height],
+      popupAnchor: [0, -height + 7],
+    });
+  };
   async function fetchData() {
     try {
       setLoading(true);
@@ -146,7 +147,7 @@ const createCustomIcon = (votes: number, title: string) => {
             : location
         )
       );
-      setSelectedLocation_Votes(currentVotes + 1)
+      setSelectedLocation_Votes(currentVotes + 1);
     }
 
     return { data, error };
@@ -166,10 +167,20 @@ const createCustomIcon = (votes: number, title: string) => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className={selectedLocation !== undefined ? "absolute bottom-0 bg-white z-[125] p-2 py-5 w-full duration-300 flex justify-center" : "hidden"}>
-        <div onClick={() => selectedLocation !== undefined ? vote(selectedLocation) : ""} className="fixed w-full h-full top-0 cursor-pointer z-[-1]"></div>
+      <div
+        className={
+          selectedLocation !== undefined
+            ? "absolute bottom-0 bg-white z-[125] p-2 py-5 w-full duration-300 flex justify-center"
+            : "hidden"
+        }
+      >
         <div className="w-[25em]">
-          <p onClick={() => setSelectedLocation(undefined)} className="text-xs mb-2 underline cursor-pointer">Go Back</p>
+          <p
+            onClick={() => setSelectedLocation(undefined)}
+            className="text-xs mb-2 underline cursor-pointer"
+          >
+            Go Back
+          </p>
           <div>
             <div
               style={{
@@ -187,8 +198,10 @@ const createCustomIcon = (votes: number, title: string) => {
               }
             ></div>
           </div>
-          <p className="mt-2 text-xs text-gray-600">{selectedLocation_Category.charAt(0).toUpperCase() +
-              selectedLocation_Category.slice(1)}</p>
+          <p className="mt-2 text-xs text-gray-600">
+            {selectedLocation_Category.charAt(0).toUpperCase() +
+              selectedLocation_Category.slice(1)}
+          </p>
           <p className=" text-xl mt-2">
             {selectedLocation_Title.charAt(0).toUpperCase() +
               selectedLocation_Title.slice(1)}
@@ -197,8 +210,46 @@ const createCustomIcon = (votes: number, title: string) => {
             {selectedLocation_Description.charAt(0).toUpperCase() +
               selectedLocation_Description.slice(1)}
           </p>
-          <p className="text-xs mt-5 text-center">Tap Anywhere to Vote</p>
-          <p className="mt-2 text-center">{selectedLocation_Votes}</p>
+          <div
+            onClick={(e) => {
+              if (selectedLocation !== undefined) {
+                vote(selectedLocation);
+                const element = e.currentTarget;
+
+                element.classList.remove(
+                  "animate-jump",
+                  "animate-duration-300",
+                  "animate-ease-in-out"
+                );
+
+                void element.offsetWidth;
+
+                element.classList.add(
+                  "animate-jump",
+                  "animate-duration-300",
+                  "animate-ease-in-out"
+                );
+
+                setTimeout(() => {
+                  element.classList.remove(
+                    "animate-jump",
+                    "animate-duration-300",
+                    "animate-ease-in-out"
+                  );
+
+                  element.classList.add(
+                    "animate-duration-300",
+                    "animate-ease-in-out"
+                  );
+                }, 300);
+              }
+            }}
+            className="animate-jump animate-duration-300 animate-ease-in-out w-full bg-indigo-500 rounded-xl cursor-pointer text-white mt-5 py-2 select-none"
+          >
+            {" "}
+            <p className="text-xs text-center">Tap Me to Vote</p>
+            <p className="mt-2 text-center text-xl">{selectedLocation_Votes}</p>
+          </div>
         </div>
       </div>
       <MapContainer
@@ -227,9 +278,8 @@ const createCustomIcon = (votes: number, title: string) => {
                     setselectedLocation_Title(item.title);
                     setSelectedLocation_Description(item.description);
                     setSelectedLocation_Photo(item.photo);
-                    setSelectedLocation_Category(item.category)
-                    setSelectedLocation_Votes(item.votes)
-                    
+                    setSelectedLocation_Category(item.category);
+                    setSelectedLocation_Votes(item.votes);
                   },
                 }}
               >
