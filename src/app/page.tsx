@@ -241,7 +241,7 @@ export default function Home() {
                   >
                     <div className="absolute inset-0 bg-black opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
                     <p className="text-white lg:text-2xl font-bold z-10">
-                      {item.category}
+                      {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
                     </p>
                   </div>
                 );
@@ -281,7 +281,7 @@ export default function Home() {
                   }}
                   className="text-xs bg-white flex items-center justify-center rounded-full p-3 cursor-pointer"
                 >
-                  <p className="ml-2">{item.category}</p>
+                <p className="ml-2">{item.category.charAt(0).toUpperCase() + item.category.slice(1)}</p>
                 </div>
               );
             })}
