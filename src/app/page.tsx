@@ -10,6 +10,7 @@ import CameraCapture from "./Components/Camera";
 import Chat from "./Components/Chat";
 import Ranking from "./Components/Ranking";
 import Translate from "./Components/Translate";
+import Beams from "@/components/Beams";
 
 import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
@@ -582,15 +583,14 @@ export default function Home() {
         </div>
 
         <div className="mt-[20em] px-10">
-                      <div className="flex justify-center items-center mb-5">
-                {" "}
-                <img className="w-5" src={"/team.svg"}></img>
-                <p className="ml-1 text-center text-gray-600 font-semibold">
-                  OUR TEAM
-                </p>
-              </div>
+          <div className="flex justify-center items-center mb-5">
+            {" "}
+            <img className="w-5" src={"/team.svg"}></img>
+            <p className="ml-1 text-center text-gray-600 font-semibold">
+              OUR TEAM
+            </p>
+          </div>
           <div className="flex justify-center mt-10">
-            
             <p className="text-center text-3xl lg:text-5xl w-[20em] leading-tight font-semibold">
               Developed by Four Aspiring Talented Youth in Hong Kong
             </p>
@@ -618,7 +618,8 @@ export default function Home() {
                 </Link>
               </div>
               <p className="mt-10 text-xs">
-                "Be extraordinary; not just be different, but unique with the greatest endeavor." —Ricky Chan
+                "Be extraordinary; not just be different, but unique with the
+                greatest endeavor." —Ricky Chan
               </p>
             </div>
 
@@ -685,19 +686,34 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-[20em] flex justify-center bg-black text-white py-40 px-10">
-          <div>
-            <p className="text-center text-3xl lg:text-5xl">
-              Learn About Our Ideas and Initiatives
-            </p>
-            <div className="flex justify-center mt-10">
-              <Link
-                className="bg-white p-5 px-20 text-black"
-                target="_blank"
-                href="https://devpost.com/software/hktap"
-              >
-                Learn More
-              </Link>
+        <div className="mt-[20em]">
+          <div style={{ width: "100%", height: "600px", position: "absolute" }}>
+            <Beams
+              beamWidth={2}
+              beamHeight={15}
+              beamNumber={12}
+              lightColor="#ffffff"
+              speed={2}
+              noiseIntensity={1.75}
+              scale={0.2}
+              rotation={35}
+            />
+          </div>
+
+          <div className="flex justify-center relative z-[50] text-white items-center">
+            <div className="mt-[14em]">
+              <p className="text-center text-3xl lg:text-5xl font-semibold">
+                Learn About Our Ideas and Initiatives
+              </p>
+              <div className="flex justify-center mt-10">
+                <Link
+                  className="bg-white p-5 px-20 text-black"
+                  target="_blank"
+                  href="https://devpost.com/software/hktap"
+                >
+                  Learn More
+                </Link>
+              </div>
             </div>
           </div>
         </div>
