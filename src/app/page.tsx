@@ -547,6 +547,13 @@ Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a 
         <div className="relative z-[50] px-10 2xl:px-20 mt-[20em]">
           <div className="lg:flex justify-between items-center">
             <div>
+                        <div className="flex items-center mb-5">
+            {" "}
+            <img className="w-5" src={"/purpose.svg"}></img>
+            <p className="ml-1 text-center text-gray-600 font-semibold">
+              PURPOSE
+            </p>
+          </div>
               <p className="text-5xl lg:text-7xl font-semibold">Why HKTAP?</p>
               <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5 text-gray-600">
                 It's fun, engaging, and filled with love! The best thing?
