@@ -250,12 +250,11 @@ export default function Home() {
                 <img className="w-5" src={"/fire-gray.svg"}></img>
               </div>
               <div className="mx-[.1em]"></div>
-              <p className="text-center text-gray-600 text-sm mt-2">
+              <p className="text-center font-semibold text-gray-600 text-sm mt-2">
                 TRENDING OPTIONS
               </p>
             </div>
           </div>
-
 
           <div className="mt-5 w-full h-[65em] md:h-[25em] lg:h-[35em]">
             <div className="grid md:grid-cols-3 h-full">
@@ -276,7 +275,7 @@ export default function Home() {
                     }}
                   >
                     <div className="absolute inset-0 bg-black opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
-                    <p className="text-white lg:text-2xl font-bold z-10">
+                    <p className="text-white xl:text-2xl font-bold z-10">
                       {item.category.charAt(0).toUpperCase() +
                         item.category.slice(1)}
                     </p>
@@ -382,9 +381,170 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="mb-[5em] relative z-[80] mt-10 px-10">
+          <div className="flex justify-center items-center mb-5">
+            {" "}
+            <img className="w-5" src={"/features.svg"}></img>
+            <p className="ml-1 text-center text-gray-600 font-semibold">
+              OUR FEATURES
+            </p>
+          </div>
+          <p className="text-center text-4xl font-semibold">
+            A better way to share, and a better place to find.
+          </p>
+          <p className="mt-10 text-gray-600 text-center">
+            No more boredom in Hong Kong after using this platform
+          </p>
+        </div>
+
+        <div className="2xl:grid grid-cols-8 gap-5 px-10 lg:px-20 relative z-[80]">
+          <div className="p-4 col-span-3">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/location.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">
+                Instant Location Sharing
+              </p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+                Our advanced camera feature automatically records your location
+                when you submit, so you don't have to manually input where you
+                are. 3, 2, 1... Captured! Share your location without
+                interruption!
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 col-span-3">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/heats.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">Drop the Heat</p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+                We want everyone to participate in this craze. Show your love to
+                the locations you are deeply interested in. Show the world what
+                you love in Hong Kong by heating them up!
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 col-span-2">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/leaderboard.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">Leaderboard</p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+                Learn what is popular in Hong Kong, it's time to grab your
+                belongings and go have a look.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="2xl:grid grid-cols-6 gap-5 px-10 lg:px-20">
+          <div className="p-4 col-span-2">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/unique.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">Be the Unique One</p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+                Your recommendation could be so valuable that it becomes red
+                with over 500 heats! Oh, it's hot here.
+              </p>
+            </div>
+          </div>
+          <div className="p-4 col-span-4">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/ai.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">
+                Powerful AI & Great Database
+              </p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+                Enjoy the AI chatbot backed by a massive database integrated
+                into our website. You can receive the best and latest
+                information by simply stating what you want to it. With the
+                advanced model and fresh data, you are promised to get the best
+                guidance possible.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="2xl:grid grid-cols-2 gap-5 px-10 lg:px-20">
 
 
-        <div className="relative z-[50] px-10 2xl:px-20">
+          <div className="p-4 col-span-1">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/category.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">Diverse Categories</p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+               We sort locations by their purposes. So, you can find the most desirable place by looking at what you can do in particular destinations: more warm, welcoming, and straightforward; we have the right place for you.
+              </p>
+            </div>
+          </div>
+  <div className="p-4 col-span-1">
+            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+              <div
+                className="w-full h-[20em] rounded-xl"
+                style={{
+                  backgroundImage: 'url("/hk.png")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
+
+              <p className="text-2xl my-7 font-semibold">We Love Hong Kong</p>
+              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a place that stands up to any adversity; When we face troubles, we find solutions. Enthusiasm, solidarity, and thoughtfulness made us unique and magical. We love it here! 
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-[50] px-10 2xl:px-20 mt-[20em]">
           <div className="lg:flex justify-between items-center">
             <div>
               <p className="text-5xl lg:text-7xl font-semibold">Why HKTAP?</p>
@@ -407,24 +567,6 @@ export default function Home() {
             <div className="flex justify-center">
               <img className="mt-20 lg:mt-0" src="/location-photo.svg"></img>
             </div>
-          </div>
-        </div>
-
-        <div className="my-[20em] px-10">
-          <p className="text-center text-3xl lg:text-5xl">
-            Powered By An Exceptional AI Model and Database
-          </p>
-          <div className="flex justify-center mt-20">
-            <img className="w-[25em]" src={"/AI-photo.svg"}></img>
-          </div>
-          <div className="flex justify-center">
-            {" "}
-            <p className="mt-20 lg:w-[45em] text-center text-xl">
-              We have implemented a tailored AI chatbot system for travelers.
-              You can receive the best and latest information by simply stating
-              what you want to the AI chatbot. With the advanced model and fresh
-              data, you are promised to get the best guidance possible.
-            </p>
           </div>
         </div>
 
@@ -461,7 +603,9 @@ export default function Home() {
                     <p className="text-center mt-5 text-2xl text-white">
                       Ricky Chan
                     </p>
-                    <p className="text-center text-sm text-white">Developer</p>
+                    <p className="text-center text-sm text-white">
+                      Developer & Graphic Designer
+                    </p>
                   </div>
                 </div>
 
@@ -550,7 +694,9 @@ export default function Home() {
         <div className="mb-[50em]"></div>
 
         <footer className="mb-[25em] px-10">
-          <p className="text-center">© 2025 HKTAP | Developed with ❤️🇭🇰 | Made By Ambitious Youths</p>
+          <p className="text-center">
+            © 2025 HKTAP | Developed with ❤️🇭🇰 | Made By Ambitious Youths
+          </p>
         </footer>
 
         <div className="relative z-[103]">
