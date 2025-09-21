@@ -722,7 +722,7 @@ export default function Home() {
 
         <footer className="mb-[25em] px-10">
           <p className="text-center">
-            © 2025 HKTAP | Developed with ❤️🇭🇰 | Made By Ambitious Youths
+            © 2025 HKTAP | Developed with ❤️ | Made By Ambitious Youths 🇭🇰
           </p>
         </footer>
 
