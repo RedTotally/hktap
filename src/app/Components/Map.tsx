@@ -291,7 +291,7 @@ function Map() {
                 }, 300);
               }
             }}
-            className="animate-jump animate-duration-300 animate-ease-in-out w-full bg-indigo-500 rounded-xl cursor-pointer text-white mt-5 py-2 select-none"
+            className="animate-jump animate-duration-100 animate-ease-in-out w-full bg-indigo-500 rounded-xl cursor-pointer text-white mt-5 py-2 select-none"
           >
             {" "}
             <p className="text-xs text-center">Tap Me to Add a Heat</p>
