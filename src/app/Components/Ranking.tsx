@@ -212,7 +212,7 @@ export default function Ranking({ onClose }: RankingProps) {
                   <img
                     src={item.photo}
                     alt={item.title || "Location"}
-                    className="w-16 h-16 object-cover rounded-lg mt-5 lg:mt-0"
+                    className="w-16 h-16 object-cover rounded-lg my-5 lg:my-0"
                   />
                 )}
 
