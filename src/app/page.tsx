@@ -200,6 +200,7 @@ export default function Home() {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
+      <Translate />
         <div
           className={
             selectedCategory == "default" ? "hidden" : "flex justify-center"
@@ -432,7 +433,7 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">Drop the Heat</p>
+              <p className="text-2xl my-7 font-semibold">Bring Up the Heat</p>
               <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
                 We want everyone to participate in this craze. Show your love to
                 the locations you are deeply interested in. Show the world what
@@ -578,17 +579,15 @@ Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a 
         </div>
 
         <div className="mt-[20em] px-10">
-          <div className="flex justify-center">
-            <img className="w-[5em]" src={"/star-craft.svg"}></img>
-          </div>
+   
 
           <div className="flex justify-center mt-10">
-            <p className="text-center text-3xl lg:text-5xl w-[15em] leading-tight">
+            <p className="text-center text-3xl lg:text-5xl w-[20em] leading-tight font-semibold">
               Developed by Four Aspiring Talented Youth in Hong Kong
             </p>
           </div>
           <div className="flex justify-center">
-            <p className="text-center mt-5">
+            <p className="text-center mt-5 text-gray-600">
               The platform is built by a group of Gen Zs
             </p>
           </div>
