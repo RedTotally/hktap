@@ -78,7 +78,7 @@ function Map() {
     background: rgba(0, 0, 0, 0.5); 
     color: white;
     padding: 15px;
-    width: 15em;                
+    width: 12em;                
     border-radius: 1em;
     font-size: 10px;
     white-space: normal;        
@@ -217,11 +217,11 @@ function Map() {
       <div
         className={
           selectedLocation !== undefined
-            ? "absolute bottom-0 bg-white z-[99] p-2 py-5 w-full duration-300 flex justify-center"
+            ? "absolute bottom-0 bg-white z-[99] p-3 py-4 w-full duration-300 flex justify-center"
             : "hidden"
         }
       >
-        <div className="w-[25em]">
+        <div className="w-[20em] max-w-[90vw]">
           <p
             onClick={() => setSelectedLocation(undefined)}
             className="text-xs mb-2 underline cursor-pointer"

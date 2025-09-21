@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import OpenAI from "openai";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   id: string;
@@ -28,7 +29,19 @@ export default function Chat({
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const messageTemplates = [
+    "Plan my day in Kowloon",
+    "Best restaurants in Central",
+    "Tourist attractions in Tsim Sha Tsui",
+    "Shopping areas in Causeway Bay",
+    "Local hidden gems",
+    "Business districts overview",
+    "Entertainment spots in Wan Chai",
+    "Traditional markets to visit"
+  ];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -52,6 +65,19 @@ export default function Chat({
       ]);
     }
   }, [messages.length]);
+
+  // Hide templates after user sends first message
+  useEffect(() => {
+    const userMessages = messages.filter(msg => msg.role === "user");
+    if (userMessages.length > 0) {
+      setShowTemplates(false);
+    }
+  }, [messages]);
+
+  const handleTemplateClick = (template: string) => {
+    setInputMessage(template);
+    setShowTemplates(false);
+  };
 
   const generateSystemPrompt = () => {
     const locationsInfo = locationsData
@@ -118,7 +144,7 @@ Current database contains ${locationsData.length} location${
       });
 
       const completion = await openai.chat.completions.create({
-        model: "openrouter/sonoma-sky-alpha",
+        model: "x-ai/grok-4-fast:free",
         messages: [
           {
             role: "system",
@@ -199,7 +225,61 @@ Current database contains ${locationsData.length} location${
                   : "bg-gray-100 text-gray-800"
               }`}
             >
-              <p className="whitespace-pre-wrap">{message.content}</p>
+              <div className="prose prose-sm max-w-none">
+                <ReactMarkdown
+                  components={{
+                    // Custom styling for markdown elements
+                    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                    h1: ({ children }) => <h1 className="text-lg font-bold mb-2">{children}</h1>,
+                    h2: ({ children }) => <h2 className="text-base font-bold mb-2">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-sm font-bold mb-1">{children}</h3>,
+                    ul: ({ children }) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
+                    ol: ({ children }) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
+                    li: ({ children }) => <li className="mb-1">{children}</li>,
+                    blockquote: ({ children }) => (
+                      <blockquote className={`border-l-2 pl-3 italic mb-2 ${
+                        message.role === "user" 
+                          ? "border-blue-200" 
+                          : "border-gray-300"
+                      }`}>
+                        {children}
+                      </blockquote>
+                    ),
+                    code: ({ children }) => (
+                      <code className={`px-1 py-0.5 rounded text-xs font-mono ${
+                        message.role === "user" 
+                          ? "bg-blue-600 bg-opacity-50" 
+                          : "bg-gray-200"
+                      }`}>
+                        {children}
+                      </code>
+                    ),
+                    pre: ({ children }) => (
+                      <pre className={`p-2 rounded text-xs font-mono overflow-x-auto mb-2 ${
+                        message.role === "user" 
+                          ? "bg-blue-600 bg-opacity-50" 
+                          : "bg-gray-200"
+                      }`}>
+                        {children}
+                      </pre>
+                    ),
+                    strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+                    em: ({ children }) => <em className="italic">{children}</em>,
+                    a: ({ href, children }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline"
+                      >
+                        {children}
+                      </a>
+                    ),
+                  }}
+                >
+                  {message.content}
+                </ReactMarkdown>
+              </div>
               <p className="text-xs opacity-70 mt-1">
                 {message.timestamp.toLocaleTimeString()}
               </p>
@@ -218,6 +298,25 @@ Current database contains ${locationsData.length} location${
         )}
         <div ref={messagesEndRef} />
       </div>
+
+      {/* Message Templates */}
+      {showTemplates && (
+        <div className="px-3 pb-2 border-t border-gray-200">
+          <p className="text-xs text-gray-500 mb-2">Try asking about:</p>
+          <div className="flex flex-wrap gap-1">
+            {messageTemplates.map((template, index) => (
+              <button
+                key={index}
+                onClick={() => handleTemplateClick(template)}
+                className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors border border-gray-200"
+                disabled={isLoading}
+              >
+                {template}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Input */}
       <div className="p-3 border-t border-gray-300">
