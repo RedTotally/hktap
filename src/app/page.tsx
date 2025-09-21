@@ -222,10 +222,10 @@ export default function Home() {
 
 <div className="flex justify-center">
               <SplitText
-  text="HKTAP"
+  text="Find and Share Your Destinations"
   className="text-5xl font-semibold text-center"
-  delay={100}
-  duration={0.6}
+  delay={50}
+  duration={0.35}
   ease="power3.out"
   splitType="chars"
   from={{ opacity: 0, y: 40 }}
