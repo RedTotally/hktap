@@ -11,6 +11,7 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet.markercluster";
+import { image } from "motion/react-client";
 
 interface Location {
   id: UUID;
@@ -63,29 +64,46 @@ function Map() {
     return [size, size * 1.64];
   };
 
-  const createCustomIcon = (votes: number, title: string) => {
+  const createCustomIcon = (votes: number, title: string, photo: string) => {
     const [width, height] = getIconSize(votes);
 
     return new L.DivIcon({
       html: `
-      <div style="position: relative; text-align: center;">
-        <div style="
-          position: absolute;
-          top: -15px; 
-          left: 50%;
-          transform: translateX(-50%);
-          background: rgba(0, 0, 0, 0.7); 
-          color: white;
-          padding: 2px 6px;
-          border-radius: 3px;
-          font-size: 12px;
-          white-space: nowrap;
-          z-index: 1000;
-        ">
-          ${title.charAt(0).toUpperCase() + title.slice(1)}
-        </div>
-        <img src="/location.svg" style="width: ${width}px; height: ${height}px;" />
-      </div>
+<div style="position: relative; text-align: center;">
+  <div style="
+    position: absolute;
+    top: -160px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.5); 
+    color: white;
+    padding: 15px;
+    width: 15em;                
+    border-radius: 1em;
+    font-size: 10px;
+    white-space: normal;        
+    z-index: 1000;
+  ">
+   <p style="text-align: center; margin-bottom: 1em;">${votes} Heats</p>
+    <div style="display: flex; justify-content: center;">
+   
+      <div style="
+        width: 5em;
+        height: 5em;
+        border-radius: 50%;
+        background-image: url('${photo}');
+        background-size: cover;
+        background-position: center;
+      "></div>
+    </div>
+    <p style="margin-top: 1em;">${
+      title.charAt(0).toUpperCase() + title.slice(1)
+    }</p>
+  </div>
+  <img src="/location.svg" style="width: ${width}px; height: ${height}px;" />
+</div>
+
+
     `,
       className: "custom-marker",
       iconSize: [width, height],
@@ -165,6 +183,35 @@ function Map() {
     return <div className="text-red-500 p-4">{error}</div>;
   }
 
+  function formatNumber(num: number): string {
+    if (num < 1000) return num.toString();
+
+    const units = [
+      "K",
+      "M",
+      "B",
+      "T",
+      "Qa",
+      "Qi",
+      "Sx",
+      "Sp",
+      "Oc",
+      "No",
+      "Dc",
+    ];
+
+    let unitIndex = -1;
+
+    while (num >= 1000 && unitIndex < units.length - 1) {
+      num /= 1000;
+      unitIndex++;
+    }
+
+    return num % 1 === 0
+      ? num.toFixed(0) + units[unitIndex]
+      : num.toFixed(1) + units[unitIndex];
+  }
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div
@@ -194,7 +241,7 @@ function Map() {
               className={
                 selectedLocation_Photo == ""
                   ? "hidden"
-                  : "w-full h-[15em] rounded-xl bg-black"
+                  : "w-full h-[15em] rounded-xl bg-black bg-center bg-cover"
               }
             ></div>
           </div>
@@ -247,8 +294,8 @@ function Map() {
             className="animate-jump animate-duration-300 animate-ease-in-out w-full bg-indigo-500 rounded-xl cursor-pointer text-white mt-5 py-2 select-none"
           >
             {" "}
-            <p className="text-xs text-center">Tap Me to Vote</p>
-            <p className="mt-2 text-center text-xl">{selectedLocation_Votes}</p>
+            <p className="text-xs text-center">Tap Me to Add a Heat</p>
+            <p className="mt-2 text-center text-xl">{selectedLocation_Votes} 🔥</p>
           </div>
         </div>
       </div>
@@ -263,7 +310,7 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <MarkerClusterGroup>
+        <MarkerClusterGroup spiderfyDistanceMultiplier={5}>
           {locations.map((item) => {
             const position: [number, number] = [item.latitude, item.longitude];
 
@@ -271,7 +318,7 @@ function Map() {
               <Marker
                 key={item.id}
                 position={position}
-                icon={createCustomIcon(item.votes, item.title)}
+                icon={createCustomIcon(item.votes, item.title, item.photo)}
                 eventHandlers={{
                   click: () => {
                     setSelectedLocation(item.id);
