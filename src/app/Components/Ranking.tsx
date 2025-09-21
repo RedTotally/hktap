@@ -68,6 +68,35 @@ export default function Ranking({ onClose }: RankingProps) {
     fetchRankings();
   }, []);
 
+  function formatNumber(num: number): string {
+    if (num < 1000) return num.toString();
+
+    const units = [
+      "K",
+      "M",
+      "B",
+      "T",
+      "Qa",
+      "Qi",
+      "Sx",
+      "Sp",
+      "Oc",
+      "No",
+      "Dc",
+    ];
+
+    let unitIndex = -1;
+
+    while (num >= 1000 && unitIndex < units.length - 1) {
+      num /= 1000;
+      unitIndex++;
+    }
+
+    return num % 1 === 0
+      ? num.toFixed(0) + units[unitIndex]
+      : num.toFixed(1) + units[unitIndex];
+  }
+
   if (loading) {
     return (
       <div className="flex flex-col items-center pb-4 bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto relative">
@@ -210,7 +239,7 @@ export default function Ranking({ onClose }: RankingProps) {
                       alt="Heat votes"
                       className="w-6 h-6 bg-orange-500 rounded-full p-1"
                     />
-                    <span className="font-bold text-lg">{item.votes}</span>
+                    <span className="font-bold text-lg">{formatNumber(item.votes)}</span>
                   </div>
                   <p className="text-xs text-gray-500">
                     {new Date(item.created_at).toLocaleDateString()}

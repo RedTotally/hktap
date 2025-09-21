@@ -15,6 +15,7 @@ import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import SplitText from "./Components/SplitText";
 
 
 const Map = dynamicImport(() => import("./Components/Map"), {
@@ -45,6 +46,11 @@ export default function Home() {
 
   const [categories, setCategories] = useState<any[]>([]);
   const [topCategories, setTopCategories] = useState<any[]>([]);
+
+  const handleAnimationComplete = () => {
+  console.log('All letters have animated!');
+};
+
 
   const items = [
     {
@@ -213,7 +219,23 @@ export default function Home() {
 
         <div>
           <div className="sticky bg-white top-0 z-[99] py-10">
-            <p className="text-center text-5xl font-bold mt-2">HKTAP</p>
+
+<div className="flex justify-center">
+              <SplitText
+  text="HKTAP"
+  className="text-5xl font-semibold text-center"
+  delay={100}
+  duration={0.6}
+  ease="power3.out"
+  splitType="chars"
+  from={{ opacity: 0, y: 40 }}
+  to={{ opacity: 1, y: 0 }}
+  threshold={0.1}
+  rootMargin="-100px"
+  textAlign="center"
+  onLetterAnimationComplete={handleAnimationComplete}
+/>
+</div>
             <p className="text-center mt-2">
               A few taps, know where to go on the map;<br></br> find
               extraordinary places in Hong Kong.
