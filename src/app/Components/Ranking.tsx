@@ -17,6 +17,8 @@ interface LocationData {
   photo?: string;
   votes: number;
   created_at: string;
+  latitude: number;
+  longitude: number;
 }
 
 export default function Ranking({ onClose }: RankingProps) {
@@ -40,7 +42,9 @@ export default function Ranking({ onClose }: RankingProps) {
       setLoading(true);
       let query = supabase
         .from("locations_db")
-        .select("id, title, description, photo, votes, created_at")
+        .select(
+          "id, title, description, photo, votes, created_at, latitude, longitude"
+        )
         .order("votes", { ascending: false })
         .order("created_at", { ascending: false });
 
@@ -107,7 +111,10 @@ export default function Ranking({ onClose }: RankingProps) {
   }
 
   return (
-    <div className="flex flex-col bg-white rounded-xl w-full h-full lg:w-auto lg:h-auto relative max-w-2xl mx-auto">
+    <div
+      className="flex flex-col bg-white p-2 py-5
+     rounded-xl w-full h-full lg:w-auto lg:h-auto relative max-w-2xl mx-auto"
+    >
       {/* Close button */}
       {onClose && (
         <button
@@ -128,7 +135,7 @@ export default function Ranking({ onClose }: RankingProps) {
       </div>
 
       {/* Rankings List */}
-      <div className="flex-1 overflow-y-auto p-4 max-h-96">
+      <div className="flex-1 overflow-y-auto p-4 max-h-130 rounded-xl">
         {rankings.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500">No rankings available yet</p>
@@ -141,7 +148,18 @@ export default function Ranking({ onClose }: RankingProps) {
             {rankings.map((item, index) => (
               <div
                 key={item.id}
-                className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                onClick={() => {
+                  window.location.replace(
+                    `https://www.google.com/maps/place/${[
+                      item.latitude,
+                      item.longitude,
+                    ][0].toFixed(4)}, ${[
+                      item.latitude,
+                      item.longitude,
+                    ][1].toFixed(4)}`
+                  );
+                }}
+                className="cursor-pointer flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 {/* Rank */}
                 <div className="flex-shrink-0">
@@ -171,13 +189,13 @@ export default function Ranking({ onClose }: RankingProps) {
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-lg truncate">
+                  <h3 className="font-semibold truncate">
                     {item.title
                       ? item.title.charAt(0).toUpperCase() + item.title.slice(1)
                       : `Location ${item.id}`}
                   </h3>
                   {item.description && (
-                    <p className="text-gray-600 text-sm truncate">
+                    <p className="text-gray-600 text-xs truncate">
                       {item.description.charAt(0).toUpperCase() +
                         item.description.slice(1)}
                     </p>
