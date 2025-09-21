@@ -707,7 +707,7 @@ export default function Home() {
               </p>
               <div className="flex justify-center mt-10">
                 <Link
-                  className="bg-white p-5 px-20 text-black"
+                  className="bg-white p-5 px-20 text-black hover:px-30 duration-300"
                   target="_blank"
                   href="https://devpost.com/software/hktap"
                 >
