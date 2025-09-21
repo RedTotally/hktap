@@ -236,8 +236,8 @@ export default function Home() {
   onLetterAnimationComplete={handleAnimationComplete}
 />
 </div>
-            <p className="text-center mt-2">
-              A few taps, know where to go on the map;<br></br> find
+            <p className="text-center mt-3">
+              A few taps, know where to go on the map; find
               extraordinary places in Hong Kong.
             </p>
           </div>
