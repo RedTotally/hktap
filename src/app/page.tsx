@@ -565,9 +565,9 @@ Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a 
               <div className="mt-10">
                 <a
                   onClick={() => setCamera(true)}
-                  className="underline text-3xl cursor-pointer"
+                  className=" text-xl cursor-pointer bg-black text-white px-5 py-2 rounded-xl hover:px-10 duration-300"
                 >
-                  Try to Take a Snapshot
+                  「Try to Take a Snapshot」
                 </a>
               </div>
             </div>
