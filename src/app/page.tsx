@@ -383,8 +383,8 @@ export default function Home() {
         <div className="relative z-[50] px-10 2xl:px-20">
           <div className="lg:flex justify-between items-center">
             <div>
-              <p className="text-5xl lg:text-7xl">Why HKTAP?</p>
-              <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5">
+              <p className="text-5xl lg:text-7xl font-semibold">Why HKTAP?</p>
+              <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5 text-gray-600">
                 It's fun, engaging, and filled with love! The best thing?
                 Everyone can use it. Every pin in the map is a real human, a
                 footprint on Hong Kong; it's real. Find somewhere exciting to
