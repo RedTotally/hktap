@@ -200,7 +200,6 @@ export default function Home() {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
-      <Translate />
         <div
           className={
             selectedCategory == "default" ? "hidden" : "flex justify-center"
@@ -507,8 +506,6 @@ export default function Home() {
         </div>
 
         <div className="2xl:grid grid-cols-2 gap-5 px-10 lg:px-20">
-
-
           <div className="p-4 col-span-1">
             <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
               <div
@@ -522,11 +519,14 @@ export default function Home() {
 
               <p className="text-2xl my-7 font-semibold">Diverse Categories</p>
               <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
-               We sort locations by their purposes. So, you can find the most desirable place by looking at what you can do in particular destinations: more warm, welcoming, and straightforward; we have the right place for you.
+                We sort locations by their purposes. So, you can find the most
+                desirable place by looking at what you can do in particular
+                destinations: more warm, welcoming, and straightforward; we have
+                the right place for you.
               </p>
             </div>
           </div>
-  <div className="p-4 col-span-1">
+          <div className="p-4 col-span-1">
             <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
               <div
                 className="w-full h-[20em] rounded-xl"
@@ -539,7 +539,10 @@ export default function Home() {
 
               <p className="text-2xl my-7 font-semibold">We Love Hong Kong</p>
               <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
-Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a place that stands up to any adversity; When we face troubles, we find solutions. Enthusiasm, solidarity, and thoughtfulness made us unique and magical. We love it here! 
+                Hong Kong, a fantastic place, is alluring, innovative, and
+                exceptional. It is a place that stands up to any adversity; When
+                we face troubles, we find solutions. Enthusiasm, solidarity, and
+                thoughtfulness made us unique and magical. We love it here!
               </p>
             </div>
           </div>
@@ -548,13 +551,13 @@ Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a 
         <div className="relative z-[50] px-10 2xl:px-20 mt-[20em]">
           <div className="lg:flex justify-between items-center">
             <div>
-                        <div className="flex items-center mb-5">
-            {" "}
-            <img className="w-5" src={"/purpose.svg"}></img>
-            <p className="ml-1 text-center text-gray-600 font-semibold">
-              PURPOSE
-            </p>
-          </div>
+              <div className="flex items-center mb-5">
+                {" "}
+                <img className="w-5" src={"/purpose.svg"}></img>
+                <p className="ml-1 text-center text-gray-600 font-semibold">
+                  PURPOSE
+                </p>
+              </div>
               <p className="text-5xl lg:text-7xl font-semibold">Why HKTAP?</p>
               <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5 text-gray-600">
                 It's fun, engaging, and filled with love! The best thing?
@@ -579,8 +582,6 @@ Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a 
         </div>
 
         <div className="mt-[20em] px-10">
-   
-
           <div className="flex justify-center mt-10">
             <p className="text-center text-3xl lg:text-5xl w-[20em] leading-tight font-semibold">
               Developed by Four Aspiring Talented Youth in Hong Kong
@@ -592,90 +593,86 @@ Hong Kong, a fantastic place, is alluring, innovative, and exceptional. It is a 
             </p>
           </div>
 
-          <div className="flex justify-center mt-20">
-            <div>
-              <div className="grid xl:grid-cols-4 gap-10 justify-center items-center">
-                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
-                  <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Be extraordinary!"<br></br>—Ricky Chan
-                  </p>
-                  <div className="bg-orange-500 rounded-full p-5 h-[25em] xl:h-[50em]">
-                    <div className="flex justify-center">
-                      <div
-                        className="h-35 w-35 rounded-full outline-2 outline-offset-6 outline-white bg-cover bg-center"
-                        style={{ backgroundImage: "url('/ricky.png')" }}
-                      ></div>
-                    </div>
-                    <p className="text-center mt-5 text-2xl text-white">
-                      Ricky Chan
-                    </p>
-                    <p className="text-center text-sm text-white">
-                      Developer & Graphic Designer
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
-                  <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Creating digital experiences with passion and precision."{" "}
-                    <br></br>—Thomas Suen
-                  </p>
-                  <div className="bg-blue-500 rounded-full p-5 h-[25em] xl:h-[50em]">
-                    <div className="flex justify-center">
-                      <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
-                    </div>
-                    <p className="text-center mt-5 text-2xl text-white">
-                      Thomas Suen
-                    </p>
-                    <p className="text-center text-sm text-white">
-                      Developer & Photographer
-                    </p>
-                    <div className="flex justify-center mt-2">
-                      <a
-                        href="https://owenisas.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-white underline hover:text-blue-200 transition-colors"
-                      >
-                        owenisas.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
-                  <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Lorem ipsum dolor sit amet."<br></br>—Jeff Leung
-                  </p>
-                  <div className="bg-yellow-500 rounded-full p-5 h-[25em] xl:h-[50em]">
-                    <div className="flex justify-center">
-                      <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
-                    </div>
-                    <p className="text-center mt-5 text-2xl text-white">
-                      Jeff Leung
-                    </p>
-                    <p className="text-center text-sm text-white">
-                      Creative Strategist
-                    </p>
-                  </div>
-                </div>
-
-                <div className="w-45 cursor-pointer group mb-5 lg:mt-0">
-                  <p className="text-center xl:mb-5 text-xs h-[10em]">
-                    "Lorem ipsum, dolor sit amet consectetur adipisicing elit."
-                    <br></br>—CHM
-                  </p>
-                  <div className="bg-indigo-500 rounded-full p-5 h-[25em] xl:h-[50em]">
-                    <div className="flex justify-center">
-                      <div className="h-35 w-35 bg-black rounded-full outline-2 outline-offset-6 outline-white"></div>
-                    </div>
-                    <p className="text-center mt-5 text-2xl text-white">CHM</p>
-                    <p className="text-center text-sm text-white">
-                      Designer & Analyst
-                    </p>
-                  </div>
-                </div>
+          <div className="grid grid-cols-4 gap-10 px-20 mt-20">
+            <div className="border-[.1em] p-5 h-[45em]">
+              <div
+                className="w-full h-[30em] bg-center bg-cover"
+                style={{ backgroundImage: "url('/ricky.png')" }}
+              ></div>
+              <p className="mt-2 text-xl font-semibold">Ricky Chan</p>
+              <p className="text-gray-600">Developer & Designer</p>
+              <div className="mt-2">
+                <Link
+                  className="text-xs underline"
+                  href={"https://rickychan.xyz/"}
+                >
+                  rickychan.xyz
+                </Link>
               </div>
+              <p className="mt-10 text-xs">
+                "Be extraordinary; not just be different, but unique with the greatest endeavor." —Ricky Chan
+              </p>
+            </div>
+
+            <div className="border-[.1em] p-5 h-[45em]">
+              <div
+                className="w-full h-[30em] bg-center bg-cover"
+                style={{ backgroundImage: "url('')" }}
+              ></div>
+              <p className="mt-2 text-xl font-semibold">Thomas Suen</p>
+              <p className="text-gray-600">Developer & Photographer</p>
+              <div className="mt-2">
+                <Link
+                  className="text-xs underline"
+                  href={"https://owenisas.com/"}
+                >
+                  owenisas.com
+                </Link>
+              </div>
+              <p className="mt-10 text-xs">
+                "Creating digital experiences with passion and
+                precision."—Thomas Suen
+              </p>
+            </div>
+
+            <div className="border-[.1em] p-5 h-[45em]">
+              <div
+                className="w-full h-[30em] bg-center bg-cover"
+                style={{ backgroundImage: "url('/jeff.png')" }}
+              ></div>
+              <p className="mt-2 text-xl font-semibold">Jeff Leung</p>
+              <p className="text-gray-600">Creative Strategist</p>
+              <div className="mt-2">
+                <Link
+                  className="text-xs underline"
+                  href={
+                    "https://youtube.com/@jeffleunglife?si=vPzGQT0VDA4dcLFp"
+                  }
+                >
+                  YouTube Channel
+                </Link>
+              </div>
+              <p className="mt-10 text-xs">
+                "Heaven definitely creates us for a purpose. Heads down on best
+                creations, riches will return in season." —Jeff Leung
+              </p>
+            </div>
+
+            <div className="border-[.1em] p-5 h-[45em]">
+              <div
+                className="w-full h-[30em] bg-center bg-cover"
+                style={{ backgroundImage: "url('/chm.png')" }}
+              ></div>
+              <p className="mt-2 text-xl font-semibold">CHM</p>
+              <p className="text-gray-600">Designer & Analyst</p>
+              <div className="mt-2">
+                <Link className="text-xs underline" href={"/"}>
+                  N/A
+                </Link>
+              </div>
+              <p className="mt-10 text-xs">
+                "Do the right thing with perseverance." —CHM
+              </p>
             </div>
           </div>
         </div>
