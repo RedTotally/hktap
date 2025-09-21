@@ -718,7 +718,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mb-[50em]"></div>
+        <div className="mt-[30em] mb-[20em] flex justify-center rounded-xl">
+          <Link href={"https://github.com/RedTotally/hktap"}><img className="w-[65em] rounded-xl cursor-pointer  hover:brightness-[90%] duration-300" src={"/open-source.png"}></img></Link>
+        </div>
 
         <footer className="mb-[25em] px-10">
           <p className="text-center">
