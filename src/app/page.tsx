@@ -208,7 +208,7 @@ export default function Home() {
             onClick={() => {
               window.location.replace(`/`);
             }}
-            className="fixed top-5 p-1 z-[100] bg-indigo-500 cursor-pointer w-[25em] rounded-full"
+            className="fixed top-5 p-1 px-3 z-[100] bg-indigo-500 cursor-pointer rounded-full"
           >
             <p className="text-white text-sm text-center">
               Category Search: {selectedCategory}, click to dismiss.
