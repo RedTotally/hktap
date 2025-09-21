@@ -232,7 +232,7 @@ export default function Ranking({ onClose }: RankingProps) {
                 </div>
 
                 {/* Votes */}
-                <div className="flex items-center justify-between lg:flex-shrink-0 text-right mt-5 lg:mt-0">
+                <div className="flex items-center justify-between lg:block lg:flex-shrink-0 text-right mt-5 lg:mt-0">
                   <div className="flex items-center gap-2">
                     <img
                       src="/flame.svg"
