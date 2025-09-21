@@ -382,9 +382,6 @@ export default function Home() {
           </div>
         </div>
 
-<div className="grid grid-cols-5 gap-10 px-10">
-<div className=""><p>hi</p></div>
-</div>
 
 
         <div className="relative z-[50] px-10 2xl:px-20">
