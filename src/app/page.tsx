@@ -9,11 +9,13 @@ import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 import Chat from "./Components/Chat";
 import Ranking from "./Components/Ranking";
+import Translate from "./Components/Translate";
 
 import Dock from "./Components/Dock";
 import { tr } from "motion/react-client";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
@@ -176,6 +178,7 @@ export default function Home() {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
+     
         <div
           className={
             selectedCategory == "default" ? "hidden" : "flex justify-center"
@@ -216,6 +219,7 @@ export default function Home() {
               extraordinary places in Hong Kong.
             </p>
           </div>
+          
 
           <p className="text-center text-sm mt-10">
             🔥<br></br>Trending Options
@@ -249,6 +253,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+
 
         <div className="mt-[5em] mb-15 flex justify-center">
           <p

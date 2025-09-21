@@ -181,7 +181,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center pb-4 bg-white lg:rounded-xl h-full w-full lg:w-auto lg:h-[70%] relative">
+    <div className="flex flex-col items-center pb-4 bg-white lg:rounded-xl h-full w-full lg:w-auto lg:h-[40em] relative">
       {/* Close button */}
       {onClose && (
         <button
