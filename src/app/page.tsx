@@ -619,7 +619,7 @@ export default function Home() {
               </div>
               <p className="mt-10 text-xs">
                 "Be extraordinary; not just be different, but unique with the
-                greatest endeavor." —Ricky Chan
+                greatest endeavor."—Ricky Chan
               </p>
             </div>
 
@@ -663,7 +663,7 @@ export default function Home() {
               </div>
               <p className="mt-10 text-xs">
                 "Heaven definitely creates us for a purpose. Heads down on best
-                creations, riches will return in season." —Jeff Leung
+                creations, riches will return in season."—Jeff Leung
               </p>
             </div>
 
@@ -672,7 +672,7 @@ export default function Home() {
                 className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/chm.png')" }}
               ></div>
-              <p className="mt-2 text-xl font-semibold">CHM</p>
+              <p className="mt-2 text-xl font-semibold">Jade Chan</p>
               <p className="text-gray-600">Designer & Analyst</p>
               <div className="mt-2">
                 <Link className="text-xs underline" href={"/"}>
@@ -680,7 +680,7 @@ export default function Home() {
                 </Link>
               </div>
               <p className="mt-10 text-xs">
-                "Do the right thing with perseverance." —CHM
+                "Do the right thing with perseverance."—Jade Chan
               </p>
             </div>
           </div>
