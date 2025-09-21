@@ -232,8 +232,8 @@ export default function Home() {
         </div>
 
         <div>
-          <div className="sticky bg-white top-0 z-[99] py-15 animate-fade-up animate-ease-in-out">
-            <p className="text-center font-bold text-5xl">
+          <div className="sticky bg-white top-0 z-[99] py-15 animate-fade-up animate-ease-in-out px-10">
+            <p className="text-center font-bold text-3xl lg:text-5xl">
               Find and Share Your Destinations
             </p>
             <p className="text-center mt-3 text-gray-600">
