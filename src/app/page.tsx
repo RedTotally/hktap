@@ -398,7 +398,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="2xl:grid grid-cols-8 gap-5 px-10 lg:px-20 relative z-[80]">
+        <div className="2xl:grid grid-cols-8 gap-5 md:px-10 lg:px-20 relative z-[80]">
           <div className="p-4 col-span-3">
             <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
               <div
@@ -462,7 +462,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="2xl:grid grid-cols-6 gap-5 px-10 lg:px-20">
+        <div className="2xl:grid grid-cols-6 gap-5 md:px-10 lg:px-20">
           <div className="p-4 col-span-2">
             <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
               <div
@@ -506,7 +506,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="2xl:grid grid-cols-2 gap-5 px-10 lg:px-20">
+        <div className="2xl:grid grid-cols-2 gap-5 md:px-10 lg:px-20">
           <div className="p-4 col-span-1">
             <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
               <div
@@ -582,7 +582,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-[20em] px-10">
+        <div className="mt-[20em] px-3 md:px-10">
           <div className="flex justify-center items-center mb-5">
             {" "}
             <img className="w-5" src={"/team.svg"}></img>
