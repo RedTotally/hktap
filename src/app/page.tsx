@@ -616,8 +616,8 @@ export default function Home() {
 
             <div className="border-[.1em] p-5 h-[40em]">
               <div
-                className="w-full h-[25em] bg-center bg-cover"
-                style={{ backgroundImage: "url('')" }}
+                className="w-full h-[25em] bg-center bg-contain bg-no-repeat"
+                style={{ backgroundImage: "url('/owenisas.png')" }}
               ></div>
               <p className="mt-2 text-xl font-semibold">Thomas Suen</p>
               <p className="text-gray-600">Developer & Photographer</p>
