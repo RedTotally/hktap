@@ -582,7 +582,15 @@ export default function Home() {
         </div>
 
         <div className="mt-[20em] px-10">
+                      <div className="flex justify-center items-center mb-5">
+                {" "}
+                <img className="w-5" src={"/team.svg"}></img>
+                <p className="ml-1 text-center text-gray-600 font-semibold">
+                  OUR TEAM
+                </p>
+              </div>
           <div className="flex justify-center mt-10">
+            
             <p className="text-center text-3xl lg:text-5xl w-[20em] leading-tight font-semibold">
               Developed by Four Aspiring Talented Youth in Hong Kong
             </p>
