@@ -55,6 +55,10 @@ function Map() {
   const [selectedLocation_Category, setSelectedLocation_Category] =
     useState("");
   const [selectedLocation_Votes, setSelectedLocation_Votes] = useState(0);
+  const [selectedLocation_Latitude, setSelectedLocation_Latitude] =
+    useState<Number>();
+  const [selectedLocation_Longitude, setSelectedLocation_Longitude] =
+    useState<Number>();
 
   const getIconSize = (votes: number): [number, number] => {
     const baseSize = 25;
@@ -75,7 +79,7 @@ function Map() {
     top: -160px; 
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.5); 
+    background: ${votes > 500 ? 'rgba(255, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)'}; 
     color: white;
     padding: 15px;
     width: 12em;                
@@ -84,9 +88,8 @@ function Map() {
     white-space: normal;        
     z-index: 1000;
   ">
-   <p style="text-align: center; margin-bottom: 1em;">${votes} Heats</p>
+    <p style="text-align: center; margin-bottom: 1em;">${votes} Heats</p>
     <div style="display: flex; justify-content: center;">
-   
       <div style="
         width: 5em;
         height: 5em;
@@ -96,12 +99,11 @@ function Map() {
         background-position: center;
       "></div>
     </div>
-    <p style="margin-top: 1em;">${
-      title.charAt(0).toUpperCase() + title.slice(1)
-    }</p>
+    <p style="margin-top: 1em;">${title.charAt(0).toUpperCase() + title.slice(1)}</p>
   </div>
   <img src="/location.svg" style="width: ${width}px; height: ${height}px;" />
 </div>
+
 
 
     `,
@@ -217,7 +219,7 @@ function Map() {
       <div
         className={
           selectedLocation !== undefined
-            ? "absolute bottom-0 bg-white z-[99] p-3 py-4 w-full duration-300 flex justify-center"
+            ? "absolute bottom-0 bg-white right-auto lg:right-0 z-[99] p-3 py-4 px-10 w-full lg:w-auto h-full overflow-auto duration-300 flex justify-center"
             : "hidden"
         }
       >
@@ -245,17 +247,32 @@ function Map() {
               }
             ></div>
           </div>
-          <p className="mt-2 text-xs text-gray-600">
-            {selectedLocation_Category.charAt(0).toUpperCase() +
-              selectedLocation_Category.slice(1)}
+          <p className="mt-5 text-xs text-gray-600">
+            {(() => {
+              const words = selectedLocation_Category.split(" ");
+              const truncated = words.slice(0, 25).join(" ");
+              const capitalized =
+                truncated.charAt(0).toUpperCase() + truncated.slice(1);
+              return words.length > 25 ? capitalized + "..." : capitalized;
+            })()}
           </p>
           <p className=" text-xl mt-2">
-            {selectedLocation_Title.charAt(0).toUpperCase() +
-              selectedLocation_Title.slice(1)}
+            {(() => {
+              const words = selectedLocation_Title.split(" ");
+              const truncated = words.slice(0, 25).join(" ");
+              const capitalized =
+                truncated.charAt(0).toUpperCase() + truncated.slice(1);
+              return words.length > 25 ? capitalized + "..." : capitalized;
+            })()}
           </p>
-          <p className=" text-sm mt-2 text-gray-600">
-            {selectedLocation_Description.charAt(0).toUpperCase() +
-              selectedLocation_Description.slice(1)}
+          <p className="text-sm mt-2 text-gray-600">
+            {(() => {
+              const words = selectedLocation_Description.split(" ");
+              const truncated = words.slice(0, 25).join(" ");
+              const capitalized =
+                truncated.charAt(0).toUpperCase() + truncated.slice(1);
+              return words.length > 25 ? capitalized + "..." : capitalized;
+            })()}
           </p>
           <div
             onClick={(e) => {
@@ -295,8 +312,23 @@ function Map() {
           >
             {" "}
             <p className="text-xs text-center">Tap Me to Add a Heat</p>
-            <p className="mt-2 text-center text-xl">{selectedLocation_Votes} 🔥</p>
+            <p className="mt-2 text-center text-xl">
+              {selectedLocation_Votes} 🔥
+            </p>
           </div>
+          <Link
+            className="text-sm my-2 block text-center underline"
+            href={
+              selectedLocation_Latitude !== undefined &&
+              selectedLocation_Longitude !== undefined
+                ? `https://www.google.com/maps/place/${selectedLocation_Latitude.toFixed(
+                    4
+                  )},${selectedLocation_Longitude.toFixed(4)}`
+                : "/"
+            }
+          >
+            Take me there
+          </Link>
         </div>
       </div>
       <MapContainer
@@ -310,7 +342,17 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <MarkerClusterGroup spiderfyDistanceMultiplier={5}>
+        <MarkerClusterGroup
+          iconCreateFunction={(cluster: any) => {
+            const count = cluster.getChildCount();
+            return L.divIcon({
+              html: `<div style="background-color: #000000; color:white; font-weight:bold; display: flex; justify-content: center; align-items: center">${count}</div>`,
+              className: "marker-cluster",
+              iconSize: L.point(40, 40, true),
+            });
+          }}
+          spiderfyDistanceMultiplier={5}
+        >
           {locations.map((item) => {
             const position: [number, number] = [item.latitude, item.longitude];
 
@@ -327,55 +369,12 @@ function Map() {
                     setSelectedLocation_Photo(item.photo);
                     setSelectedLocation_Category(item.category);
                     setSelectedLocation_Votes(item.votes);
+                    setSelectedLocation_Latitude(item.latitude);
+                    setSelectedLocation_Longitude(item.longitude);
                   },
                 }}
               >
-                <Popup autoClose={false}>
-                  <h3 className="font-bold text-lg mb-2">
-                    {" "}
-                    {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
-                  </h3>
-                  {item.photo && (
-                    <img
-                      src={item.photo}
-                      alt={item.title}
-                      className="w-full h-[15em] object-cover rounded mb-2"
-                    />
-                  )}
 
-                  <p className="mb-2">
-                    {" "}
-                    {item.description.charAt(0).toUpperCase() +
-                      item.description.slice(1)}
-                  </p>
-                  <div className="my-3">
-                    <div className="flex justify-center items-center">
-                      <div className="group p-2">
-                        <div className="flex justify-center relative z-[110]">
-                          <p
-                            className={`duration-200 opacity-0 group-hover:opacity-100 absolute -top-10 group-hover:-top-11 w-fit whitespace-pre rounded-md border border-neutral-700 bg-[#060010] px-2 py-0.5 text-xs text-white`}
-                          >
-                            Drop Your Heat
-                          </p>
-                        </div>
-                        <img
-                          onClick={() => vote(item.id)}
-                          className="bg-orange-500 rounded-full p-5 cursor-pointer w-[7em]"
-                          src={"/flame.svg"}
-                        />
-                      </div>
-                    </div>
-
-                    <Link
-                      className="text-sm my-2 block text-center underline"
-                      href={`https://www.google.com/maps/place/${position[0].toFixed(
-                        4
-                      )}, ${position[1].toFixed(4)}`}
-                    >
-                      Take me there
-                    </Link>
-                  </div>
-                </Popup>
               </Marker>
             );
           })}
