@@ -295,7 +295,9 @@ function Map() {
           >
             {" "}
             <p className="text-xs text-center">Tap Me to Add a Heat</p>
-            <p className="mt-2 text-center text-xl">{selectedLocation_Votes} 🔥</p>
+            <p className="mt-2 text-center text-xl">
+              {selectedLocation_Votes} 🔥
+            </p>
           </div>
         </div>
       </div>
@@ -310,7 +312,17 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <MarkerClusterGroup spiderfyDistanceMultiplier={5}>
+        <MarkerClusterGroup
+          iconCreateFunction={(cluster: any) => {
+            const count = cluster.getChildCount();
+            return L.divIcon({
+              html: `<div style="background-color: #000000; color:white; font-weight:bold; display: flex; justify-content: center; align-items: center">${count}</div>`,
+              className: "marker-cluster",
+              iconSize: L.point(40, 40, true),
+            });
+          }}
+          spiderfyDistanceMultiplier={5}
+        >
           {locations.map((item) => {
             const position: [number, number] = [item.latitude, item.longitude];
 
