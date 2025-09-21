@@ -255,8 +255,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-5 w-full h-[15em] md:h-[25em] lg:h-[35em]">
-            <div className="grid grid-cols-3 h-full">
+          <div className="mt-5 w-full h-[65em] md:h-[25em] lg:h-[35em]">
+            <div className="grid md:grid-cols-3 h-full">
               {topCategories.map((item) => {
                 return (
                   <div
