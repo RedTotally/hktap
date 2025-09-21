@@ -172,11 +172,14 @@ export default function Ranking({ onClose }: RankingProps) {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-lg truncate">
-                    {item.title || `Location ${item.id}`}
+                    {item.title
+                      ? item.title.charAt(0).toUpperCase() + item.title.slice(1)
+                      : `Location ${item.id}`}
                   </h3>
                   {item.description && (
                     <p className="text-gray-600 text-sm truncate">
-                      {item.description}
+                      {item.description.charAt(0).toUpperCase() +
+                        item.description.slice(1)}
                     </p>
                   )}
                 </div>
