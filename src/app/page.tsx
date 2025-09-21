@@ -16,6 +16,7 @@ import { tr } from "motion/react-client";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import SplitText from "./Components/SplitText";
+import SpotlightCard from "./Components/SpotlightCard";
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
@@ -255,6 +256,7 @@ export default function Home() {
             </div>
           </div>
 
+
           <div className="mt-5 w-full h-[65em] md:h-[25em] lg:h-[35em]">
             <div className="grid md:grid-cols-3 h-full">
               {topCategories.map((item) => {
@@ -379,6 +381,11 @@ export default function Home() {
             <Ranking onClose={() => setRanking(false)} />
           </div>
         </div>
+
+<div className="grid grid-cols-5 gap-10 px-10">
+<div className=""><p>hi</p></div>
+</div>
+
 
         <div className="relative z-[50] px-10 2xl:px-20">
           <div className="lg:flex justify-between items-center">
