@@ -593,10 +593,10 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-4 gap-10 px-20 mt-20">
-            <div className="border-[.1em] p-5 h-[45em]">
+          <div className="grid md:grid-cols-2 2xl:grid-cols-4 gap-5 md:px-10 2xl:px-20 mt-20">
+            <div className="border-[.1em] p-5 h-[40em]">
               <div
-                className="w-full h-[30em] bg-center bg-cover"
+                className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/ricky.png')" }}
               ></div>
               <p className="mt-2 text-xl font-semibold">Ricky Chan</p>
@@ -614,9 +614,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="border-[.1em] p-5 h-[45em]">
+            <div className="border-[.1em] p-5 h-[40em]">
               <div
-                className="w-full h-[30em] bg-center bg-cover"
+                className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('')" }}
               ></div>
               <p className="mt-2 text-xl font-semibold">Thomas Suen</p>
@@ -635,9 +635,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="border-[.1em] p-5 h-[45em]">
+            <div className="border-[.1em] p-5 h-[40em]">
               <div
-                className="w-full h-[30em] bg-center bg-cover"
+                className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/jeff.png')" }}
               ></div>
               <p className="mt-2 text-xl font-semibold">Jeff Leung</p>
@@ -658,9 +658,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="border-[.1em] p-5 h-[45em]">
+            <div className="border-[.1em] p-5 h-[40em]">
               <div
-                className="w-full h-[30em] bg-center bg-cover"
+                className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/chm.png')" }}
               ></div>
               <p className="mt-2 text-xl font-semibold">CHM</p>
