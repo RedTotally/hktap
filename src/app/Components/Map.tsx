@@ -219,7 +219,7 @@ function Map() {
       <div
         className={
           selectedLocation !== undefined
-            ? "absolute bottom-0 bg-white right-auto lg:right-0 z-[99] p-2 py-5 px-10 h-full overflow-auto duration-300 flex justify-center"
+            ? "absolute bottom-0 bg-white right-auto lg:right-0 z-[99] p-2 py-5 px-10 w-full lg:w-auto h-full overflow-auto duration-300 flex justify-center"
             : "hidden"
         }
       >

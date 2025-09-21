@@ -545,8 +545,8 @@ export default function Home() {
 
         <div className="mb-[50em]"></div>
 
-        <footer className="mb-[25em]">
-          <p className="text-center">© 2025 HKTAP | Developed with ❤️🇭🇰</p>
+        <footer className="mb-[25em] px-10">
+          <p className="text-center">© 2025 HKTAP | Developed with ❤️🇭🇰 | Made By Ambitious Youths</p>
         </footer>
 
         <div className="relative z-[103]">
