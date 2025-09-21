@@ -158,7 +158,7 @@ export default function Ranking({ onClose }: RankingProps) {
       {/* Header */}
       <div className="p-6">
         <h2 className="text-2xl font-bold text-center">Leaderboard</h2>
-        <p className="text-center text-gray-600 mt-2 text-sm">
+        <p className="text-center text-gray-600 text-sm">
           Most voted locations in Hong Kong
         </p>
       </div>
