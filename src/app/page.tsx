@@ -17,7 +17,6 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import SplitText from "./Components/SplitText";
 
-
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
   loading: () => <div>Loading map...</div>,
@@ -47,10 +46,11 @@ export default function Home() {
   const [categories, setCategories] = useState<any[]>([]);
   const [topCategories, setTopCategories] = useState<any[]>([]);
 
-  const handleAnimationComplete = () => {
-  console.log('All letters have animated!');
-};
+  const [search, setSearch] = useState("");
 
+  const handleAnimationComplete = () => {
+    console.log("All letters have animated!");
+  };
 
   const items = [
     {
@@ -181,10 +181,24 @@ export default function Home() {
     fetchCategories();
   }, []);
 
+  function getMatchScore(category: string, search: string) {
+    const cat = category.toLowerCase();
+    const s = search.toLowerCase();
+
+    let score = 0;
+    for (let i = 0; i < s.length; i++) {
+      if (cat[i] === s[i]) {
+        score++;
+      } else {
+        break;
+      }
+    }
+    return score;
+  }
+
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
-     
         <div
           className={
             selectedCategory == "default" ? "hidden" : "flex justify-center"
@@ -218,34 +232,28 @@ export default function Home() {
         </div>
 
         <div>
-          <div className="sticky bg-white top-0 z-[99] py-10">
-
-<div className="flex justify-center">
-              <SplitText
-  text="Find and Share Your Destinations"
-  className="text-5xl font-semibold text-center"
-  delay={50}
-  duration={0.35}
-  ease="power3.out"
-  splitType="chars"
-  from={{ opacity: 0, y: 40 }}
-  to={{ opacity: 1, y: 0 }}
-  threshold={0.1}
-  rootMargin="-100px"
-  textAlign="center"
-  onLetterAnimationComplete={handleAnimationComplete}
-/>
-</div>
-            <p className="text-center mt-3">
-              A few taps, know where to go on the map; find
-              extraordinary places in Hong Kong.
+          <div className="sticky bg-white top-0 z-[99] py-15 animate-fade-up animate-ease-in-out">
+            <p className="text-center font-bold text-5xl">
+              Find and Share Your Destinations
+            </p>
+            <p className="text-center mt-3 text-gray-600">
+              A few taps, know where to go on the map; find extraordinary places
+              in Hong Kong.
             </p>
           </div>
-          
 
-          <p className="text-center text-sm mt-10">
-            🔥<br></br>Trending Options
-          </p>
+          <div className=" mt-10 flex justify-center items-center">
+            <div>
+              <div className="flex justify-center">
+                {" "}
+                <img className="w-5" src={"/fire-gray.svg"}></img>
+              </div>
+              <div className="mx-[.1em]"></div>
+              <p className="text-center text-gray-600 text-sm mt-2">
+                TRENDING OPTIONS
+              </p>
+            </div>
+          </div>
 
           <div className="mt-5 w-full h-[15em] md:h-[25em] lg:h-[35em]">
             <div className="grid grid-cols-3 h-full">
@@ -267,7 +275,8 @@ export default function Home() {
                   >
                     <div className="absolute inset-0 bg-black opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
                     <p className="text-white lg:text-2xl font-bold z-10">
-                      {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                      {item.category.charAt(0).toUpperCase() +
+                        item.category.slice(1)}
                     </p>
                   </div>
                 );
@@ -275,8 +284,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-
 
         <div className="mt-[5em] mb-15 flex justify-center">
           <p
@@ -297,22 +304,53 @@ export default function Home() {
           }
         ></div>
 
-        <div className="relative z-[5] bg-gray-100 h-[35em] overflow-auto">
-          <div className="grid sm:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-10 gap-5 w-full p-5 overflow-auto">
-            {categories.map((item) => {
-              return (
-                <div
-                  key={item.category}
-                  onClick={() => {
-                    setCurrentCategory(item.category);
-                    window.location.replace(`/?category=${item.category}`);
-                  }}
-                  className="text-xs bg-white flex items-center justify-center rounded-full p-3 cursor-pointer"
-                >
-                <p className="ml-2">{item.category.charAt(0).toUpperCase() + item.category.slice(1)}</p>
-                </div>
-              );
-            })}
+        <div className="relative z-[5] bg-gray-100 h-[35em] overflow-auto border-t-[.1em] border-gray-300">
+          <input
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full py-5 outline-none px-5"
+            placeholder="Search..."
+          ></input>
+          <div className="grid w-full overflow-auto pb-[50em] border-t-[.1em] border-gray-300">
+            {categories
+
+              .map((item) => {
+                const cat = item.category.toLowerCase();
+                const s = search.toLowerCase().trim();
+
+                let matchScore = 0;
+
+                if (s.length > 0) {
+                  const index = cat.indexOf(s);
+                  if (index !== -1) {
+                    matchScore = s.length + (cat.length - index) * 0.01;
+                  }
+                }
+
+                return { ...item, matchScore };
+              })
+              .filter((item) => search === "" || item.matchScore > 0)
+              .sort((a, b) => b.matchScore - a.matchScore)
+              .map((item) => {
+                return (
+                  <div
+                    key={item.category}
+                    onClick={() => {
+                      setCurrentCategory(item.category);
+                      window.location.replace(`/?category=${item.category}`);
+                    }}
+                    className="bg-white p-3 py-5 cursor-pointer hover:brightness-[90%] duration-300 border-b-[.1em] border-gray-300"
+                  >
+                    <p className="ml-2">
+                      {item.category.length > 50
+                        ? item.category.charAt(0).toUpperCase() +
+                          item.category.slice(1, 50) +
+                          "..."
+                        : item.category.charAt(0).toUpperCase() +
+                          item.category.slice(1)}
+                    </p>
+                  </div>
+                );
+              })}
           </div>
         </div>
 
@@ -435,11 +473,13 @@ export default function Home() {
                     <p className="text-center mt-5 text-2xl text-white">
                       Thomas Suen
                     </p>
-                    <p className="text-center text-sm text-white">Developer & Photographer</p>
+                    <p className="text-center text-sm text-white">
+                      Developer & Photographer
+                    </p>
                     <div className="flex justify-center mt-2">
-                      <a 
-                        href="https://owenisas.com" 
-                        target="_blank" 
+                      <a
+                        href="https://owenisas.com"
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs text-white underline hover:text-blue-200 transition-colors"
                       >
