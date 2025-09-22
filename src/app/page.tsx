@@ -577,12 +577,14 @@ export default function Home() {
               </div>
             </div>
             <div className="flex justify-center rounded-xl">
-              <video className="rounded-xl w-[30em] mt-20 lg:mt-0" loop autoPlay>
-      <source src="hktap.mp4" type="video/mp4" />
-
-      Your browser does not support the video tag.
-    </video>
-              
+              <video
+                className="rounded-xl w-[30em] mt-20 lg:mt-0"
+                loop
+                autoPlay
+              >
+                <source src="hktap-intro.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </div>
@@ -724,7 +726,12 @@ export default function Home() {
         </div>
 
         <div className="mt-[30em] mb-[20em] flex justify-center rounded-xl px-10">
-          <Link href={"https://github.com/RedTotally/hktap"}><img className="w-[65em] rounded-xl cursor-pointer  hover:brightness-[90%] duration-300" src={"/open-source.png"}></img></Link>
+          <Link href={"https://github.com/RedTotally/hktap"}>
+            <img
+              className="w-[65em] rounded-xl cursor-pointer  hover:brightness-[90%] duration-300"
+              src={"/open-source.png"}
+            ></img>
+          </Link>
         </div>
 
         <footer className="mb-[25em] px-10">
