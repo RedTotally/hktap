@@ -576,8 +576,13 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="flex justify-center">
-              <img className="mt-20 lg:mt-0" src="/location-photo.svg"></img>
+            <div className="flex justify-center rounded-xl">
+              <video className="rounded-xl w-[30em] mt-20 lg:mt-0" loop autoPlay>
+      <source src="hktap.mp4" type="video/mp4" />
+
+      Your browser does not support the video tag.
+    </video>
+              
             </div>
           </div>
         </div>

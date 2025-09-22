@@ -142,7 +142,7 @@ export default function Ranking({ onClose }: RankingProps) {
   return (
     <div
       className="flex flex-col bg-white p-2 py-5
-     rounded-xl w-full h-full lg:w-auto lg:h-auto relative max-w-2xl mx-auto"
+     rounded-xl w-[20em] h-full lg:w-auto lg:h-auto relative max-w-2xl mx-auto"
     >
       {/* Close button */}
       {onClose && (
