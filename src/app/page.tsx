@@ -738,6 +738,8 @@ export default function Home() {
           <p className="text-center">
             © 2025 HKTAP | Developed with ❤️ | AWS AI Hackathon Hong Kong 🇭🇰
           </p>
+
+          <p className="text-center text-xs mt-2">We Develop the <Link className="underline" target="_blank" href={"https://en.wikipedia.org/wiki/Supercalifragilisticexpialidocious"}>Supercalifragilisticexpialidocious</Link> ✨</p>
         </footer>
 
         <div className="relative z-[103]">
