@@ -3,21 +3,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import dynamicImport from "next/dynamic";
-import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 import Chat from "./Components/Chat";
 import Ranking from "./Components/Ranking";
-import Translate from "./Components/Translate";
 import Beams from "@/components/Beams";
 
 import Dock from "./Components/Dock";
-import { tr } from "motion/react-client";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import SplitText from "./Components/SplitText";
-import SpotlightCard from "./Components/SpotlightCard";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
@@ -49,6 +46,8 @@ export default function Home() {
   const [topCategories, setTopCategories] = useState<any[]>([]);
 
   const [search, setSearch] = useState("");
+
+  const pageRef = useRef<HTMLDivElement>(null);
 
   const handleAnimationComplete = () => {
     console.log("All letters have animated!");
@@ -198,42 +197,216 @@ export default function Home() {
     return score;
   }
 
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(pageRef);
+
+      const categoryCards = q("[data-animate='category-card']") as HTMLElement[];
+      categoryCards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 60, scale: 0.9, transformOrigin: "center bottom" },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "back.out(1.6)",
+            delay: index * 0.08,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      const featureSection = q("[data-animate='feature-section']")[0] as
+        | HTMLElement
+        | undefined;
+      if (featureSection) {
+        const featureHeaders = Array.from(
+          featureSection.querySelectorAll<HTMLElement>(
+            "[data-animate='feature-header']"
+          )
+        );
+
+        if (featureHeaders.length) {
+          gsap.fromTo(
+            featureHeaders,
+            { y: 50, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: "power3.out",
+              stagger: 0.18,
+              scrollTrigger: {
+                trigger: featureSection,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      }
+
+      const sketchCards = q("[data-animate='sketch-card']") as HTMLElement[];
+      sketchCards.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+          {
+            clipPath: "inset(0 0% 0 0)",
+            opacity: 1,
+            duration: 1.2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      const whyText = q("[data-animate='why-text']")[0] as HTMLElement | undefined;
+      if (whyText) {
+        gsap.fromTo(
+          whyText,
+          { x: -120, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: whyText,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      const teamSection = q("[data-animate='team-section']")[0] as
+        | HTMLElement
+        | undefined;
+      if (teamSection) {
+        const teamHeaders = Array.from(
+          teamSection.querySelectorAll<HTMLElement>(
+            "[data-animate='team-header']"
+          )
+        );
+
+        if (teamHeaders.length) {
+          gsap.fromTo(
+            teamHeaders,
+            { y: 60, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: "power3.out",
+              stagger: 0.18,
+              scrollTrigger: {
+                trigger: teamSection,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      }
+
+      const teamCards = q("[data-animate='team-card']") as HTMLElement[];
+      teamCards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { y: 90, opacity: 0, scale: 0.92, rotate: -4 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            rotate: 0,
+            duration: 0.85,
+            ease: "power3.out",
+            delay: index * 0.05,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
+      const ideasButton = q("[data-animate='ideas-button']")[0] as
+        | HTMLElement
+        | undefined;
+      if (ideasButton) {
+        gsap.fromTo(
+          ideasButton,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: ideasButton,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    },
+    {
+      scope: pageRef,
+      dependencies: [topCategories.length],
+      revertOnUpdate: true,
+    }
+  );
+
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
-        <div
-          className={
-            selectedCategory == "default" ? "hidden" : "flex justify-center"
-          }
-        >
+        <div ref={pageRef}>
           <div
-            onClick={() => {
-              window.location.replace(`/`);
-            }}
-            className="fixed top-5 p-1 px-3 z-[100] bg-indigo-500 cursor-pointer rounded-full"
+            className={
+              selectedCategory == "default" ? "hidden" : "flex justify-center"
+            }
           >
-            <p className="text-white text-sm text-center">
-              Category Search: {selectedCategory}, click to dismiss.
-            </p>
+            <div
+              onClick={() => {
+                window.location.replace(`/`);
+              }}
+              className="fixed top-5 p-1 px-3 z-[100] bg-indigo-500 cursor-pointer rounded-full"
+            >
+              <p className="text-white text-sm text-center">
+                Category Search: {selectedCategory}, click to dismiss.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div className="fixed bg-black z-[100] flex justify-center bottom-0 left-[50%] right-[50%] mb-5">
-          <Dock
-            items={items}
-            panelHeight={68}
-            baseItemSize={50}
-            magnification={70}
-          />
-        </div>
+          <div className="fixed bg-black z-[100] flex justify-center bottom-0 left-[50%] right-[50%] mb-5">
+            <Dock
+              items={items}
+              panelHeight={68}
+              baseItemSize={50}
+              magnification={70}
+            />
+          </div>
 
-        <div className="flex justify-center items-center h-[35em] bg-gray-100 relative">
-          <Suspense>
-            <Map />
-          </Suspense>
-        </div>
+          <div className="flex justify-center items-center h-[35em] bg-gray-100 relative">
+            <Suspense>
+              <Map />
+            </Suspense>
+          </div>
 
-        <div>
+          <div>
           <div className="sticky bg-white top-0 z-[99] py-15 animate-fade-up animate-ease-in-out px-10">
             <p className="text-center font-bold text-3xl lg:text-5xl">
               Find and Share Your Destinations
@@ -262,6 +435,7 @@ export default function Home() {
               {topCategories.map((item) => {
                 return (
                   <div
+                    data-animate="category-card"
                     onClick={() => {
                       setCurrentCategory(item.category);
                       window.location.replace(`/?category=${item.category}`);
@@ -382,25 +556,40 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mb-[5em] relative z-[80] mt-10 px-10">
+        <div
+          data-animate="feature-section"
+          className="mb-[5em] relative z-[80] mt-10 px-10"
+        >
           <div className="flex justify-center items-center mb-5">
             {" "}
             <img className="w-5" src={"/features.svg"}></img>
-            <p className="ml-1 text-center text-gray-600 font-semibold">
+            <p
+              data-animate="feature-header"
+              className="ml-1 text-center text-gray-600 font-semibold"
+            >
               OUR FEATURES
             </p>
           </div>
-          <p className="text-center text-4xl font-semibold">
+          <p
+            data-animate="feature-header"
+            className="text-center text-4xl font-semibold"
+          >
             A better way to share, and a better place to find.
           </p>
-          <p className="mt-10 text-gray-600 text-center">
+          <p
+            data-animate="feature-header"
+            className="mt-10 text-gray-600 text-center"
+          >
             No more boredom in Hong Kong after using this platform
           </p>
         </div>
 
         <div className="2xl:grid grid-cols-8 gap-5 md:px-10 lg:px-20 relative z-[80]">
           <div className="p-4 col-span-3">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -423,7 +612,10 @@ export default function Home() {
           </div>
 
           <div className="p-4 col-span-3">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -443,7 +635,10 @@ export default function Home() {
           </div>
 
           <div className="p-4 col-span-2">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -464,7 +659,10 @@ export default function Home() {
 
         <div className="2xl:grid grid-cols-6 gap-5 md:px-10 lg:px-20">
           <div className="p-4 col-span-2">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -482,7 +680,10 @@ export default function Home() {
             </div>
           </div>
           <div className="p-4 col-span-4">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -508,7 +709,10 @@ export default function Home() {
 
         <div className="2xl:grid grid-cols-2 gap-5 md:px-10 lg:px-20">
           <div className="p-4 col-span-1">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -528,7 +732,10 @@ export default function Home() {
             </div>
           </div>
           <div className="p-4 col-span-1">
-            <div className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6">
+            <div
+              data-animate="sketch-card"
+              className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
+            >
               <div
                 className="w-full h-[20em] rounded-xl"
                 style={{
@@ -551,7 +758,7 @@ export default function Home() {
 
         <div className="relative z-[50] px-10 2xl:px-20 mt-[20em]">
           <div className="lg:flex justify-between items-center">
-            <div>
+            <div data-animate="why-text">
               <div className="flex items-center mb-5">
                 {" "}
                 <img className="w-5" src={"/purpose.svg"}></img>
@@ -590,8 +797,14 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-[20em] px-3 md:px-10">
-          <div className="flex justify-center items-center mb-5">
+        <div
+          data-animate="team-section"
+          className="mt-[20em] px-3 md:px-10"
+        >
+          <div
+            data-animate="team-header"
+            className="flex justify-center items-center mb-5"
+          >
             {" "}
             <img className="w-5" src={"/team.svg"}></img>
             <p className="ml-1 text-center text-gray-600 font-semibold">
@@ -599,18 +812,27 @@ export default function Home() {
             </p>
           </div>
           <div className="flex justify-center mt-10">
-            <p className="text-center text-3xl lg:text-5xl w-[20em] leading-tight font-semibold">
+            <p
+              data-animate="team-header"
+              className="text-center text-3xl lg:text-5xl w-[20em] leading-tight font-semibold"
+            >
               Developed by Four Aspiring Talented Youth in Hong Kong
             </p>
           </div>
           <div className="flex justify-center">
-            <p className="text-center mt-5 text-gray-600">
+            <p
+              data-animate="team-header"
+              className="text-center mt-5 text-gray-600"
+            >
               The platform is built by a group of Gen Zs
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 2xl:grid-cols-4 gap-5 md:px-10 2xl:px-20 mt-20">
-            <div className="border-[.1em] p-5 h-[40em]">
+            <div
+              data-animate="team-card"
+              className="border-[.1em] p-5 h-[40em]"
+            >
               <div
                 className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/ricky.png')" }}
@@ -631,7 +853,10 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="border-[.1em] p-5 h-[40em]">
+            <div
+              data-animate="team-card"
+              className="border-[.1em] p-5 h-[40em]"
+            >
               <div
                 className="w-full h-[25em] bg-center bg-contain bg-no-repeat"
                 style={{ backgroundImage: "url('/owenisas.png')" }}
@@ -652,7 +877,10 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="border-[.1em] p-5 h-[40em]">
+            <div
+              data-animate="team-card"
+              className="border-[.1em] p-5 h-[40em]"
+            >
               <div
                 className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/jeff.png')" }}
@@ -675,7 +903,10 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="border-[.1em] p-5 h-[40em]">
+            <div
+              data-animate="team-card"
+              className="border-[.1em] p-5 h-[40em]"
+            >
               <div
                 className="w-full h-[25em] bg-center bg-cover"
                 style={{ backgroundImage: "url('/chm.png')" }}
@@ -710,11 +941,21 @@ export default function Home() {
 
           <div className="flex justify-center relative z-[50] text-white items-center">
             <div className="mt-[14em]">
-              <p className="text-center text-3xl lg:text-5xl font-semibold">
-                Learn About Our Ideas and Initiatives
-              </p>
+              <SplitText
+                text="Learn About Our Ideas and Initiatives"
+                tag="p"
+                className="text-center text-3xl lg:text-5xl font-semibold"
+                splitType="words"
+                delay={180}
+                duration={0.6}
+                from={{ opacity: 0, y: 30 }}
+                to={{ opacity: 1, y: 0 }}
+                once={false}
+                textAlign="center"
+              />
               <div className="flex justify-center mt-10">
                 <Link
+                  data-animate="ideas-button"
                   className="bg-white p-5 px-20 text-black hover:px-30 duration-300 rounded-xl"
                   target="_blank"
                   href="https://devpost.com/software/hktap"
@@ -751,6 +992,7 @@ export default function Home() {
             isOpen={chatOpen}
             onToggle={() => setChatOpen(!chatOpen)}
           />
+        </div>
         </div>
       </Suspense>
     </>
