@@ -14,7 +14,12 @@ import Dock from "./Components/Dock";
 import Link from "next/link";
 import SplitText from "./Components/SplitText";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const Map = dynamicImport(() => import("./Components/Map"), {
   ssr: false,
@@ -201,25 +206,50 @@ export default function Home() {
     () => {
       const q = gsap.utils.selector(pageRef);
 
-      const categoryCards = q("[data-animate='category-card']") as HTMLElement[];
+      const categoryCards = gsap.utils.toArray<HTMLElement>(
+        q("[data-animate='category-card']")
+      );
       categoryCards.forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 60, scale: 0.9, transformOrigin: "center bottom" },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: "back.out(1.6)",
-            delay: index * 0.08,
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
+        gsap.set(card, { transformPerspective: 800 });
+        const direction = index % 2 === 0 ? -12 : 12;
+        const cardTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+
+        cardTimeline
+          .fromTo(
+            card,
+            {
+              opacity: 0,
+              y: 120,
+              scale: 0.82,
+              rotateX: 35,
+              rotateY: direction,
+              "--category-shine": 0,
             },
-          }
-        );
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotateX: 0,
+              rotateY: 0,
+              duration: 0.9,
+              ease: "expo.out",
+            }
+          )
+          .to(
+            card,
+            {
+              "--category-shine": 1,
+              duration: 0.6,
+              ease: "sine.out",
+            },
+            "<0.1"
+          );
       });
 
       const featureSection = q("[data-animate='feature-section']")[0] as
@@ -233,17 +263,101 @@ export default function Home() {
         );
 
         if (featureHeaders.length) {
-          gsap.fromTo(
-            featureHeaders,
-            { y: 50, opacity: 0 },
+          const headerOffsets: Array<gsap.TweenVars> = [
+            { x: -90 },
+            { y: 70 },
+            { x: 90 },
+          ];
+
+          const featureTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: featureSection,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          });
+
+          featureHeaders.forEach((header, idx) => {
+            const baseFrom = headerOffsets[idx] ?? { y: 50 };
+            featureTimeline.fromTo(
+              header,
+              { ...baseFrom, opacity: 0 },
+              {
+                x: 0,
+                y: 0,
+                opacity: 1,
+                duration: 0.75,
+                ease: "power3.out",
+              },
+              idx * 0.2
+            );
+          });
+        }
+      }
+
+      const sketchCards = gsap.utils.toArray<HTMLElement>(
+        q("[data-animate='sketch-card']")
+      );
+      sketchCards.forEach((card) => {
+        const sketchLayers = gsap.utils.toArray<HTMLElement>(
+          card.querySelectorAll<HTMLElement>("[data-sketch-child]")
+        );
+
+        const sketchTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+
+        sketchTimeline
+          .fromTo(
+            card,
             {
-              y: 0,
+              clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+              "--sketch-progress": 0,
+              boxShadow: "0px 0px 0px rgba(15, 23, 42, 0)",
+            },
+            {
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+              "--sketch-progress": 1,
+              duration: 1,
+              ease: "power2.out",
+              boxShadow: "0px 25px 45px rgba(15, 23, 42, 0.18)",
+            }
+          )
+          .from(
+            sketchLayers,
+            {
+              y: 26,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.6,
+              ease: "power2.out",
+            },
+            "-=0.45"
+          );
+      });
+
+      const whyText = q("[data-animate='why-text']")[0] as HTMLElement | undefined;
+      if (whyText) {
+        const whyLines = Array.from(
+          whyText.querySelectorAll<HTMLElement>("[data-animate='why-line']")
+        );
+
+        if (whyLines.length) {
+          gsap.fromTo(
+            whyLines,
+            { x: -120, opacity: 0 },
+            {
+              x: 0,
               opacity: 1,
-              duration: 0.7,
+              duration: 0.8,
               ease: "power3.out",
-              stagger: 0.18,
+              stagger: 0.2,
               scrollTrigger: {
-                trigger: featureSection,
+                trigger: whyText,
                 start: "top 80%",
                 toggleActions: "play none none reverse",
               },
@@ -252,37 +366,19 @@ export default function Home() {
         }
       }
 
-      const sketchCards = q("[data-animate='sketch-card']") as HTMLElement[];
-      sketchCards.forEach((card) => {
+      const whyVideo = q("[data-animate='why-video']")[0] as HTMLElement | undefined;
+      if (whyVideo) {
         gsap.fromTo(
-          card,
-          { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-          {
-            clipPath: "inset(0 0% 0 0)",
-            opacity: 1,
-            duration: 1.2,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
-
-      const whyText = q("[data-animate='why-text']")[0] as HTMLElement | undefined;
-      if (whyText) {
-        gsap.fromTo(
-          whyText,
-          { x: -120, opacity: 0 },
+          whyVideo,
+          { x: 120, opacity: 0, scale: 0.92 },
           {
             x: 0,
             opacity: 1,
-            duration: 0.8,
+            scale: 1,
+            duration: 0.9,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: whyText,
+              trigger: whyVideo,
               start: "top 80%",
               toggleActions: "play none none reverse",
             },
@@ -303,7 +399,7 @@ export default function Home() {
         if (teamHeaders.length) {
           gsap.fromTo(
             teamHeaders,
-            { y: 60, opacity: 0 },
+            { y: 70, opacity: 0 },
             {
               y: 0,
               opacity: 1,
@@ -320,19 +416,28 @@ export default function Home() {
         }
       }
 
-      const teamCards = q("[data-animate='team-card']") as HTMLElement[];
+      const teamCards = gsap.utils.toArray<HTMLElement>(
+        q("[data-animate='team-card']")
+      );
       teamCards.forEach((card, index) => {
         gsap.fromTo(
           card,
-          { y: 90, opacity: 0, scale: 0.92, rotate: -4 },
+          {
+            y: 140,
+            opacity: 0,
+            scale: 0.86,
+            rotateX: 18,
+            skewY: index % 2 === 0 ? -6 : 6,
+          },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            rotate: 0,
-            duration: 0.85,
-            ease: "power3.out",
-            delay: index * 0.05,
+            rotateX: 0,
+            skewY: 0,
+            duration: 0.95,
+            ease: "expo.out",
+            delay: index * 0.06,
             scrollTrigger: {
               trigger: card,
               start: "top 85%",
@@ -348,10 +453,11 @@ export default function Home() {
       if (ideasButton) {
         gsap.fromTo(
           ideasButton,
-          { opacity: 0, y: 50 },
+          { opacity: 0, y: 50, scale: 0.95 },
           {
             opacity: 1,
             y: 0,
+            scale: 1,
             duration: 0.6,
             ease: "power3.out",
             scrollTrigger: {
@@ -591,6 +697,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/location.png")',
@@ -599,10 +706,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
                 Instant Location Sharing
               </p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 Our advanced camera feature automatically records your location
                 when you submit, so you don't have to manually input where you
                 are. 3, 2, 1... Captured! Share your location without
@@ -617,6 +727,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/heats.png")',
@@ -625,8 +736,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">Bring Up the Heat</p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
+                Bring Up the Heat
+              </p>
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 We want everyone to participate in this craze. Show your love to
                 the locations you are deeply interested in. Show the world what
                 you love in Hong Kong by heating them up!
@@ -640,6 +756,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/leaderboard.png")',
@@ -648,8 +765,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">Leaderboard</p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
+                Leaderboard
+              </p>
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 Learn what is popular in Hong Kong, it's time to grab your
                 belongings and go have a look.
               </p>
@@ -664,6 +786,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/unique.png")',
@@ -672,8 +795,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">Be the Unique One</p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
+                Be the Unique One
+              </p>
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 Your recommendation could be so valuable that it becomes red
                 with over 500 heats! Oh, it's hot here.
               </p>
@@ -685,6 +813,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/ai.png")',
@@ -693,10 +822,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
                 Powerful AI & Great Database
               </p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 Enjoy the AI chatbot backed by a massive database integrated
                 into our website. You can receive the best and latest
                 information by simply stating what you want to it. With the
@@ -714,6 +846,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/category.png")',
@@ -722,8 +855,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">Diverse Categories</p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
+                Diverse Categories
+              </p>
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 We sort locations by their purposes. So, you can find the most
                 desirable place by looking at what you can do in particular
                 destinations: more warm, welcoming, and straightforward; we have
@@ -737,6 +875,7 @@ export default function Home() {
               className="border-2 rounded-xl p-10 border-gray-200 outline-gray-100 outline-6 overflow-hidden relative"
             >
               <div
+                data-sketch-child
                 className="w-full h-[20em] rounded-xl"
                 style={{
                   backgroundImage: 'url("/hk.png")',
@@ -745,8 +884,13 @@ export default function Home() {
                 }}
               ></div>
 
-              <p className="text-2xl my-7 font-semibold">We Love Hong Kong</p>
-              <p className="text-gray-600 mt-1 leading-loose lg:h-[10em]">
+              <p className="text-2xl my-7 font-semibold" data-sketch-child>
+                We Love Hong Kong
+              </p>
+              <p
+                className="text-gray-600 mt-1 leading-loose lg:h-[10em]"
+                data-sketch-child
+              >
                 Hong Kong, a fantastic place, is alluring, innovative, and
                 exceptional. It is a place that stands up to any adversity; When
                 we face troubles, we find solutions. Enthusiasm, solidarity, and
@@ -759,22 +903,30 @@ export default function Home() {
         <div className="relative z-[50] px-10 2xl:px-20 mt-[20em]">
           <div className="lg:flex justify-between items-center">
             <div data-animate="why-text">
-              <div className="flex items-center mb-5">
+              <div className="flex items-center mb-5" data-animate="why-line">
                 {" "}
                 <img className="w-5" src={"/purpose.svg"}></img>
                 <p className="ml-1 text-center text-gray-600 font-semibold">
                   PURPOSE
                 </p>
               </div>
-              <p className="text-5xl lg:text-7xl font-semibold">Why HKTAP?</p>
-              <p className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5 text-gray-600">
+              <p
+                className="text-5xl lg:text-7xl font-semibold"
+                data-animate="why-line"
+              >
+                Why HKTAP?
+              </p>
+              <p
+                className="text-xl lg:w-[35em] 2xl:w-[45em] mt-5 text-gray-600"
+                data-animate="why-line"
+              >
                 It's fun, engaging, and filled with love! The best thing?
                 Everyone can use it. Every pin in the map is a real human, a
                 footprint on Hong Kong; it's real. Find somewhere exciting to
                 go, and share somewhere worth your time.
               </p>
 
-              <div className="mt-10">
+              <div className="mt-10" data-animate="why-line">
                 <a
                   onClick={() => setCamera(true)}
                   className=" text-xl cursor-pointer bg-black text-white px-5 py-2 rounded-xl hover:px-10 duration-300"
@@ -783,7 +935,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="flex justify-center rounded-xl">
+            <div className="flex justify-center rounded-xl" data-animate="why-video">
               <video
                 className="rounded-xl w-[30em] mt-20 lg:mt-0"
                 loop
