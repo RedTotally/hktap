@@ -581,6 +581,7 @@ export default function Home() {
                 className="rounded-xl w-[30em] mt-20 lg:mt-0"
                 loop
                 autoPlay
+                muted
               >
                 <source src="hktap-intro.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
