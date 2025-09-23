@@ -252,6 +252,28 @@ export default function Home() {
           );
       });
 
+      const popElements = gsap.utils.toArray<HTMLElement>(
+        q("[data-animate='pop']")
+      );
+      popElements.forEach((element) => {
+        gsap.fromTo(
+          element,
+          { opacity: 0, y: 70, scale: 0.86 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.85,
+            ease: "expo.out",
+            scrollTrigger: {
+              trigger: element,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
       const featureSection = q("[data-animate='feature-section']")[0] as
         | HTMLElement
         | undefined;
@@ -263,12 +285,6 @@ export default function Home() {
         );
 
         if (featureHeaders.length) {
-          const headerOffsets: Array<gsap.TweenVars> = [
-            { x: -90 },
-            { y: 70 },
-            { x: 90 },
-          ];
-
           const featureTimeline = gsap.timeline({
             scrollTrigger: {
               trigger: featureSection,
@@ -278,13 +294,13 @@ export default function Home() {
           });
 
           featureHeaders.forEach((header, idx) => {
-            const baseFrom = headerOffsets[idx] ?? { y: 50 };
             featureTimeline.fromTo(
               header,
-              { ...baseFrom, opacity: 0 },
+              { y: 70, opacity: 0, scale: 0.86 },
               {
                 x: 0,
                 y: 0,
+                scale: 1,
                 opacity: 1,
                 duration: 0.75,
                 ease: "power3.out",
@@ -315,15 +331,21 @@ export default function Home() {
           .fromTo(
             card,
             {
-              clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+              opacity: 0,
+              y: 90,
+              scale: 0.84,
+              rotateX: 12,
               "--sketch-progress": 0,
               boxShadow: "0px 0px 0px rgba(15, 23, 42, 0)",
             },
             {
-              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotateX: 0,
               "--sketch-progress": 1,
-              duration: 1,
-              ease: "power2.out",
+              duration: 0.9,
+              ease: "expo.out",
               boxShadow: "0px 25px 45px rgba(15, 23, 42, 0.18)",
             }
           )
@@ -349,10 +371,11 @@ export default function Home() {
         if (whyLines.length) {
           gsap.fromTo(
             whyLines,
-            { x: -120, opacity: 0 },
+            { y: 70, opacity: 0, scale: 0.86 },
             {
-              x: 0,
+              y: 0,
               opacity: 1,
+              scale: 1,
               duration: 0.8,
               ease: "power3.out",
               stagger: 0.2,
@@ -399,10 +422,11 @@ export default function Home() {
         if (teamHeaders.length) {
           gsap.fromTo(
             teamHeaders,
-            { y: 70, opacity: 0 },
+            { y: 70, opacity: 0, scale: 0.86 },
             {
               y: 0,
               opacity: 1,
+              scale: 1,
               duration: 0.75,
               ease: "power3.out",
               stagger: 0.18,
@@ -514,10 +538,13 @@ export default function Home() {
 
           <div>
           <div className="sticky bg-white top-0 z-[99] py-15 animate-fade-up animate-ease-in-out px-10">
-            <p className="text-center font-bold text-3xl lg:text-5xl">
+            <p
+              data-animate="pop"
+              className="text-center font-bold text-3xl lg:text-5xl"
+            >
               Find and Share Your Destinations
             </p>
-            <p className="text-center mt-3 text-gray-600">
+            <p data-animate="pop" className="text-center mt-3 text-gray-600">
               A few taps, know where to go on the map; find extraordinary places
               in Hong Kong.
             </p>
