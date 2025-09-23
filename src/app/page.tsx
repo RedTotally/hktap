@@ -576,7 +576,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="flex justify-center rounded-xl">
+            <div className="flex justify-center rounded-xl lg:ml-15">
               <video
                 className="rounded-xl w-[30em] mt-20 lg:mt-0"
                 loop
