@@ -11,7 +11,8 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet.markercluster";
-import { image } from "motion/react-client";
+import { image, tr } from "motion/react-client";
+import { title } from "process";
 
 interface Location {
   id: UUID;
@@ -22,6 +23,7 @@ interface Location {
   category: string;
   photo: string;
   votes: number;
+  password: string;
 }
 
 function Map() {
@@ -60,6 +62,21 @@ function Map() {
   const [selectedLocation_Longitude, setSelectedLocation_Longitude] =
     useState<Number>();
 
+  const [selectedLocation_Password, setSelectedLocation_Password] =
+    useState("");
+
+  const [updatedTitle, setUpdatedTitle] = useState("");
+  const [updatedDescription, setUpdatedDescription] = useState("");
+
+  const [updateText, setUpdateText] = useState("");
+  const [updateColor, setUpdateColor] = useState("");
+
+  const [submitPassword, setSubmitPassword] = useState("N/A");
+
+  const [detailUnlock, setDetailUnlock] = useState(false);
+
+  const [ed, setEd] = useState(false)
+
   const getIconSize = (votes: number): [number, number] => {
     const baseSize = 25;
     const maxSize = 50;
@@ -79,7 +96,7 @@ function Map() {
     top: -160px; 
     left: 50%;
     transform: translateX(-50%);
-    background: ${votes > 500 ? 'rgba(255, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)'}; 
+    background: ${votes > 500 ? "rgba(255, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.5)"}; 
     color: white;
     padding: 15px;
     width: 12em;                
@@ -99,7 +116,9 @@ function Map() {
         background-position: center;
       "></div>
     </div>
-    <p style="margin-top: 1em;">${title.charAt(0).toUpperCase() + title.slice(1)}</p>
+    <p style="margin-top: 1em;">${
+      title.charAt(0).toUpperCase() + title.slice(1)
+    }</p>
   </div>
   <img src="/location.svg" style="width: ${width}px; height: ${height}px;" />
 </div>
@@ -214,6 +233,61 @@ function Map() {
       : num.toFixed(1) + units[unitIndex];
   }
 
+  async function unlock() {
+    if (submitPassword == selectedLocation_Password) {
+      setDetailUnlock(true);
+      setUpdateText("");
+    } else {
+      setUpdateText("Password incorrect.");
+      setUpdateColor("text-red-500");
+    }
+  }
+
+  async function deleteData() {
+    if (submitPassword == selectedLocation_Password) {
+      const { error } = await supabase
+        .from("locations_db")
+        .delete()
+        .eq("title", selectedLocation_Title);
+      setUpdateText("");
+      setUpdateColor("text-green-500");
+      setSelectedLocation(undefined);
+      fetchData();
+    } else {
+      setUpdateText("Password incorrect.");
+      setUpdateColor("text-red-500");
+    }
+  }
+
+  async function updateData() {
+    if (updatedTitle == "" || updatedDescription == "") {
+      setUpdateText("Title or description is missing.");
+      setUpdateColor("text-red-500");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("locations_db")
+      .update({ title: updatedTitle, description: updatedDescription })
+      .eq("id", selectedLocation)
+      .select();
+
+    setUpdateText(
+      "Thank you for spreading fun, the details have been updated!"
+    );
+    setUpdateColor("text-green-500");
+
+    fetchData();
+  }
+
+  const handleTitleChange = (event: any) => {
+    setUpdatedTitle(event.target.value);
+  };
+
+  const handleDescriptionChange = (event: any) => {
+    setUpdatedDescription(event.target.value);
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div
@@ -224,11 +298,64 @@ function Map() {
         }
       >
         <div className="w-[20em] max-w-[90vw]">
-          <p
-            onClick={() => setSelectedLocation(undefined)}
-            className="text-xs mb-2 underline cursor-pointer"
+          <div className="flex justify-between items-center mb-2">
+            <p
+              onClick={() => setSelectedLocation(undefined)}
+              className="select-none text-xs underline cursor-pointer"
+            >
+              Go Back
+            </p>
+            <p onClick={() => ed == true ? setEd(false) : setEd(true)} className="select-none text-xs underline cursor-pointer">Edit & Delete</p>
+          </div>
+          <div className={ed == true ? "my-5 flex items-center" : "hidden"}>
+            <input
+              className="text-sm border-2 w-full p-2 rounded-xl"
+              placeholder="Password"
+              onChange={(e) => setSubmitPassword(e.target.value)}
+            ></input>
+            <p
+              onClick={() => unlock()}
+              className="text-sm p-2 ml-2 bg-indigo-500 text-white rounded-xl cursor-pointer hover:brightness-[90%] duration-300"
+            >
+              Unlock
+            </p>
+            <p
+              onClick={() => deleteData()}
+              className="text-sm p-2 ml-2 bg-red-500 text-white rounded-xl cursor-pointer hover:brightness-[90%] duration-300"
+            >
+              Delete
+            </p>
+          </div>
+
+          <div
+            className={
+              detailUnlock == true ? "my-5 flex items-center" : "hidden"
+            }
           >
-            Go Back
+            <div>
+              <input
+                className="text-sm border-2 w-full p-2 rounded-xl"
+                placeholder="Title"
+                value={updatedTitle}
+                onChange={handleTitleChange}
+              ></input>
+              <textarea
+                className="text-sm border-2 w-full p-2 rounded-xl mt-5"
+                placeholder="Description"
+                value={updatedDescription}
+                onChange={handleDescriptionChange}
+              ></textarea>
+              <p
+                onClick={() => updateData()}
+                className="mt-5
+             bg-indigo-500 text-center p-2 text-white rounded-xl hover:brightness-[90%] duration-300 cursor-pointer"
+              >
+                Update
+              </p>
+            </div>
+          </div>
+          <p className={`my-5 text-xs text-center ${updateColor}`}>
+            {updateText}
           </p>
           <div>
             <div
@@ -363,6 +490,9 @@ function Map() {
                 icon={createCustomIcon(item.votes, item.title, item.photo)}
                 eventHandlers={{
                   click: () => {
+                    setSubmitPassword("N/A")
+                    setDetailUnlock(false)
+                    setUpdateText("")
                     setSelectedLocation(item.id);
                     setselectedLocation_Title(item.title);
                     setSelectedLocation_Description(item.description);
@@ -371,11 +501,12 @@ function Map() {
                     setSelectedLocation_Votes(item.votes);
                     setSelectedLocation_Latitude(item.latitude);
                     setSelectedLocation_Longitude(item.longitude);
+                    setUpdatedTitle(item.title);
+                    setUpdatedDescription(item.description);
+                    setSelectedLocation_Password(item.password);
                   },
                 }}
-              >
-
-              </Marker>
+              ></Marker>
             );
           })}
         </MarkerClusterGroup>

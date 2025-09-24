@@ -26,6 +26,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [password, setPassword] = useState("");
 
   const startCamera = async () => {
     try {
@@ -65,6 +66,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
       setTitle("");
       setDescription("");
       setCategory("");
+      setPassword("");
     }
   };
 
@@ -192,7 +194,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           ×
         </button>
       )}
-      {!previewImage ? (
+      {previewImage ? (
         <>
           <video
             ref={videoRef}
@@ -251,27 +253,38 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                   Retake Photo
                 </p>
               </div>
-              <div className="flex flex-col w-full">
+           <div className="flex flex-col w-full">
+               <div className="flex items-center justify-between">
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Title"
-                  className="p-3 w-full outline-none"
-                />
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Description"
-                  className="p-3 w-full outline-none"
+                  placeholder="Title *"
+                  className="p-3 w-full outline-none border-b-[.1em] border-gray-300"
                 />
                 <input
                   type="text"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Category"
-                  className="p-3 w-full outline-none"
+                  placeholder="Category *"
+                  className="p-3 w-full outline-none border-b-[.1em] border-l-[.1em] border-gray-300"
                 />
+                </div>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description *"
+                  className="p-3 w-full outline-none border-b-[.1em] border-gray-300"
+                />
+                
+                                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Password (Optional)"
+                  className="p-3 w-full outline-none border-b-[.1em] border-gray-300"
+                />
+                <p className="text-xs my-5 px-3 lg:w-[35em]">*Password is for you to unlock modification options after you have shared your location, it is optional, but recommended.</p>
               </div>
             </div>
             <div
