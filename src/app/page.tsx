@@ -200,7 +200,7 @@ export default function Home() {
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div className="w-full h-full flex justify-center items-center fixed"><p>Loading...</p></div>}>
         <div
           className={
             selectedCategory == "default" ? "hidden" : "flex justify-center"
