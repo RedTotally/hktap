@@ -240,7 +240,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
             alt="Captured preview"
             className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none object-cover"
           />
-          <div className="lg:h-[20em] w-full">
+          <div className="w-full">
             <div className="lg:h-[13em] overflow-auto w-full">
               <div className="w-full">
                 <p
@@ -285,9 +285,8 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                   className="p-3 w-full outline-none border-b-[.1em] border-gray-300"
                 />
                 <p className="text-xs my-5 px-3 lg:w-[35em]">*Password is for you to unlock modification options after you have shared your location; it is optional, but recommended.</p>
-              </div>
-            </div>
-            <div
+             
+                         <div
               onClick={uploadPhoto}
               className="flex justify-center items-center w-full mt-5"
             >
@@ -296,6 +295,9 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                 src={"/upolad.svg"}
               ></img>
             </div>
+              </div>
+            </div>
+
           </div>
         </div>
       )}
