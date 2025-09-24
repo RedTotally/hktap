@@ -194,7 +194,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           ×
         </button>
       )}
-      {previewImage ? (
+      {!previewImage ? (
         <>
           <video
             ref={videoRef}
@@ -236,7 +236,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
       ) : (
         <div className="flex flex-col items-center w-full h-full overflow-auto">
           <img
-            src={!previewImage}
+            src={previewImage}
             alt="Captured preview"
             className="w-full lg:w-[540px] h-[460px] bg-black lg:rounded-t-xl rounded-t-none object-cover"
           />
