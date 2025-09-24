@@ -284,7 +284,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                   placeholder="Password (Optional)"
                   className="p-3 w-full outline-none border-b-[.1em] border-gray-300"
                 />
-                {/*<p className="text-xs my-5 px-3 lg:w-[35em]">*Password is for you to unlock modification options after you have shared your location; it is optional, but recommended.</p>*/}
+                <p className="text-xs my-5 px-3 lg:w-[35em]">*Password is for you to unlock modification options after you have shared your location; it is optional, but recommended.</p>
              
                          <div
               onClick={uploadPhoto}
