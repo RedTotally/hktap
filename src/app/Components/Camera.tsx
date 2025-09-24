@@ -194,7 +194,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           ×
         </button>
       )}
-      {previewImage ? (
+      {!previewImage ? (
         <>
           <video
             ref={videoRef}
