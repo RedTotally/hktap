@@ -280,7 +280,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                                 <input
                   type="text"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password (Optional)"
                   className="p-3 w-full outline-none border-b-[.1em] border-gray-300"
                 />
