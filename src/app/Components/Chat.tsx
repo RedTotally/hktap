@@ -200,7 +200,7 @@ Current database contains ${locationsData.length} location${
 
   return (
     <div className="flex justify-center w-full h-full">
-      <div className="h-full w-full lg:h-[60%] lg:w-[25em] fixed bottom-0 lg:bottom-40 bg-white border-gray-300 lg:rounded-xl shadow-xl z-50 flex flex-col">
+      <div className="h-full w-full lg:h-[70%] lg:w-[25em] fixed bottom-0 lg:bottom-30 bg-white border-gray-300 lg:rounded-xl shadow-xl z-50 flex flex-col">
         {/* Chat Header */}
         <div className="bg-black text-white px-5 p-3 lg:rounded-t-xl flex justify-between items-center">
           <h3 className="font-semibold">HKTAP AI Assistant</h3>
