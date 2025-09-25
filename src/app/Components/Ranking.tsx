@@ -164,7 +164,7 @@ export default function Ranking({ onClose }: RankingProps) {
       </div>
 
       {/* Rankings List */}
-      <div className="flex-1 overflow-y-auto p-2 max-h-130 rounded-xl">
+      <div className="flex-1 overflow-y-auto p-2 rounded-xl">
         {rankings.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500">No rankings available yet</p>
