@@ -40,7 +40,7 @@ export default function Chat({
     "Local hidden gems",
     "Business districts overview",
     "Entertainment spots in Wan Chai",
-    "Traditional markets to visit"
+    "Traditional markets to visit",
   ];
 
   const scrollToBottom = () => {
@@ -68,7 +68,7 @@ export default function Chat({
 
   // Hide templates after user sends first message
   useEffect(() => {
-    const userMessages = messages.filter(msg => msg.role === "user");
+    const userMessages = messages.filter((msg) => msg.role === "user");
     if (userMessages.length > 0) {
       setShowTemplates(false);
     }
@@ -201,145 +201,169 @@ Current database contains ${locationsData.length} location${
   return (
     <div className="flex justify-center w-full h-full">
       <div className="h-full w-full lg:h-[60%] lg:w-[25em] fixed bottom-0 lg:bottom-40 bg-white border-gray-300 lg:rounded-xl shadow-xl z-50 flex flex-col">
-      {/* Chat Header */}
-      <div className="bg-black text-white px-5 p-3 lg:rounded-t-xl flex justify-between items-center">
-        <h3 className="font-semibold">HKTAP AI Assistant</h3>
-        <button onClick={onToggle} className="text-white hover:text-gray-200">
-          ✕
-        </button>
-      </div>
+        {/* Chat Header */}
+        <div className="bg-black text-white px-5 p-3 lg:rounded-t-xl flex justify-between items-center">
+          <h3 className="font-semibold">HKTAP AI Assistant</h3>
+          <button onClick={onToggle} className="text-white hover:text-gray-200">
+            ✕
+          </button>
+        </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${
-              message.role === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-3">
+          {messages.map((message) => (
             <div
-              className={`max-w-[80%] p-2 rounded-xl text-sm ${
-                message.role === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 text-gray-800"
+              key={message.id}
+              className={`flex ${
+                message.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
-              <div className="prose prose-sm max-w-none">
-                <ReactMarkdown
-                  components={{
-                    // Custom styling for markdown elements
-                    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                    h1: ({ children }) => <h1 className="text-lg font-bold mb-2">{children}</h1>,
-                    h2: ({ children }) => <h2 className="text-base font-bold mb-2">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-sm font-bold mb-1">{children}</h3>,
-                    ul: ({ children }) => <ul className="list-disc pl-4 mb-2">{children}</ul>,
-                    ol: ({ children }) => <ol className="list-decimal pl-4 mb-2">{children}</ol>,
-                    li: ({ children }) => <li className="mb-1">{children}</li>,
-                    blockquote: ({ children }) => (
-                      <blockquote className={`border-l-2 pl-3 italic mb-2 ${
-                        message.role === "user" 
-                          ? "border-blue-200" 
-                          : "border-gray-300"
-                      }`}>
-                        {children}
-                      </blockquote>
-                    ),
-                    code: ({ children }) => (
-                      <code className={`px-1 py-0.5 rounded text-xs font-mono ${
-                        message.role === "user" 
-                          ? "bg-blue-600 bg-opacity-50" 
-                          : "bg-gray-200"
-                      }`}>
-                        {children}
-                      </code>
-                    ),
-                    pre: ({ children }) => (
-                      <pre className={`p-2 rounded text-xs font-mono overflow-x-auto mb-2 ${
-                        message.role === "user" 
-                          ? "bg-blue-600 bg-opacity-50" 
-                          : "bg-gray-200"
-                      }`}>
-                        {children}
-                      </pre>
-                    ),
-                    strong: ({ children }) => <strong className="font-bold">{children}</strong>,
-                    em: ({ children }) => <em className="italic">{children}</em>,
-                    a: ({ href, children }) => (
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline"
-                      >
-                        {children}
-                      </a>
-                    ),
-                  }}
-                >
-                  {message.content}
-                </ReactMarkdown>
+              <div
+                className={`max-w-[80%] p-2 rounded-xl text-sm ${
+                  message.role === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-800"
+                }`}
+              >
+                <div className="prose prose-sm max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      // Custom styling for markdown elements
+                      p: ({ children }) => (
+                        <p className="mb-2 last:mb-0">{children}</p>
+                      ),
+                      h1: ({ children }) => (
+                        <h1 className="text-lg font-bold mb-2">{children}</h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 className="text-base font-bold mb-2">{children}</h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 className="text-sm font-bold mb-1">{children}</h3>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="list-disc pl-4 mb-2">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal pl-4 mb-2">{children}</ol>
+                      ),
+                      li: ({ children }) => (
+                        <li className="mb-1">{children}</li>
+                      ),
+                      blockquote: ({ children }) => (
+                        <blockquote
+                          className={`border-l-2 pl-3 italic mb-2 ${
+                            message.role === "user"
+                              ? "border-blue-200"
+                              : "border-gray-300"
+                          }`}
+                        >
+                          {children}
+                        </blockquote>
+                      ),
+                      code: ({ children }) => (
+                        <code
+                          className={`px-1 py-0.5 rounded text-xs font-mono ${
+                            message.role === "user"
+                              ? "bg-blue-600 bg-opacity-50"
+                              : "bg-gray-200"
+                          }`}
+                        >
+                          {children}
+                        </code>
+                      ),
+                      pre: ({ children }) => (
+                        <pre
+                          className={`p-2 rounded text-xs font-mono overflow-x-auto mb-2 ${
+                            message.role === "user"
+                              ? "bg-blue-600 bg-opacity-50"
+                              : "bg-gray-200"
+                          }`}
+                        >
+                          {children}
+                        </pre>
+                      ),
+                      strong: ({ children }) => (
+                        <strong className="font-bold">{children}</strong>
+                      ),
+                      em: ({ children }) => (
+                        <em className="italic">{children}</em>
+                      ),
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 underline"
+                        >
+                          {children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
+                <p className="text-xs opacity-70 mt-1">
+                  {message.timestamp.toLocaleTimeString()}
+                </p>
               </div>
-              <p className="text-xs opacity-70 mt-1">
-                {message.timestamp.toLocaleTimeString()}
-              </p>
             </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-800 p-2 rounded-xl text-sm">
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                <span>Thinking...</span>
+          ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-gray-100 text-gray-800 p-2 rounded-xl text-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                  <span>Thinking...</span>
+                </div>
               </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Message Templates */}
+        {showTemplates && (
+          <div className="px-3 pb-2 border-t border-gray-200">
+            <p className="text-xs text-gray-500 mb-2">Try asking about:</p>
+            <div className="flex flex-wrap gap-1">
+              {messageTemplates.map((template, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleTemplateClick(template)}
+                  className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors border border-gray-200"
+                  disabled={isLoading}
+                >
+                  {template}
+                </button>
+              ))}
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
-      </div>
 
-      {/* Message Templates */}
-      {showTemplates && (
-        <div className="px-3 pb-2 border-t border-gray-200">
-          <p className="text-xs text-gray-500 mb-2">Try asking about:</p>
-          <div className="flex flex-wrap gap-1">
-            {messageTemplates.map((template, index) => (
-              <button
-                key={index}
-                onClick={() => handleTemplateClick(template)}
-                className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors border border-gray-200"
-                disabled={isLoading}
-              >
-                {template}
-              </button>
-            ))}
+        {/* Input */}
+        <div className="p-3 border-t border-gray-300">
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask about Hong Kong locations..."
+              className="flex-1 p-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-blue-500"
+              disabled={isLoading}
+            />
+            <button
+              onClick={sendMessage}
+              disabled={!inputMessage.trim() || isLoading}
+              className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white px-3 py-2 rounded-xl text-sm transition-colors"
+            >
+              Send
+            </button>
           </div>
         </div>
-      )}
-
-      {/* Input */}
-      <div className="p-3 border-t border-gray-300">
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Ask about Hong Kong locations..."
-            className="flex-1 p-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-blue-500"
-            disabled={isLoading}
-          />
-          <button
-            onClick={sendMessage}
-            disabled={!inputMessage.trim() || isLoading}
-            className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white px-3 py-2 rounded-xl text-sm transition-colors"
-          >
-            Send
-          </button>
-        </div>
       </div>
-    </div>
     </div>
   );
 }
