@@ -200,7 +200,13 @@ export default function Home() {
 
   return (
     <>
-      <Suspense fallback={<div className="w-full h-full flex justify-center items-center fixed"><p>Loading...</p></div>}>
+      <Suspense
+        fallback={
+          <div className="w-full h-full flex justify-center items-center fixed">
+            <p>Loading...</p>
+          </div>
+        }
+      >
         <div
           className={
             selectedCategory == "default" ? "hidden" : "flex justify-center"
@@ -740,7 +746,19 @@ export default function Home() {
             © 2025 HKTAP | Developed with ❤️ | AWS AI Hackathon Hong Kong 🇭🇰
           </p>
 
-          <p className="text-center text-xs mt-2">We Develop the <Link className="underline" target="_blank" href={"https://en.wikipedia.org/wiki/Supercalifragilisticexpialidocious"}>Supercalifragilisticexpialidocious</Link> ✨</p>
+          <p className="text-center text-xs mt-2">
+            We Develop the{" "}
+            <Link
+              className="underline"
+              target="_blank"
+              href={
+                "https://en.wikipedia.org/wiki/Supercalifragilisticexpialidocious"
+              }
+            >
+              Supercalifragilisticexpialidocious
+            </Link>{" "}
+            ✨
+          </p>
         </footer>
 
         <div className="relative z-[103]">
