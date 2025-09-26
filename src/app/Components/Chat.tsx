@@ -235,7 +235,7 @@ Current database contains ${locationsData.length} location${
           'X-Title': 'HKTAP - Hong Kong Location Assistant',
         },
         body: JSON.stringify({
-          model: 'google/gemini-2.0-flash-001',
+          model: 'x-ai/grok-4-fast:free',
           messages: [
             {
               role: 'system',
