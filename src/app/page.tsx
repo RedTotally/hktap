@@ -696,13 +696,13 @@ export default function Home() {
             data-animate="feature-section"
             className="mb-[5em] relative z-[80] mt-10 px-10"
           >
-            <div className="flex justify-center items-center mb-5">
+            <div
+              data-animate="feature-header"
+              className="flex justify-center items-center mb-5"
+            >
               {" "}
               <img className="w-5" src={"/features.svg"}></img>
-              <p
-                data-animate="feature-header"
-                className="ml-1 text-center text-gray-600 font-semibold"
-              >
+              <p className="ml-1 text-center text-gray-600 font-semibold">
                 OUR FEATURES
               </p>
             </div>
