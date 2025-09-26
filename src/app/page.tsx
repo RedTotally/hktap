@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import CameraCapture from "./Components/Camera";
 import Chat from "./Components/Chat";
 import Ranking from "./Components/Ranking";
-import Beams from "@/components/Beams";
+import Beams from "./Components/Beams";
 
 import Dock from "./Components/Dock";
 import Link from "next/link";

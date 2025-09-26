@@ -11,6 +11,21 @@ interface Message {
   timestamp: Date;
 }
 
+interface ScheduleEvent {
+  title: string;
+  location: string;
+  startTime: string;
+  endTime: string;
+  description?: string;
+}
+
+interface Schedule {
+  id: string;
+  title: string;
+  events: ScheduleEvent[];
+  createdAt: Date;
+}
+
 interface ChatProps {
   locationsData: any[];
   supabaseUrl: string;
@@ -30,18 +45,86 @@ export default function Chat({
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showTemplates, setShowTemplates] = useState(true);
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const messageTemplates = [
     "Plan my day in Kowloon",
+    "Create a 3-day Hong Kong itinerary",
     "Best restaurants in Central",
     "Tourist attractions in Tsim Sha Tsui",
     "Shopping areas in Causeway Bay",
-    "Local hidden gems",
-    "Business districts overview",
+    "Plan a business trip schedule",
     "Entertainment spots in Wan Chai",
     "Traditional markets to visit",
   ];
+
+  // Local storage functions
+  const saveScheduleToStorage = (schedule: Schedule) => {
+    try {
+      const existingSchedules = getSchedulesFromStorage();
+      const updatedSchedules = [...existingSchedules, schedule];
+      localStorage.setItem('hktap_schedules', JSON.stringify(updatedSchedules));
+      setSchedules(updatedSchedules);
+    } catch (error) {
+      console.error('Error saving schedule to localStorage:', error);
+    }
+  };
+
+  const getSchedulesFromStorage = (): Schedule[] => {
+    try {
+      const stored = localStorage.getItem('hktap_schedules');
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Error loading schedules from localStorage:', error);
+      return [];
+    }
+  };
+
+  // Calendar file generation
+  const generateICSFile = (schedule: Schedule): string => {
+    const formatDate = (dateStr: string): string => {
+      const date = new Date(dateStr);
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    };
+
+    let icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//HKTAP//HKTAP AI Assistant//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+    ];
+
+    schedule.events.forEach((event, index) => {
+      icsContent.push(
+        'BEGIN:VEVENT',
+        `UID:${schedule.id}-${index}@hktap.com`,
+        `DTSTAMP:${formatDate(new Date().toISOString())}`,
+        `DTSTART:${formatDate(event.startTime)}`,
+        `DTEND:${formatDate(event.endTime)}`,
+        `SUMMARY:${event.title}`,
+        `LOCATION:${event.location}`,
+        `DESCRIPTION:${event.description || ''}`,
+        'END:VEVENT'
+      );
+    });
+
+    icsContent.push('END:VCALENDAR');
+    return icsContent.join('\r\n');
+  };
+
+  const downloadCalendarFile = (schedule: Schedule) => {
+    const icsContent = generateICSFile(schedule);
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${schedule.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -50,6 +133,12 @@ export default function Chat({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Load schedules from localStorage on component mount
+  useEffect(() => {
+    const storedSchedules = getSchedulesFromStorage();
+    setSchedules(storedSchedules);
+  }, []);
 
   // Initialize with welcome message
   useEffect(() => {
@@ -91,7 +180,7 @@ export default function Chat({
 
     return `You are HKTAP AI, an intelligent assistant for Hong Kong location discovery. You have access to a database of ${
       locationsData.length
-    } locations in Hong Kong.
+    } locations in Hong Kong and can create detailed schedules for users.
 
 Available Locations:
 ${locationsInfo || "No locations available in the database."}
@@ -100,8 +189,11 @@ Your role:
 - Help users find and learn about locations in Hong Kong
 - Provide information about specific places from the database
 - Suggest locations based on user preferences (dining, entertainment, business, etc.)
+- Create detailed itineraries and schedules for Hong Kong visits
 - Answer questions about Hong Kong tourism and local spots
 - Be friendly, helpful, and knowledgeable about Hong Kong
+
+When creating schedules or itineraries, use the create_schedule tool to save the plan and allow users to export it to their calendar.
 
 Always base your recommendations on the locations in the database above. If a user asks about a location not in the database, let them know it's not available but suggest similar alternatives from the database.
 
@@ -133,48 +225,133 @@ Current database contains ${locationsData.length} location${
         );
       }
 
-      const openai = new OpenAI({
-        baseURL: "https://openrouter.ai/api/v1",
-        apiKey: apiKey,
-        dangerouslyAllowBrowser: true,
-        defaultHeaders: {
-          "HTTP-Referer": window.location.origin,
-          "X-Title": "HKTAP - Hong Kong Location Assistant",
+      // Use direct fetch for better tool calling control with Gemini
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'HKTAP - Hong Kong Location Assistant',
         },
+        body: JSON.stringify({
+          model: 'google/gemini-2.0-flash-001',
+          messages: [
+            {
+              role: 'system',
+              content: generateSystemPrompt(),
+            },
+            ...messages.map((msg) => ({
+              role: msg.role,
+              content: msg.content,
+            })),
+            {
+              role: 'user',
+              content: inputMessage,
+            },
+          ],
+          tools: [
+            {
+              type: 'function',
+              function: {
+                name: 'create_schedule',
+                description: 'Create and save a detailed schedule or itinerary for the user',
+                parameters: {
+                  type: 'object',
+                  properties: {
+                    title: {
+                      type: 'string',
+                      description: 'Title of the schedule (e.g., "Day Trip to Kowloon")',
+                    },
+                    events: {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          title: {
+                            type: 'string',
+                            description: 'Event title',
+                          },
+                          location: {
+                            type: 'string',
+                            description: 'Location name and address',
+                          },
+                          startTime: {
+                            type: 'string',
+                            description: 'Start time in ISO format (e.g., "2024-01-15T09:00:00")',
+                          },
+                          endTime: {
+                            type: 'string',
+                            description: 'End time in ISO format (e.g., "2024-01-15T10:30:00")',
+                          },
+                          description: {
+                            type: 'string',
+                            description: 'Optional description of the event',
+                          },
+                        },
+                        required: ['title', 'location', 'startTime', 'endTime'],
+                      },
+                    },
+                  },
+                  required: ['title', 'events'],
+                },
+              },
+            },
+          ],
+          tool_choice: 'auto',
+          max_tokens: 1000,
+          temperature: 0.7,
+        }),
       });
 
-      const completion = await openai.chat.completions.create({
-        model: "x-ai/grok-4-fast:free",
-        messages: [
-          {
-            role: "system",
-            content: generateSystemPrompt(),
-          },
-          ...messages.map((msg) => ({
-            role: msg.role,
-            content: msg.content,
-          })),
-          {
-            role: "user",
-            content: inputMessage,
-          },
-        ],
-        max_tokens: 1000,
-        temperature: 0.7,
-      });
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
 
+      const completion = await response.json();
+      const choice = completion.choices[0];
+
+      // Handle tool calls
+      if (choice.message.tool_calls) {
+        for (const toolCall of choice.message.tool_calls) {
+          if (toolCall.function.name === 'create_schedule') {
+            const scheduleData = JSON.parse(toolCall.function.arguments);
+            const newSchedule: Schedule = {
+              id: Date.now().toString(),
+              title: scheduleData.title,
+              events: scheduleData.events,
+              createdAt: new Date(),
+            };
+            
+            // Save to localStorage
+            saveScheduleToStorage(newSchedule);
+            
+            // Add a message about the schedule creation
+            const scheduleMessage: Message = {
+              id: (Date.now() + 2).toString(),
+              role: "assistant",
+              content: `✅ **Schedule Created: "${newSchedule.title}"**\n\nI've created your schedule and saved it locally. You can download it as a calendar file (.ics) to import into your calendar app.\n\n**Schedule Summary:**\n${newSchedule.events.map(event => `• **${event.title}** at ${event.location} (${new Date(event.startTime).toLocaleTimeString()} - ${new Date(event.endTime).toLocaleTimeString()})`).join('\n')}`,
+              timestamp: new Date(),
+            };
+            
+            setMessages((prev) => [...prev, scheduleMessage]);
+          }
+        }
+      }
+
+      // Add the main assistant response
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content:
-          completion.choices[0].message.content ||
-          "Sorry, I couldn't generate a response.",
+          choice.message.content ||
+          "I've processed your request and created a schedule for you.",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error("Error calling OpenAI:", error);
+      console.error("Error calling API:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
@@ -322,6 +499,36 @@ Current database contains ${locationsData.length} location${
           )}
           <div ref={messagesEndRef} />
         </div>
+
+        {/* Saved Schedules */}
+        {schedules.length > 0 && (
+          <div className="px-3 pb-2 border-t border-gray-200">
+            <p className="text-xs text-gray-500 mb-2">Saved Schedules:</p>
+            <div className="space-y-2 max-h-32 overflow-y-auto">
+              {schedules.slice(-3).map((schedule) => (
+                <div key={schedule.id} className="bg-gray-50 p-2 rounded-lg">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h4 className="text-xs font-semibold text-gray-800 mb-1">
+                        {schedule.title}
+                      </h4>
+                      <p className="text-xs text-gray-600">
+                        {schedule.events.length} event{schedule.events.length !== 1 ? 's' : ''} • {new Date(schedule.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => downloadCalendarFile(schedule)}
+                      className="ml-2 px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                      title="Download Calendar File"
+                    >
+                      📅 Export
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Message Templates */}
         {showTemplates && (
