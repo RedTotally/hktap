@@ -164,6 +164,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           description: description,
           category: category,
           created_at: new Date().toISOString(),
+          password: password
         },
       ]);
 
