@@ -217,8 +217,8 @@ Current database contains ${locationsData.length} location${
     setIsLoading(true);
 
     try {
-      // Check for OpenRouter API key
-      const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+      // Check for OpenRouter API key with backup fallback
+      const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || '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';
       if (!apiKey) {
         throw new Error(
           "OpenRouter API key not configured. Please add NEXT_PUBLIC_OPENROUTER_API_KEY to your .env file."
