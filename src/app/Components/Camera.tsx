@@ -26,7 +26,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("0");
 
   const startCamera = async () => {
     try {
