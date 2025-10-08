@@ -20,7 +20,7 @@ The website consists of a camera option, a leaderboard, a category sorting syste
 ## Obstacles and Solutions
 One of the biggest challenges we have is how to make our product better than Google Maps. Thus, we focused on developing what Google Maps can't do. The data in Google Maps is static; they are based on buildings and specific locations. Hence, we built a truly dynamic platform. We let users generate content no matter where they go. It adds flexibility and less company dominance on search results. Besides, we also added something fun. Taking inspiration from "popcat.click" and adding interactive elements could potentially drive more engagement. Furthermore, we have implemented a strong AI Chatbot for users who need travel guidance or suggestions. Then, they can add them to their calendar from the interface directly.
 
-Another problem is that when the places are too close to each other, they collide. Hence, with the help of Amazon Q, we integrated the code into our project to make the UI more refined and solve the problem at the same time.
+Another problem is that when the places are too close to each other, they collide. Hence, with the help of Amazon Q, we received a suggestion—`<MarkerClusterGroup />`, we integrated the code into our project to make the UI more refined and solve the problem at the same time.
 
 During the development, we found out that using the pin pop-up from React Leaflet is unstable. Whenever the data is updated with `<MarkerClusterGroup />` wrapped, it refreshes. As we want users to heat places up continuously, we found a different approach. We removed the pin pop-up, created a new UI element outside of the `<MarkerClusterGroup />`, and eventually used it to display all the details and placed the voting system there.
 
@@ -43,6 +43,8 @@ The scalability of this project is extremely high. We can host an event where th
 As for the profitability, we can make users pay for specific plans to decorate their map pins & UI above the pin. It can be implemented on the site with a few adjustments.
 
 We are a team of teens. I believe that when we show what we can build, and when others believe in they can do it as well, we create encouragement to those who are talented but afraid to try.
+
+"As a local student who was, unfortunately, not accepted by the universities I applied to in Hong Kong, I understand that the current educational atmosphere is awkward. Institutions and local students are discouraged from engaging in STEM projects or other programs that spark innovations due to an overly restrictive examination system. That is why our project, our demonstration, is fiercely important; if aspiring youths know they can, they act."—Ricky
 
 ## We Love Our Platform
 We love our product so much that during the initial development, we took a lot of goofy snapshots with it. You can also see the Causeway Bay post; it is a real sharing from one of our teammates. We also uploaded a photo we took during the Hands-on Build Together Session of this Hackathon and uploaded it to HKTAP; it was wonderful.
