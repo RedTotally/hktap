@@ -1,3 +1,5 @@
+<img src="https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/003/774/908/datas/original.png">
+
 ## The Chosen Theme
 Smart Tourism – Enhance travel experiences and industry efficiency
 
