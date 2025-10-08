@@ -22,7 +22,7 @@ One of the biggest challenges we have is how to make our product better than Goo
 
 Another problem is that when the places are too close to each other, they collide. Hence, with the help of Amazon Q, we integrated the code into our project to make the UI more refined and solve the problem at the same time.
 
-During the development, we found out that using the pin pop-up from React Leaflet is unstable. Whenever the data is updated with `<MarkerClusterGroup />` wrapped, it refreshes. As we want users to heat places up continuously, we found a different approach. We removed the pin pop-up, created a new UI element outside of the <MarkerClusterGroup />, and eventually used it to display all the details and placed the voting system there.
+During the development, we found out that using the pin pop-up from React Leaflet is unstable. Whenever the data is updated with `<MarkerClusterGroup />` wrapped, it refreshes. As we want users to heat places up continuously, we found a different approach. We removed the pin pop-up, created a new UI element outside of the `<MarkerClusterGroup />`, and eventually used it to display all the details and placed the voting system there.
 
 We figured out that we have to let users edit what they have published without account registration because people make mistakes. However, we want our product to be convenient; no registration. Thus, we added an optional password input for location sharing. You are required to enter the title, description, and category, but it is optional to enter a password. The password is for accessing the modification feature of your posts.
 
