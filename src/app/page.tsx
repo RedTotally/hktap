@@ -1151,7 +1151,7 @@ export default function Home() {
 
           <footer className="mb-[25em] px-10">
             <p className="text-center">
-              © 2025 HKTAP | Developed with 💪 | AWS AI Hackathon Hong Kong 🇭🇰
+              © 2025 HKTAP | Developed with ❤️💪🧠 | AWS AI Hackathon Hong Kong 🇭🇰
             </p>
 
             <p className="text-center text-xs mt-2">
