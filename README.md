@@ -46,7 +46,7 @@ The scalability of this project is extremely large. We can host an event where t
 
 As for the profitability, we can make users pay for specific plans to decorate their map pins & UI above the pin. It can be implemented on the site with a few adjustments. We aim to increase overall tourism revenue in Hong Kong, which is strongly related to the local economy. If HKTAP is proposed to the government, we will receive a reliable source of funding and long-term collaboration, considering the platform's high practicality.
 
-As a team of teens, I believe that demonstrating what we can build encourages others to do the same: stand out, develop, learn, and try our best; we have a chance. If we can do it, we will show a new opportunity, a silver lining. It would be groundbreaking, jumping to a new era.
+As a team of teens, I believe that demonstrating what we can build encourages others to do the same: stand out, develop, learn, and try our best; we have a chance. If we can do it, a new opportunity will be shown, a silver lining. It would be groundbreaking, jumping to a new era.
 
 "As a local student who was, unfortunately, not accepted by the universities I applied to in Hong Kong, I understand that the current atmosphere in education is awkward. Institutions and local students are discouraged from engaging in STEM projects or other programs that spark innovations due to an overly restrictive examination system. That is why our project, our demonstration, is fiercely important; if aspiring youths know they can, they act."—Ricky
 
